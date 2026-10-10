@@ -83,7 +83,7 @@ export const crustdataCompanySearch = createTool({
       limit,
     });
     // Response envelope key is not shown in the docs excerpt we read; handle common shapes.
-    const rows = data?.companies ?? data?.results ?? (Array.isArray(data) ? data : []);
+    const rows = data?.companies ?? [];
     return { companies: rows };
   },
 });
