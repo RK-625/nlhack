@@ -30,16 +30,6 @@ async function crustdata(path: string, body: unknown): Promise<any> {
   }
 }
 
-// Recursively cap array lengths and string sizes so payloads stay LLM-friendly.
-function trim(value: unknown, maxItems = 8, maxStr = 400): unknown {
-  if (typeof value === "string") return value.length > maxStr ? `${value.slice(0, maxStr)}...` : value;
-  if (Array.isArray(value)) return value.slice(0, maxItems).map((v) => trim(v, maxItems, maxStr));
-  if (value && typeof value === "object") {
-    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, trim(v, maxItems, maxStr)]));
-  }
-  return value;
-}
-
 const ENRICH_SECTIONS = [
   "basic_info", "revenue", "headcount", "funding", "hiring", "locations", "taxonomy",
   "people", "competitors", "web_traffic", "news", "market_intel",
@@ -66,7 +56,7 @@ export const crustdataCompanyEnrich = createTool({
     });
     // Response is a top-level array: [{ matched_on, match_type, matches: [{ confidence_score, company_data }] }]
     const results = (Array.isArray(data) ? data : []).flatMap((entry: any) =>
-      (entry.matches ?? []).slice(0, 2).map((m: any) => trim({ confidence: m.confidence_score, ...m.company_data })),
+      (entry.matches ?? []).slice(0, 2).map((m: any) => ({ confidence: m.confidence_score, ...m.company_data })),
     );
     return { results };
   },
@@ -94,7 +84,7 @@ export const crustdataCompanySearch = createTool({
     });
     // Response envelope key is not shown in the docs excerpt we read; handle common shapes.
     const rows = data?.companies ?? data?.results ?? (Array.isArray(data) ? data : []);
-    return { companies: trim(rows, 25, 300) as any[] };
+    return { companies: rows };
   },
 });
 
@@ -113,7 +103,7 @@ export const crustdataWebSearch = createTool({
       source: r.source,
       title: r.title,
       url: r.url,
-      snippet: trim(r.snippet),
+      snippet: r.snippet,
     }));
     return { results };
   },
