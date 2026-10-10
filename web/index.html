@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Chat with the nlhack team of agents." />
+    <meta name="theme-color" content="#0b0c0e" />
+    <title>nlhack</title>
+    <!-- Pre-paint theme script adapted from rakazo (Apache-2.0), github.com/elie222/rakazo@912c977 -->
+    <script>
+      (() => {
+        const key = "nlhack.uiAppearance";
+        let preference = "system";
+        try {
+          const stored = localStorage.getItem(key);
+          if (stored === "system" || stored === "light" || stored === "dark") preference = stored;
+        } catch {}
+        const systemLight =
+          typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: light)").matches;
+        const theme = preference === "system" ? (systemLight ? "light" : "dark") : preference;
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", theme === "light" ? "#fafaf8" : "#0b0c0e");
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

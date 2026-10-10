@@ -1,0 +1,48 @@
+nlhack web UI
+==============
+
+This directory contains code adapted from Rakazo
+(https://github.com/elie222/rakazo), commit 912c9770c9e1848930364c34d9458b5ce7b22409 (912c977).
+Copyright 2026 Rakazo contributors.
+Licensed under the Apache License, Version 2.0. A copy of the license is in LICENSE.rakazo.
+
+Each copied file carries the header
+  "Modified from rakazo (Apache-2.0), github.com/elie222/rakazo@912c977".
+Changes made: import paths rewritten from @rakazo/* workspace packages to local "@/..." aliases,
+lingui i18n macros removed (plain English strings), rakazo-only types and helpers trimmed,
+and the localStorage appearance key renamed to "nlhack.uiAppearance".
+
+Copied / modified files (rakazo source -> this directory):
+
+  packages/ui-web/src/components/ui/{alert-dialog,button,dialog,dropdown-menu,input-group,
+    input,popover,separator,skeleton,spinner,textarea,tooltip}.tsx -> src/components/ui/
+  packages/ui-web/src/bot-avatar.tsx         -> src/components/avatar/bot-avatar.tsx
+  packages/ui-web/src/group-avatar.tsx       -> src/components/avatar/group-avatar.tsx
+  packages/ui-web/src/avatar-style.tsx       -> src/components/avatar/avatar-style.tsx
+  packages/ui-web/src/lib/utils.ts           -> src/lib/utils.ts
+  packages/ui-web/src/styles.css             -> src/styles/ui.css
+  packages/ui-web/src/shadcn.css             -> src/styles/shadcn.css
+  packages/ui-web/components.json            -> components.json (aliases changed)
+  packages/ui-tokens/src/tokens.css          -> src/styles/tokens.css
+  packages/ui-tokens/src/index.ts            -> src/lib/tokens.ts
+  packages/core/src/avatar-motion.ts         -> src/lib/avatar/avatar-motion.ts
+  packages/core/src/avatar-shape.ts          -> src/lib/avatar/avatar-shape.ts
+  packages/core/src/bot-avatar-colors.ts     -> src/lib/avatar/bot-avatar-colors.ts
+  packages/core/src/bot-avatar-shapes.ts     -> src/lib/avatar/bot-avatar-shapes.ts
+  packages/core/src/run-state.ts             -> src/lib/avatar/run-state.ts (ACTIVE_RUN_STATUSES only)
+  packages/contracts/src/markdown-text.ts    -> src/components/markdown/markdown-text.ts
+  packages/chat-ui/src/markdown.web.tsx      -> src/components/markdown/markdown.web.tsx
+  packages/chat-ui/src/markdown.ts           -> src/components/markdown/markdown.ts
+  packages/chat-ui/src/markdown-table.tsx    -> src/components/markdown/markdown-table.tsx
+  packages/chat-ui/src/table-utils.ts        -> src/components/markdown/table-utils.ts
+  packages/chat-ui/src/icons.tsx             -> src/components/markdown/icons.tsx
+  packages/chat-ui/src/markdown-link-prompt.tsx -> src/components/markdown/markdown-link-prompt.tsx
+  packages/chat-ui/src/linkify-it.d.ts       -> src/components/markdown/linkify-it.d.ts
+  packages/chat-ui/src/markdown.web.css      -> src/styles/markdown.web.css
+  packages/chat-ui/src/markdown-table.css    -> src/styles/markdown-table.css
+  apps/web/src/styles.css                    -> src/styles.css
+  apps/web/src/lib/ui-appearance.ts          -> src/lib/appearance.ts
+  apps/web/src/lib/transcript-scroll.ts      -> src/lib/transcript-scroll.ts
+  apps/web/src/lib/tool-activity-view.ts     -> src/lib/tool-activity-view.ts (trimmed)
+  apps/web/src/components/ToolActivityDisclosure.tsx -> src/components/chat/ToolActivityDisclosure.tsx
+  apps/web/index.html (theme pre-paint script) -> index.html
