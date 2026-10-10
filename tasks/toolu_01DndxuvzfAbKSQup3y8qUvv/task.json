@@ -1,0 +1,18 @@
+{
+  "tool_use_id": "toolu_01DndxuvzfAbKSQup3y8qUvv",
+  "agent_id": "a4fe6571d3691ef30",
+  "subagent_type": "general-purpose",
+  "task_description": "Build market-researcher agent with Crustdata",
+  "files": [
+    "check.tmp.ts"
+  ],
+  "token_usage": {
+    "input_tokens": 32,
+    "cache_creation_tokens": 79170,
+    "cache_read_tokens": 912057,
+    "output_tokens": 842,
+    "api_call_count": 16
+  },
+  "started_at": "2026-10-10T17:50:09.523733+05:30",
+  "completed_at": "2026-10-10T17:51:49.825918+05:30"
+}
