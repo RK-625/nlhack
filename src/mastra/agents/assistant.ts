@@ -1,6 +1,7 @@
 import { Agent } from "@mastra/core/agent";
 import { ASSISTANT_INSTRUCTIONS } from "../prompts";
 import { marketResearcher } from "./market-researcher";
+import { cfoAgent } from "./cfo";
 
 export const assistant = new Agent({
   id: "assistant",
@@ -8,7 +9,7 @@ export const assistant = new Agent({
   description: "Primary assistant that handles conversations and coordinates specialist agents.",
   instructions: ASSISTANT_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
-  agents: { marketResearcher },
+  agents: { marketResearcher, cfoAgent },
   defaultOptions: {
     maxSteps: 6,
     delegation: {

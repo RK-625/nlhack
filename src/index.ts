@@ -1,6 +1,9 @@
 import { mastra } from "./mastra";
 
-const agent = mastra.getAgent(process.env.AGENT === "market-researcher" ? "marketResearcher" : "assistant");
+const agentId = process.env.AGENT === "market-researcher"
+  ? "marketResearcher"
+  : process.env.AGENT === "cfo" ? "cfoAgent" : "assistant";
+const agent = mastra.getAgent(agentId);
 const prompt = process.argv.slice(2).join(" ") || "Say hello in one sentence.";
 
 const res = await agent.generate(prompt);
