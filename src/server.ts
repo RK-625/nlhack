@@ -1,6 +1,8 @@
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import { bot } from "./bot/whatsapp";
+import { handleChat, listAgents, sendJson } from "./chat-api";
+import { createWebHandler } from "./web";
 
 const policyPages: Record<string, URL> = {
   "/privacy": new URL("../public/privacy.html", import.meta.url),
@@ -50,8 +52,38 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  res.writeHead(404).end();
+  // Web chat API
+  if (url.pathname === "/api/agents") {
+    if (req.method !== "GET") {
+      res.writeHead(405, { allow: "GET" }).end();
+      return;
+    }
+    sendJson(res, 200, listAgents());
+    return;
+  }
+
+  const chatMatch = url.pathname.match(/^\/api\/chat\/([^/]+)$/);
+  if (chatMatch) {
+    try {
+      await handleChat(decodeURIComponent(chatMatch[1]), req, res);
+    } catch (error: unknown) {
+      console.error("Web chat failed", error);
+      if (!res.headersSent) sendJson(res, 500, { error: "Chat failed" });
+      else res.end();
+    }
+    return;
+  }
+
+  if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
+    res.writeHead(404).end();
+    return;
+  }
+
+  // Everything else is the web UI (Vite dev middleware, or web/dist in production).
+  webHandler(req, res);
 });
+
+const webHandler = await createWebHandler(server);
 
 const PORT = Number(process.env.PORT) || 3000;
 server.listen(PORT, () => {
