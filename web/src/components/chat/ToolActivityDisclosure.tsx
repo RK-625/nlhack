@@ -3,7 +3,8 @@ import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { formatToolActivityDuration, toolStepCount } from "@/lib/tool-activity-view";
 
-export type ToolStep = { label: string; count: number };
+/** `status` overrides the currentIndex-based icon (nlhack: per-step state from AI SDK tool parts). */
+export type ToolStep = { label: string; count: number; status?: "running" | "done" | "error" };
 
 /** A run's tool steps (rakazo's `steps` message block shape). */
 export type ToolStepsBlock = { kind: "steps"; steps: ToolStep[]; durationMs?: number };
@@ -37,14 +38,17 @@ export function ToolSteps({
       ) : null}
       {shown.map((step, offset) => {
         const index = hidden + offset;
-        const isCurrent = index === currentIndex;
+        const status = step.status ?? (index === currentIndex ? "running" : "done");
+        const isCurrent = status === "running";
         return (
           <div key={index} className="flex min-w-0 items-center gap-2 leading-5">
             <span
-              className={`text-[12px] ${isCurrent ? "text-warning" : "text-success"}`}
+              className={`text-[12px] ${
+                isCurrent ? "text-warning" : status === "error" ? "text-destructive" : "text-success"
+              }`}
               style={{ animation: isCurrent ? "rkPulse 1.2s ease-in-out infinite" : undefined }}
             >
-              {isCurrent ? "◷" : "✓"}
+              {isCurrent ? "◷" : status === "error" ? "✕" : "✓"}
             </span>
             <span
               className={`min-w-0 flex-1 truncate text-[13px] ${

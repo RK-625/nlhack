@@ -4,12 +4,13 @@ import { Moon, PanelLeftClose, Search, SquarePen, Sun } from "lucide-react";
 import { useState } from "react";
 import { BotAvatar } from "@/components/avatar/bot-avatar";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import type { ChatMessage } from "@/hooks/useAgentChat";
+import type { UIMessage } from "ai";
+import type { AgentRowState } from "@/hooks/useAgentChat";
 import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
 import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
-
-export type AgentRowState = { messages: ChatMessage[]; running: boolean; unread: boolean };
+import { messageTime } from "@/lib/chats";
+import { messageText } from "@/lib/message-parts";
 
 export function Sidebar({
   agents,
@@ -91,7 +92,14 @@ export function Sidebar({
           const row = rows[agent.key];
           const last = row?.messages.at(-1);
           const selected = agent.key === activeKey;
-          const preview = row?.running ? "Working…" : last ? previewText(last) : agent.description;
+          const lastTime = last ? messageTime(last.id) : undefined;
+          const preview = row?.running
+            ? "Working…"
+            : row?.error
+              ? "Reply failed"
+              : last
+                ? previewText(last) || agent.description
+                : agent.description;
           return (
             <button
               key={agent.key}
@@ -120,9 +128,9 @@ export function Sidebar({
                     {row?.unread ? <span className="sr-only"> (unread)</span> : null}
                   </span>
                   <div className="flex shrink-0 items-center gap-1.5">
-                    {last ? (
+                    {lastTime !== undefined ? (
                       <span className="text-[11.5px] tabular-nums text-muted-foreground/60">
-                        {formatRosterTime(last.createdAt)}
+                        {formatRosterTime(lastTime)}
                       </span>
                     ) : null}
                     {row?.unread ? (
@@ -173,8 +181,8 @@ function ThemeToggle() {
   );
 }
 
-function previewText(message: ChatMessage): string {
-  const plain = message.text
+function previewText(message: UIMessage): string {
+  const plain = messageText(message)
     .replace(/[#>*_`|]/g, "")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/\s+/g, " ")

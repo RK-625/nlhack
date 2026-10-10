@@ -1,8 +1,9 @@
 // Shell layout ported from rakazo (apps/web/src/pages/Shell.tsx ~2748-3520),
 // Apache-2.0, github.com/elie222/rakazo@912c977.
 import { useEffect, useState } from "react";
-import { setActiveAgent, useAgentChat, useAgentChatSummaries } from "@/hooks/useAgentChat";
+import { useAgentChatSummaries } from "@/hooks/useAgentChat";
 import { useAgents } from "@/hooks/useAgents";
+import { getChat, setActiveChat } from "@/lib/chats";
 import { ChatPane } from "@/shell/ChatPane";
 import { Sidebar } from "@/shell/Sidebar";
 
@@ -37,10 +38,8 @@ export function App() {
   const active =
     agents.find((agent) => agent.key === activeKey || agent.id === activeKey) ?? agents[0] ?? null;
   const rows = useAgentChatSummaries(agents.map((agent) => agent.key));
-  const activeChat = useAgentChat(active?.key ?? "");
-
   useEffect(() => {
-    setActiveAgent(active?.key ?? null);
+    setActiveChat(active?.key ?? null);
   }, [active?.key]);
 
   const select = (key: string) => {
@@ -71,7 +70,12 @@ export function App() {
         mobileOpen={mobileOpen}
         onSelect={select}
         onNewChat={() => {
-          activeChat.clear();
+          if (active) {
+            const chat = getChat(active.key);
+            void chat.stop();
+            chat.clearError();
+            chat.messages = [];
+          }
           setMobileOpen(false);
         }}
         onCollapse={() => setCollapsedPref(true)}
@@ -83,6 +87,7 @@ export function App() {
       >
         <ChatPane
           agent={active}
+          agents={agents}
           sidebarCollapsed={collapsed}
           onOpenMobileSidebar={() => setMobileOpen(true)}
           onRestoreSidebar={() => setCollapsedPref(false)}

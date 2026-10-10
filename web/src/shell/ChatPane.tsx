@@ -1,30 +1,77 @@
+import { useMemo } from "react";
 import { BotAvatar } from "@/components/avatar/bot-avatar";
 import { useAgentChat } from "@/hooks/useAgentChat";
 import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
+import type { AgentNames } from "@/lib/message-parts";
 import { ChatHeader } from "./ChatHeader";
 import { Composer } from "./Composer";
 import { MessageList } from "./MessageList";
 
 const SUGGESTIONS: Record<string, string[]> = {
-  assistant: ["What can your team do?", "Plan my week", "Summarize a company for me"],
-  "market-researcher": ["Top competitors to Mastra", "Funding history of Vercel", "Headcount trend at Linear"],
-  cfo: ["What's our runway at $50k burn?", "Model hiring 2 engineers", "Price a $20/seat plan"],
+  assistant: ["What can your team do?", "Say hi in 5 words", "Ask the CFO about runway at $50k burn"],
+  "market-researcher": ["Look up Stripe's headcount", "Top competitors to Mastra", "Funding history of Vercel"],
+  cfo: ["What's our runway with $600k and $50k burn?", "Model hiring 2 engineers", "Price a $20/seat plan"],
 };
 const DEFAULT_SUGGESTIONS = ["What can you help with?", "Give me an example task"];
 
 export function ChatPane({
   agent,
+  agents,
   sidebarCollapsed,
   onOpenMobileSidebar,
   onRestoreSidebar,
 }: {
   agent: AgentSummary | null;
+  agents: AgentSummary[];
   sidebarCollapsed: boolean;
   onOpenMobileSidebar: () => void;
   onRestoreSidebar: () => void;
 }) {
-  const chat = useAgentChat(agent?.key ?? "");
+  const agentNames = useMemo<AgentNames>(
+    () => Object.fromEntries(agents.flatMap((a) => [[a.key, a.name], [a.id, a.name]])),
+    [agents],
+  );
+  if (!agent) {
+    return (
+      <>
+        <ChatHeader
+          agent={null}
+          running={false}
+          sidebarCollapsed={sidebarCollapsed}
+          onOpenMobileSidebar={onOpenMobileSidebar}
+          onRestoreSidebar={onRestoreSidebar}
+        />
+        <div className="grid flex-1 place-items-center text-[14px] text-muted-foreground">Pick an agent to start.</div>
+      </>
+    );
+  }
+  return (
+    <AgentConversation
+      key={agent.key}
+      agent={agent}
+      agentNames={agentNames}
+      sidebarCollapsed={sidebarCollapsed}
+      onOpenMobileSidebar={onOpenMobileSidebar}
+      onRestoreSidebar={onRestoreSidebar}
+    />
+  );
+}
+
+function AgentConversation({
+  agent,
+  agentNames,
+  sidebarCollapsed,
+  onOpenMobileSidebar,
+  onRestoreSidebar,
+}: {
+  agent: AgentSummary;
+  agentNames: AgentNames;
+  sidebarCollapsed: boolean;
+  onOpenMobileSidebar: () => void;
+  onRestoreSidebar: () => void;
+}) {
+  const chat = useAgentChat(agent.key);
   return (
     <>
       <ChatHeader
@@ -34,19 +81,16 @@ export function ChatPane({
         onOpenMobileSidebar={onOpenMobileSidebar}
         onRestoreSidebar={onRestoreSidebar}
       />
-      {agent ? (
-        <>
-          <MessageList
-            key={agent.key}
-            messages={chat.messages}
-            running={chat.running}
-            empty={<EmptyState agent={agent} onPick={chat.send} />}
-          />
-          <Composer agentName={agent.name} running={chat.running} onSend={chat.send} onStop={chat.stop} />
-        </>
-      ) : (
-        <div className="grid flex-1 place-items-center text-[14px] text-muted-foreground">Pick an agent to start.</div>
-      )}
+      <MessageList
+        messages={chat.messages}
+        status={chat.status}
+        error={chat.error}
+        agentNames={agentNames}
+        onRetry={chat.retry}
+        onDismissError={chat.dismissError}
+        empty={<EmptyState agent={agent} onPick={chat.send} />}
+      />
+      <Composer agentName={agent.name} running={chat.running} onSend={chat.send} onStop={chat.stop} />
     </>
   );
 }

@@ -1,18 +1,28 @@
 // Scroll container, tail-following and jump-to-latest ported from rakazo's Transcript
 // (apps/web/src/pages/Shell.tsx ~4736-5243), Apache-2.0, github.com/elie222/rakazo@912c977.
+import type { ChatStatus, UIMessage } from "ai";
 import { ArrowDown } from "lucide-react";
 import { Fragment, type ReactNode, useLayoutEffect, useRef, useState } from "react";
-import type { ChatMessage } from "@/hooks/useAgentChat";
+import { messageTime } from "@/lib/chats";
+import { type AgentNames, messageSegments } from "@/lib/message-parts";
 import { transcriptIsNearEnd, transcriptMovedDown } from "@/lib/transcript-scroll";
-import { MessageBubble, WorkingIndicator } from "./MessageBubble";
+import { ErrorBubble, MessageBubble, WorkingIndicator } from "./MessageBubble";
 
 export function MessageList({
   messages,
-  running,
+  status,
+  error,
+  agentNames,
+  onRetry,
+  onDismissError,
   empty,
 }: {
-  messages: ChatMessage[];
-  running: boolean;
+  messages: UIMessage[];
+  status: ChatStatus;
+  error: Error | undefined;
+  agentNames: AgentNames;
+  onRetry: () => void;
+  onDismissError: () => void;
   /** Rendered instead of the transcript when there are no messages. */
   empty: ReactNode;
 }) {
@@ -21,12 +31,18 @@ export function MessageList({
   const lastScrollTop = useRef<number | null>(null);
   const [atEnd, setAtEnd] = useState(true);
 
-  // Follow the tail while the reader is at the bottom; leave them alone once they scroll up.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run when the transcript grows.
+  const last = messages.at(-1);
+  const streamingId = status === "streaming" && last?.role === "assistant" ? last.id : null;
+  // Show "Thinking" until the reply has something visible to render.
+  const waiting =
+    status === "submitted" ||
+    (status === "streaming" && (!last || last.role !== "assistant" || messageSegments(last, agentNames).length === 0));
+
+  // Follow the tail (including streamed growth) while the reader is at the bottom.
   useLayoutEffect(() => {
     const element = scrollRef.current;
     if (element && following.current) element.scrollTop = element.scrollHeight;
-  }, [messages.length, running]);
+  });
 
   const stopFollowing = (element: HTMLDivElement) => {
     lastScrollTop.current = element.scrollTop;
@@ -40,7 +56,7 @@ export function MessageList({
     element.scrollTo({ top: element.scrollHeight, behavior: "smooth" });
   };
 
-  if (messages.length === 0 && !running) {
+  if (messages.length === 0 && status === "ready") {
     return <div className="rk-scroll flex min-h-0 flex-1 overflow-y-auto">{empty}</div>;
   }
 
@@ -66,11 +82,12 @@ export function MessageList({
       >
         {messages.map((message, index) => (
           <Fragment key={message.id}>
-            {startsNewDay(messages[index - 1], message) ? <TimeSeparator at={message.createdAt} /> : null}
-            <MessageBubble message={message} />
+            {startsNewDay(messages[index - 1], message) ? <TimeSeparator at={messageTime(message.id)} /> : null}
+            <MessageBubble message={message} streaming={message.id === streamingId} agentNames={agentNames} />
           </Fragment>
         ))}
-        {running ? <WorkingIndicator /> : null}
+        {waiting ? <WorkingIndicator /> : null}
+        {error ? <ErrorBubble error={error} onRetry={onRetry} onDismiss={onDismissError} /> : null}
       </div>
       <button
         type="button"
@@ -88,13 +105,16 @@ export function MessageList({
   );
 }
 
-function startsNewDay(previous: ChatMessage | undefined, message: ChatMessage): boolean {
-  return !previous || new Date(previous.createdAt).toDateString() !== new Date(message.createdAt).toDateString();
+function startsNewDay(previous: UIMessage | undefined, message: UIMessage): boolean {
+  if (!previous) return true;
+  const a = messageTime(previous.id);
+  const b = messageTime(message.id);
+  return a !== undefined && b !== undefined && new Date(a).toDateString() !== new Date(b).toDateString();
 }
 
 /** rakazo's TimeSeparator (apps/web/src/pages/shell/chat-context.tsx). */
-function TimeSeparator({ at }: { at: number }) {
-  const date = new Date(at);
+function TimeSeparator({ at }: { at: number | undefined }) {
+  const date = new Date(at ?? Date.now());
   const today = new Date();
   const yesterday = new Date(today.getTime() - 86_400_000);
   const label =
