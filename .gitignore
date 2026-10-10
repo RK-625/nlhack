@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Secrets (WhatsApp tokens, LLM keys, NEATLOGS_API_KEY)
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Mastra (local dev output + local DB)
+.mastra/
+*.db
+*.db-journal
+
+# Next.js / Vercel
+.next/
+.vercel/
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Test / coverage
+coverage/
+
+# Claude Code: keep settings.json (Entire hooks), ignore personal/temp stuff
+.claude/settings.local.json
+.claude/worktrees/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
