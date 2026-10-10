@@ -6,6 +6,7 @@
     "dev": "mastra dev",
     "build": "mastra build",
     "start": "tsx --env-file=.env src/index.ts",
+    "bot": "tsx --env-file=.env src/server.ts",
     "typecheck": "tsc"
   },
   "dependencies": {
