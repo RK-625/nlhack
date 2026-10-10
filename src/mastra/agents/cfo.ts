@@ -1,7 +1,8 @@
 import { Agent } from "@mastra/core/agent";
+import { wrapMastra } from "neatlogs/mastra";
 import { CFO_INSTRUCTIONS } from "../prompts";
 
-export const cfoAgent = new Agent({
+export const cfoAgent = wrapMastra(new Agent({
   id: "cfo",
   name: "CFO Agent",
   description:
@@ -9,4 +10,4 @@ export const cfoAgent = new Agent({
   instructions: CFO_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   defaultOptions: { maxSteps: 12 },
-});
+}));

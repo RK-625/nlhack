@@ -1,9 +1,10 @@
 import { Agent } from "@mastra/core/agent";
+import { wrapMastra } from "neatlogs/mastra";
 import { ASSISTANT_INSTRUCTIONS } from "../prompts";
 import { marketResearcher } from "./market-researcher";
 import { cfoAgent } from "./cfo";
 
-export const assistant = new Agent({
+export const assistant = wrapMastra(new Agent({
   id: "assistant",
   name: "Assistant",
   description: "Primary assistant that handles conversations and coordinates specialist agents.",
@@ -16,4 +17,4 @@ export const assistant = new Agent({
       onDelegationStart: () => ({ modifiedMaxSteps: 12 }),
     },
   },
-});
+}));
