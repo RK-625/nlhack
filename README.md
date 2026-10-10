@@ -21,6 +21,7 @@ Copy `.env.example` to `.env` and fill in the provider and integration credentia
 - `npm start -- "Research Retool and its competitors"` — run the primary Assistant.
 - `AGENT=market-researcher npm start -- "Research Retool"` — run the specialist directly.
 - `npm run bot` — start the WhatsApp webhook server at `/api/webhooks/whatsapp` (port 3000 by default).
+- `npm run tunnel` — expose port 3000 via localtunnel to `https://nlhack-rithesh-bot.loca.lt` for Meta Webhooks.
 - `npm run dev` — open the Mastra development environment.
 - `npm run typecheck` — check TypeScript.
 

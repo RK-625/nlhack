@@ -7,6 +7,7 @@
     "build": "mastra build",
     "start": "tsx --env-file=.env src/index.ts",
     "bot": "tsx --env-file=.env src/server.ts",
+    "tunnel": "npx --yes localtunnel --port 3000 --subdomain nlhack-rithesh-bot",
     "typecheck": "tsc"
   },
   "dependencies": {
