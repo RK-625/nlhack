@@ -6,13 +6,11 @@ import * as m from "motion/react-m";
 import { useState } from "react";
 import { BotAvatar } from "@/components/avatar/bot-avatar";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import type { UIMessage } from "ai";
 import type { AgentRowState } from "@/hooks/useAgentChat";
 import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
 import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
 import { messageTime } from "@/lib/chats";
-import { messageText } from "@/lib/message-parts";
 import {
   DURATION,
   enterTransition,
@@ -135,15 +133,6 @@ export function Sidebar({
           const last = row?.messages.at(-1);
           const selected = agent.key === activeKey;
           const lastTime = last ? messageTime(last.id) : undefined;
-          const status = row?.running ? "working" : row?.error ? "error" : "idle";
-          const preview =
-            status === "working"
-              ? "Working…"
-              : status === "error"
-                ? "Reply failed"
-                : last
-                  ? previewText(last) || agent.description
-                  : agent.description;
           return (
             <m.button
               key={agent.key}
@@ -209,22 +198,6 @@ export function Sidebar({
                     </AnimatePresence>
                   </div>
                 </div>
-                {/* Status changes (Working… / failed / latest message) cross-fade. */}
-                <AnimatePresence mode="wait" initial={false}>
-                  <m.div
-                    key={status}
-                    variants={fade}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    dir="auto"
-                    className={`mt-1 line-clamp-2 whitespace-normal break-words text-[12.5px] ${
-                      row?.running || row?.unread ? "font-medium text-foreground/75" : "text-muted-foreground/60"
-                    }`}
-                  >
-                    {preview}
-                  </m.div>
-                </AnimatePresence>
               </div>
             </m.button>
           );
@@ -269,15 +242,6 @@ function ThemeToggle() {
       </span>
     </button>
   );
-}
-
-function previewText(message: UIMessage): string {
-  const plain = messageText(message)
-    .replace(/[#>*_`|]/g, "")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/\s+/g, " ")
-    .trim();
-  return message.role === "user" ? `You: ${plain}` : plain;
 }
 
 /** Time for today, weekday within a week, else a short date (as in rakazo's roster). */
