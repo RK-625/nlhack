@@ -24,11 +24,30 @@ Copy `.env.example` to `.env` and fill in the provider and integration credentia
 - `AGENT=market-researcher npm start -- "Research Retool"` — run the specialist directly.
 - `AGENT=cfo npm start -- "Cash is INR 1200000 and monthly net cash burn is INR 200000. Estimate runway."` — run the CFO Agent directly.
 - `npm run bot` — start the WhatsApp webhook server at `/api/webhooks/whatsapp` (port 3000 by default).
-- `npm run tunnel` — expose port 3000 via localtunnel to `https://nlhack-rithesh-bot.loca.lt` for Meta Webhooks.
+- `npm run tunnel` — run the ngrok CLI using `PORT` (defaults to 3000), `NGROK_DOMAIN`, and `NGROK_AUTHTOKEN` from `.env`. Install the ngrok CLI first (`brew install --cask ngrok` on macOS) and set the domain and authtoken from your ngrok dashboard.
+- `npm run tunnel:local` — localtunnel fallback. Its requested subdomain is not reserved; check the actual printed URL after every restart before using it in Meta.
 - `npm run dev` — open the Mastra development environment.
 - `npm run typecheck` — check TypeScript.
 
+## WhatsApp connection checks
+
+Keep `npm run bot` and `npm run tunnel` running in separate terminals. Configure Meta's WhatsApp Business Account webhook callback as `https://<NGROK_DOMAIN>/api/webhooks/whatsapp`, use the same `WHATSAPP_VERIFY_TOKEN` as `.env`, and subscribe to `messages`.
+
+Also subscribe your app to the WhatsApp Business Account itself. Verify that your app appears in `GET /<WABA_ID>/subscribed_apps`; with approval, add it using `POST /<WABA_ID>/subscribed_apps` authenticated with your app's WhatsApp management token. A `messages` field subscription alone does not bind the app to the account. Meta's internal test app appearing in the list is not enough.
+
+`GET /health` returns `{ "status": "ok" }`. `WhatsApp assistant started` confirms the incoming message reached the model handler; `WhatsApp reply sent` confirms Meta accepted the outgoing reply. Confirm delivery separately in WhatsApp.
+
+If Meta rejects the access token as expired (OAuth error 190, subcode 463), replace `WHATSAPP_ACCESS_TOKEN` and restart the bot. Refreshing the file does not change the running process. Check the app dashboard's publication requirements when it warns that unpublished apps only receive dashboard test events. A successful dashboard sample is not an end-to-end test: it uses sample phone details and cannot prove delivery to your phone.
+
 ## Key Integrations
 
-- **NeatLogs**: Dependency installed; runtime tracing still needs to be wired up.
+- **NeatLogs**: All three Mastra agents are wrapped with `neatlogs/mastra`, recording agent runs, model steps, tool calls, inputs/outputs, timing, token usage when returned, and errors. CLI and WhatsApp runs have request traces; WhatsApp also records history message count/bytes and reply delivery. Tracing does not trim model context.
 - **Entire**: Coding-context hooks and checkpoint settings are configured.
+
+## View Neatlogs traces
+
+Set `NEATLOGS_API_KEY` in `.env` to your Neatlogs project ingest key, then restart `npm run bot` (or run `npm start -- "Say hello in one sentence"`). Optional `NEATLOGS_ENDPOINT` selects the ingest endpoint; `NEATLOGS_DEBUG=true` enables SDK diagnostics. Without a key, dashboard export is disabled and startup prints a warning.
+
+Open https://app.neatlogs.com and select the project matching your key. Open its traces view and find the `whatsapp.request` or `cli.request` run. The terminal prints the exact `traceId` for each request; use it to identify the run. Expand the agent/model/tool spans to inspect each step. WhatsApp turns share a hashed conversation session ID. Agent/model/tool tracing captures conversation content and tool results; session hashing only hides the phone number in the session identifier.
+
+`npx neatlogs doctor --local --json` validates the local SDK pipeline without credentials or network calls. `node --env-file=.env node_modules/neatlogs/dist/cli.mjs doctor --probe --json` sends generated diagnostic spans to your configured project and checks their persisted trace. It does not call an LLM. CLI requests explicitly flush at shutdown; the long-running bot uses SDK batching and signal shutdown handlers.
