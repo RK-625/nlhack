@@ -2,8 +2,11 @@
 // ~5092-5112 and ~6847-6880), Apache-2.0, github.com/elie222/rakazo@912c977.
 import type { UIMessage } from "ai";
 import { ChevronRight, RotateCcw, X } from "lucide-react";
-import type { ReactNode } from "react";
+import * as m from "motion/react-m";
+import { type ReactNode, useState } from "react";
 import { StandaloneToolActivity } from "@/components/chat/ToolActivityDisclosure";
+import { Collapse } from "@/components/motion/Collapse";
+import { DURATION, enterTransition, exitTransition } from "@/lib/motion";
 import { ChatMarkdown, LinkifiedText } from "@/components/markdown/markdown.web";
 import { type AgentNames, messageSegments, messageText, toolsDurationMs } from "@/lib/message-parts";
 import { toolStepCount } from "@/lib/tool-activity-view";
@@ -63,17 +66,7 @@ export function MessageBubble({
           );
         }
         if (segment.kind === "reasoning") {
-          return (
-            <details key={segment.key} className="group ps-1 text-[13px] text-muted-foreground">
-              <summary className="flex w-fit cursor-pointer list-none items-center gap-1 font-medium hover:text-foreground/75">
-                <ChevronRight size={14} strokeWidth={1.8} className="transition-transform group-open:rotate-90" />
-                Reasoning
-              </summary>
-              <div className="ms-[7px] mt-1 whitespace-pre-wrap border-s border-border ps-3 leading-[1.5]">
-                {segment.text}
-              </div>
-            </details>
-          );
+          return <ReasoningNote key={segment.key} text={segment.text} />;
         }
         return (
           <Row key={segment.key} user={false}>
@@ -87,6 +80,35 @@ export function MessageBubble({
           </Row>
         );
       })}
+    </div>
+  );
+}
+
+/** Collapsed, dimmed reasoning; opens and closes with the shared height motion. */
+function ReasoningNote({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="ps-1 text-[13px] text-muted-foreground">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+        className="flex w-fit cursor-pointer items-center gap-1 font-medium transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground/75"
+      >
+        <m.span
+          aria-hidden
+          className="inline-flex"
+          initial={false}
+          animate={{ rotate: open ? 90 : 0 }}
+          transition={open ? enterTransition(DURATION.fast) : exitTransition(DURATION.fast)}
+        >
+          <ChevronRight size={14} strokeWidth={1.8} />
+        </m.span>
+        Reasoning
+      </button>
+      <Collapse open={open}>
+        <div className="ms-[7px] mt-1 whitespace-pre-wrap border-s border-border ps-3 leading-[1.5]">{text}</div>
+      </Collapse>
     </div>
   );
 }

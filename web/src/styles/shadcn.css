@@ -620,3 +620,52 @@
     -webkit-text-fill-color: currentColor;
   }
 }
+
+/*
+ * nlhack: symmetric Base UI overlay motion. Popups get data-open / data-closed; tw-animate's
+ * `enter` keyframe starts from the --tw-enter-* offsets and `exit` ends at the --tw-exit-*
+ * offsets. Fade and zoom were already paired (fade-in-0/fade-out-0, zoom-in-95/zoom-out-95),
+ * but only the enter had the per-side slide (data-[side=*]:slide-in-from-*), so closes skipped
+ * it. Pinning the exit translate to the enter translate makes every close the exact reverse of
+ * its open, at one duration, with the mirrored ease pair from styles.css.
+ * (Unlayered, so it wins over the utilities layer.)
+ */
+:is(
+    [data-slot="dropdown-menu-content"],
+    [data-slot="dropdown-menu-sub-content"],
+    [data-slot="popover-content"],
+    [data-slot="tooltip-content"],
+    [data-slot="dialog-content"],
+    [data-slot="dialog-overlay"],
+    [data-slot="alert-dialog-content"],
+    [data-slot="alert-dialog-overlay"]
+  ) {
+  --tw-exit-translate-x: var(--tw-enter-translate-x);
+  --tw-exit-translate-y: var(--tw-enter-translate-y);
+  --tw-duration: var(--motion-fast);
+
+  &[data-open] {
+    --tw-ease: var(--ease-enter);
+  }
+
+  &[data-closed] {
+    --tw-ease: var(--ease-exit);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Opacity only: no slide or zoom, in either direction. */
+  :is(
+      [data-slot="dropdown-menu-content"],
+      [data-slot="dropdown-menu-sub-content"],
+      [data-slot="popover-content"],
+      [data-slot="tooltip-content"],
+      [data-slot="dialog-content"],
+      [data-slot="alert-dialog-content"]
+    ) {
+    --tw-enter-scale: 1;
+    --tw-exit-scale: 1;
+    --tw-enter-translate-x: 0;
+    --tw-enter-translate-y: 0;
+  }
+}

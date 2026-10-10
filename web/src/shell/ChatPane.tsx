@@ -1,9 +1,12 @@
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { useMemo } from "react";
 import { BotAvatar } from "@/components/avatar/bot-avatar";
 import { useAgentChat } from "@/hooks/useAgentChat";
 import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
 import type { AgentNames } from "@/lib/message-parts";
+import { paneSwap, rise, staggerGroup } from "@/lib/motion";
 import { ChatHeader } from "./ChatHeader";
 import { Composer } from "./Composer";
 import { MessageList } from "./MessageList";
@@ -47,14 +50,25 @@ export function ChatPane({
     );
   }
   return (
-    <AgentConversation
-      key={agent.key}
-      agent={agent}
-      agentNames={agentNames}
-      sidebarCollapsed={sidebarCollapsed}
-      onOpenMobileSidebar={onOpenMobileSidebar}
-      onRestoreSidebar={onRestoreSidebar}
-    />
+    // Switching agents: the old conversation leaves, then the new one arrives (mirrored).
+    <AnimatePresence mode="wait" initial={false}>
+      <m.div
+        key={agent.key}
+        variants={paneSwap}
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        className="flex min-h-0 min-w-0 flex-1 flex-col"
+      >
+        <AgentConversation
+          agent={agent}
+          agentNames={agentNames}
+          sidebarCollapsed={sidebarCollapsed}
+          onOpenMobileSidebar={onOpenMobileSidebar}
+          onRestoreSidebar={onRestoreSidebar}
+        />
+      </m.div>
+    </AnimatePresence>
   );
 }
 
@@ -95,24 +109,39 @@ function AgentConversation({
   );
 }
 
+/**
+ * Shown while an agent has no messages. Its pieces and suggestion chips stagger in, and
+ * leave in reverse order (MessageList drives hidden/visible under AnimatePresence).
+ */
 function EmptyState({ agent, onPick }: { agent: AgentSummary; onPick: (text: string) => void }) {
   return (
-    <div className="m-auto flex max-w-md flex-col items-center gap-3 px-6 py-10 text-center">
-      <BotAvatar color={agentAvatarValue(agent.id)} identity={agent.id} size={64} />
-      <h2 className="mt-1 text-[20px] font-semibold text-foreground">{agent.name}</h2>
-      <p className="text-[14px] leading-[1.5] text-muted-foreground">{agent.description}</p>
-      <div className="mt-2 flex flex-wrap justify-center gap-2">
+    <m.div
+      variants={staggerGroup()}
+      className="m-auto flex max-w-md flex-col items-center gap-3 px-6 py-10 text-center"
+    >
+      <m.div variants={rise}>
+        <BotAvatar color={agentAvatarValue(agent.id)} identity={agent.id} size={64} />
+      </m.div>
+      <m.h2 variants={rise} className="mt-1 text-[20px] font-semibold text-foreground">
+        {agent.name}
+      </m.h2>
+      <m.p variants={rise} className="text-[14px] leading-[1.5] text-muted-foreground">
+        {agent.description}
+      </m.p>
+      <m.div variants={staggerGroup()} className="mt-2 flex flex-wrap justify-center gap-2">
         {(SUGGESTIONS[agent.id] ?? DEFAULT_SUGGESTIONS).map((suggestion) => (
-          <button
+          <m.button
             key={suggestion}
             type="button"
+            variants={rise}
             onClick={() => onPick(suggestion)}
-            className="rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+            className="rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-foreground/80 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground"
           >
             {suggestion}
-          </button>
+          </m.button>
         ))}
-      </div>
-    </div>
+      </m.div>
+    </m.div>
   );
 }
+

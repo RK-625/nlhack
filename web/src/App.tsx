@@ -1,9 +1,13 @@
 // Shell layout ported from rakazo (apps/web/src/pages/Shell.tsx ~2748-3520),
 // Apache-2.0, github.com/elie222/rakazo@912c977.
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect, useState } from "react";
 import { useAgentChatSummaries } from "@/hooks/useAgentChat";
 import { useAgents } from "@/hooks/useAgents";
+import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { getChat, setActiveChat } from "@/lib/chats";
+import { backdrop } from "@/lib/motion";
 import { ChatPane } from "@/shell/ChatPane";
 import { Sidebar } from "@/shell/Sidebar";
 
@@ -34,6 +38,10 @@ export function App() {
   );
   const [collapsed, setCollapsed] = useState(() => readPref(COLLAPSED_KEY) === "true");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isDesktop = useIsDesktop();
+  // Docked on desktop unless collapsed; an overlay on mobile only while open.
+  const sidebarOpen = isDesktop ? !collapsed : mobileOpen;
+  const overlayOpen = !isDesktop && mobileOpen;
 
   const active =
     agents.find((agent) => agent.key === activeKey || agent.id === activeKey) ?? agents[0] ?? null;
@@ -54,41 +62,52 @@ export function App() {
 
   return (
     <div className="relative flex h-full min-w-0 overflow-hidden bg-background text-foreground/90">
-      {mobileOpen ? (
-        <button
-          type="button"
-          aria-label="Close navigation"
-          onClick={() => setMobileOpen(false)}
-          className="absolute inset-y-0 end-0 start-[min(calc(100%-48px),316px)] z-30 bg-overlay md:hidden"
-        />
-      ) : null}
-      <Sidebar
-        agents={agents}
-        rows={rows}
-        activeKey={active?.key ?? null}
-        collapsed={collapsed}
-        mobileOpen={mobileOpen}
-        onSelect={select}
-        onNewChat={() => {
-          if (active) {
-            const chat = getChat(active.key);
-            void chat.stop();
-            chat.clearError();
-            chat.messages = [];
-          }
-          setMobileOpen(false);
-        }}
-        onCollapse={() => setCollapsedPref(true)}
-      />
+      <AnimatePresence initial={false}>
+        {overlayOpen ? (
+          <m.button
+            key="backdrop"
+            type="button"
+            aria-label="Close navigation"
+            onClick={() => setMobileOpen(false)}
+            variants={backdrop}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="absolute inset-y-0 end-0 start-[min(calc(100%-48px),316px)] z-30 bg-overlay"
+          />
+        ) : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        {sidebarOpen ? (
+          <Sidebar
+            key={isDesktop ? "docked" : "overlay"}
+            docked={isDesktop}
+            agents={agents}
+            rows={rows}
+            activeKey={active?.key ?? null}
+            onSelect={select}
+            onNewChat={() => {
+              if (active) {
+                const chat = getChat(active.key);
+                void chat.stop();
+                chat.clearError();
+                chat.messages = [];
+              }
+              setMobileOpen(false);
+            }}
+            onCollapse={() => setCollapsedPref(true)}
+          />
+        ) : null}
+      </AnimatePresence>
       <main
-        aria-hidden={mobileOpen || undefined}
-        inert={mobileOpen}
+        aria-hidden={overlayOpen || undefined}
+        inert={overlayOpen}
         className="isolate flex min-w-0 flex-1 flex-col bg-background"
       >
         <ChatPane
           agent={active}
           agents={agents}
-          sidebarCollapsed={collapsed}
+          sidebarCollapsed={isDesktop && collapsed}
           onOpenMobileSidebar={() => setMobileOpen(true)}
           onRestoreSidebar={() => setCollapsedPref(false)}
         />

@@ -4,6 +4,20 @@
 @import "@fontsource-variable/geist/wght.css";
 
 
+/*
+ * nlhack motion tokens; keep in sync with src/lib/motion.ts. --ease-exit is the exact
+ * time-reverse of --ease-enter, so an exit replays its enter backwards; --ease-standard
+ * mirrors itself, for two-way CSS state changes (hover, focus).
+ */
+:root {
+  --motion-fast: 150ms;
+  --motion-base: 220ms;
+  --motion-slow: 300ms;
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.64, 0, 0.78, 0);
+  --ease-standard: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
 html,
 body,
 #root {
