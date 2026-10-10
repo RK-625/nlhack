@@ -1,107 +1,93 @@
-import { ChevronDown, Moon, Sun } from "lucide-react";
-import { useState } from "react";
-import { BotAvatar } from "@/components/avatar/bot-avatar";
-import { ToolActivityDisclosure, ToolSteps } from "@/components/chat/ToolActivityDisclosure";
-import { ChatMarkdown } from "@/components/markdown/markdown.web";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { PLACEHOLDER_AGENTS } from "@/hooks/useAgents";
-import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
+// Shell layout ported from rakazo (apps/web/src/pages/Shell.tsx ~2748-3520),
+// Apache-2.0, github.com/elie222/rakazo@912c977.
+import { useEffect, useState } from "react";
+import { setActiveAgent, useAgentChat, useAgentChatSummaries } from "@/hooks/useAgentChat";
+import { useAgents } from "@/hooks/useAgents";
+import { ChatPane } from "@/shell/ChatPane";
+import { Sidebar } from "@/shell/Sidebar";
 
-const SAMPLE_MARKDOWN = `### Runway check
+const ACTIVE_KEY = "nlhack.activeAgent";
+const COLLAPSED_KEY = "nlhack.sidebarCollapsed";
 
-Your **monthly burn** is about \`$42k\`. At the current balance that gives roughly *14 months*.
+function readPref(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
 
-| Scenario | Burn | Runway |
-| --- | ---: | ---: |
-| Today | $42k | 14 mo |
-| +2 hires | $58k | 10 mo |
+function writePref(key: string, value: string) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Preferences are a convenience; ignore blocked storage.
+  }
+}
 
-- Next step: confirm Q4 revenue
-- [Mastra docs](https://mastra.ai)
-`;
-
-/** S1 verification page: proves the lifted components, tokens and themes render. */
 export function App() {
-  const [theme, setTheme] = useState<ResolvedAppearance>(
-    () => (document.documentElement.dataset.theme as ResolvedAppearance) ?? "dark",
+  const agents = useAgents();
+  // ?agent=<key|id> deep-links to an agent; otherwise reopen the last one.
+  const [activeKey, setActiveKey] = useState<string | null>(
+    () => new URLSearchParams(window.location.search).get("agent") ?? readPref(ACTIVE_KEY),
   );
-  const [picked, setPicked] = useState(PLACEHOLDER_AGENTS[0]);
+  const [collapsed, setCollapsed] = useState(() => readPref(COLLAPSED_KEY) === "true");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const toggleTheme = () => setTheme(setUiAppearance(theme === "dark" ? "light" : "dark"));
+  const active =
+    agents.find((agent) => agent.key === activeKey || agent.id === activeKey) ?? agents[0] ?? null;
+  const rows = useAgentChatSummaries(agents.map((agent) => agent.key));
+  const activeChat = useAgentChat(active?.key ?? "");
+
+  useEffect(() => {
+    setActiveAgent(active?.key ?? null);
+  }, [active?.key]);
+
+  const select = (key: string) => {
+    setActiveKey(key);
+    writePref(ACTIVE_KEY, key);
+    setMobileOpen(false);
+  };
+  const setCollapsedPref = (value: boolean) => {
+    setCollapsed(value);
+    writePref(COLLAPSED_KEY, String(value));
+  };
 
   return (
-    <div className="rk-scroll mx-auto flex h-full max-w-2xl flex-col gap-8 overflow-y-auto px-4 py-8">
-      <header className="flex items-center justify-between">
-        <h1 className="text-[20px] font-semibold">nlhack web · S1 component check</h1>
-        <Button variant="outline" size="sm" onClick={toggleTheme}>
-          {theme === "dark" ? <Sun /> : <Moon />}
-          {theme === "dark" ? "Light" : "Dark"}
-        </Button>
-      </header>
-
-      <section className="flex flex-col gap-3">
-        <h2 className="text-[13px] text-muted-foreground">Agents (BotAvatar)</h2>
-        <div className="flex flex-col gap-1 rounded-xl border border-sidebar-border bg-sidebar p-2.5">
-          {PLACEHOLDER_AGENTS.map((agent, index) => (
-            <div key={agent.id} className="flex items-center gap-3 rounded-xl px-2.5 py-[10px] hover:bg-sidebar-accent">
-              <BotAvatar color="" identity={agent.id} size={38} status={index === 0 ? "running" : undefined} />
-              <div className="min-w-0">
-                <div className="text-[14px] font-medium">{agent.name}</div>
-                <div className="text-[12.5px] text-muted-foreground/60">{agent.id}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="flex flex-wrap items-center gap-3">
-        <h2 className="w-full text-[13px] text-muted-foreground">Button + DropdownMenu</h2>
-        <Button>Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" />}>
-            {picked.name}
-            <ChevronDown />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {PLACEHOLDER_AGENTS.map((agent) => (
-              <DropdownMenuItem key={agent.id} onClick={() => setPicked(agent)}>
-                {agent.name}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </section>
-
-      <section className="flex flex-col gap-2">
-        <h2 className="text-[13px] text-muted-foreground">Chat bubbles + ChatMarkdown + tool activity</h2>
-        <div className="flex justify-end">
-          <div className="rounded-[20px] bg-chat-user px-[18px] py-3 text-[15.5px] text-chat-user-foreground">
-            How long is our runway if we hire two engineers?
-          </div>
-        </div>
-        <div className="ps-1">
-          <ToolActivityDisclosure live={false} stepCount={3} durationMs={4200}>
-            <ToolSteps
-              steps={[
-                { label: "Delegated to CFO Agent", count: 1 },
-                { label: "Calculated burn", count: 2 },
-              ]}
-            />
-          </ToolActivityDisclosure>
-        </div>
-        <div className="flex justify-start">
-          <div className="max-w-full rounded-[20px] bg-muted px-[18px] py-3 text-[15.5px] leading-[1.5] text-foreground/90">
-            <ChatMarkdown>{SAMPLE_MARKDOWN}</ChatMarkdown>
-          </div>
-        </div>
-      </section>
+    <div className="relative flex h-full min-w-0 overflow-hidden bg-background text-foreground/90">
+      {mobileOpen ? (
+        <button
+          type="button"
+          aria-label="Close navigation"
+          onClick={() => setMobileOpen(false)}
+          className="absolute inset-y-0 end-0 start-[min(calc(100%-48px),316px)] z-30 bg-overlay md:hidden"
+        />
+      ) : null}
+      <Sidebar
+        agents={agents}
+        rows={rows}
+        activeKey={active?.key ?? null}
+        collapsed={collapsed}
+        mobileOpen={mobileOpen}
+        onSelect={select}
+        onNewChat={() => {
+          activeChat.clear();
+          setMobileOpen(false);
+        }}
+        onCollapse={() => setCollapsedPref(true)}
+      />
+      <main
+        aria-hidden={mobileOpen || undefined}
+        inert={mobileOpen}
+        className="isolate flex min-w-0 flex-1 flex-col bg-background"
+      >
+        <ChatPane
+          agent={active}
+          sidebarCollapsed={collapsed}
+          onOpenMobileSidebar={() => setMobileOpen(true)}
+          onRestoreSidebar={() => setCollapsedPref(false)}
+        />
+      </main>
     </div>
   );
 }

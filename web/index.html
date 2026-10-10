@@ -17,7 +17,14 @@
         } catch {}
         const systemLight =
           typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: light)").matches;
-        const theme = preference === "system" ? (systemLight ? "light" : "dark") : preference;
+        // ?theme=light|dark forces a theme for this load only (screenshots, previews).
+        const forced = new URLSearchParams(location.search).get("theme");
+        const theme =
+          forced === "light" || forced === "dark"
+            ? forced
+            : preference === "system"
+              ? (systemLight ? "light" : "dark")
+              : preference;
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
         const meta = document.querySelector('meta[name="theme-color"]');

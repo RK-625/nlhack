@@ -1,13 +1,17 @@
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
-import { applyUiAppearance, watchSystemAppearance } from "./lib/appearance";
+import { applyResolvedAppearance, applyUiAppearance, watchSystemAppearance } from "./lib/appearance";
 import "./styles.css";
 
-applyUiAppearance();
+// ?theme=light|dark forces a theme for this load only (matches the pre-paint script in index.html).
+const forcedTheme = new URLSearchParams(window.location.search).get("theme");
+const themeForced = forcedTheme === "light" || forcedTheme === "dark";
+if (themeForced) applyResolvedAppearance(forcedTheme);
+else applyUiAppearance();
 
 function AppearanceSync() {
-  useEffect(() => watchSystemAppearance(), []);
+  useEffect(() => (themeForced ? undefined : watchSystemAppearance()), []);
   return null;
 }
 

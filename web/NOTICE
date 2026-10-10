@@ -46,3 +46,7 @@ Copied / modified files (rakazo source -> this directory):
   apps/web/src/lib/tool-activity-view.ts     -> src/lib/tool-activity-view.ts (trimmed)
   apps/web/src/components/ToolActivityDisclosure.tsx -> src/components/chat/ToolActivityDisclosure.tsx
   apps/web/index.html (theme pre-paint script) -> index.html
+
+Markup and classes ported (rewritten, not copied verbatim) from apps/web/src/pages/Shell.tsx
+and apps/web/src/pages/shell/chat-context.tsx:
+  src/App.tsx, src/shell/{Sidebar,ChatHeader,MessageList,MessageBubble,Composer}.tsx
