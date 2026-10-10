@@ -76,7 +76,7 @@ export function Sidebar({
       className={
         docked
           ? "relative flex h-full shrink-0 overflow-hidden border-e border-sidebar-border bg-sidebar"
-          : "absolute inset-y-0 start-0 z-40 flex w-[calc(100%-48px)] max-w-[316px] flex-col border-e border-sidebar-border bg-sidebar"
+          : "absolute inset-y-0 start-0 z-40 flex w-[calc(100%-48px)] max-w-[284px] flex-col border-e border-sidebar-border bg-sidebar"
       }
     >
       <m.div

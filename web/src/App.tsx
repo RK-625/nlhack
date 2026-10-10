@@ -73,7 +73,7 @@ export function App() {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="absolute inset-y-0 end-0 start-[min(calc(100%-48px),316px)] z-30 bg-overlay"
+            className="absolute inset-y-0 end-0 start-[min(calc(100%-48px),284px)] z-30 bg-overlay"
           />
         ) : null}
       </AnimatePresence>

@@ -82,7 +82,7 @@ export const collapse: Variants = {
 };
 
 /** Desktop sidebar: width opens/closes, content fades. */
-export const SIDEBAR_WIDTH = 316;
+export const SIDEBAR_WIDTH = 284;
 export const sidebarDesktop: Variants = {
   hidden: { width: 0, transition: exitTransition(DURATION.slow) },
   visible: { width: SIDEBAR_WIDTH, transition: enterTransition(DURATION.slow) },
