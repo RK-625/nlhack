@@ -44,7 +44,7 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
     id: "neatlogs",
     name: "Neatlogs Agent",
     description:
-      "Analyzes the Neatlogs traces of this project's agent runs: errors, latency, token usage, evaluations, detections, and triage items.",
+      "Analyzes the Neatlogs traces of this project's agent runs: errors, latency, token usage, evaluations, detections, and triage items. Can update triage items and create detections, each after you approve it.",
   },
 ];
 

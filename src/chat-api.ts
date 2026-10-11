@@ -182,7 +182,8 @@ async function ownThread(agentId: string, user: SessionUser) {
 /**
  * A new user message moves past any approval still awaiting a decision: it is cleared from the
  * stored history (so it is no longer offered, and a late decision gets 409) and its suspended run
- * is discarded, deleting the same snapshot rows Mastra deletes when an agent run finishes.
+ * is discarded, deleting the same snapshot rows Mastra deletes when an agent run finishes. For an
+ * approval raised by a delegated sub-agent, the sub-agent's own suspended run is discarded too.
  */
 async function dropPendingApprovals(agentId: string, user: SessionUser): Promise<void> {
   const thread = await ownThread(agentId, user);

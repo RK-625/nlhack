@@ -82,6 +82,7 @@ export function MessageBubble({
             <ApprovalCard
               key={segment.key}
               label={segment.label}
+              agent={segment.agent}
               toolName={segment.toolName}
               input={segment.input}
               onRespond={onApproval ? (approved) => onApproval(segment.approvalId, approved) : undefined}
@@ -136,29 +137,35 @@ function ReasoningNote({ text }: { text: string }) {
   );
 }
 
-/** A tool call paused for the user's decision: what will run, with its exact arguments. */
+/**
+ * A tool call paused for the user's decision: what will run, with its exact arguments. For a call
+ * a delegated sub-agent wants to make, `agent` names that sub-agent.
+ */
 function ApprovalCard({
   label,
+  agent,
   toolName,
   input,
   onRespond,
 }: {
   label: string;
+  agent?: string;
   toolName: string;
   input: unknown;
   onRespond?: (approved: boolean) => void;
 }) {
+  const title = agent ? `${agent} wants to run: ${label}` : `Approve ${label}?`;
   return (
     <Row user={false}>
       <div
         role="group"
-        aria-label={`Approve ${label}?`}
+        aria-label={title}
         data-testid="tool-approval"
         className="flex max-w-full flex-col gap-2 rounded-[20px] border border-border bg-muted/60 px-[18px] py-3 text-[14.5px] leading-[1.45] text-foreground/90"
       >
         <div className="flex items-center gap-2 font-medium">
           <ShieldAlert size={15} strokeWidth={1.8} className="shrink-0 text-muted-foreground" />
-          <span className="min-w-0 break-words">Approve {label}?</span>
+          <span className="min-w-0 break-words">{title}</span>
         </div>
         <code className="w-fit max-w-full break-all rounded-md bg-background px-1.5 py-0.5 font-mono text-[12.5px] text-muted-foreground">
           {toolName}

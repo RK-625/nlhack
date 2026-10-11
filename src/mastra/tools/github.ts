@@ -57,21 +57,3 @@ export async function getGithubTools(): Promise<GithubTools> {
     return {};
   }
 }
-
-const TOOL_KEY_PREFIX = "github_"; // listTools() namespaces tools as `<server>_<tool>`.
-
-/**
- * Only the tools that never need approval, for callers that cannot show an approval prompt
- * (delegation from the assistant). Same predicate as the
- * approval gate, so a tool is either listed here or would have suspended for approval.
- */
-export async function getGithubReadTools(): Promise<GithubTools> {
-  const tools = await getGithubTools();
-  return Object.fromEntries(
-    Object.entries(tools).filter(([key, tool]) => {
-      if (!key.startsWith(TOOL_KEY_PREFIX)) return false;
-      const annotations = (tool as { mcp?: { annotations?: RequireToolApprovalContext["annotations"] } }).mcp?.annotations;
-      return !githubToolNeedsApproval({ annotations });
-    }),
-  );
-}

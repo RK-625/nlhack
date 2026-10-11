@@ -4,8 +4,8 @@ import { wrapMastra } from "neatlogs/mastra";
 import { ASSISTANT_INSTRUCTIONS } from "../prompts";
 import { marketResearcher } from "./market-researcher";
 import { cfoAgent } from "./cfo";
-import { githubReaderAgent } from "./github";
-import { neatlogsReaderAgent } from "./neatlogs";
+import { githubAgent } from "./github";
+import { neatlogsAgent } from "./neatlogs";
 
 export const assistant = wrapMastra(new Agent({
   id: "assistant",
@@ -14,10 +14,12 @@ export const assistant = wrapMastra(new Agent({
   instructions: ASSISTANT_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
-  // Delegation gets the read-only GitHub and Neatlogs agents: the assistant's chat cannot
-  // show an approval prompt for a sub-agent's write. Writes happen in each agent's own chat.
-  // The keys match the registered agents ("githubAgent", "neatlogsAgent") so the prompt and the web UI's "agent-<key>" labels still match.
-  agents: { marketResearcher, cfoAgent, githubAgent: githubReaderAgent, neatlogsAgent: neatlogsReaderAgent },
+  // The GitHub and Neatlogs agents are the same write-capable agents the web app chats with. A
+  // sub-agent tool call that needs approval suspends this run too: the approval request surfaces
+  // on the "agent-<key>" delegation call in the Assistant's own chat (carrying the real nested
+  // tool name and arguments), and approving or denying it resumes the sub-agent from there.
+  // The keys match the registered agents so the web UI's "agent-<key>" labels resolve.
+  agents: { marketResearcher, cfoAgent, githubAgent, neatlogsAgent },
   defaultOptions: {
     maxSteps: 6,
     delegation: {

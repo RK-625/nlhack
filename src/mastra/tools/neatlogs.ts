@@ -84,17 +84,3 @@ export async function getNeatlogsTools(): Promise<NeatlogsTools> {
     return {};
   }
 }
-
-/**
- * Only the read allowlist, for callers that cannot show an approval prompt (delegation from the
- * assistant). Same predicate as the approval gate.
- */
-export async function getNeatlogsReadTools(): Promise<NeatlogsTools> {
-  const tools = await getNeatlogsTools();
-  return Object.fromEntries(
-    Object.entries(tools).filter(([key]) => {
-      const name = toolName(key);
-      return name !== undefined && !neatlogsToolNeedsApproval({ toolName: name });
-    }),
-  ) as NeatlogsTools;
-}

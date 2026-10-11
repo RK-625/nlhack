@@ -6,8 +6,11 @@ export type Segment =
   | { kind: "text"; text: string; key: string }
   | { kind: "reasoning"; text: string; key: string }
   | { kind: "tools"; steps: ToolStep[]; callIds: string[]; key: string }
-  /** A tool call paused until the user approves or denies it. */
-  | { kind: "approval"; approvalId: string; toolName: string; label: string; input: unknown; key: string };
+  /**
+   * A tool call paused until the user approves or denies it. For a call a delegated sub-agent
+   * made, toolName/label/input describe that nested call and `agent` names the sub-agent.
+   */
+  | { kind: "approval"; approvalId: string; toolName: string; label: string; input: unknown; agent?: string; key: string };
 
 /** Agent display names by registry key and id, for "agent-<key>" delegation tools. */
 export type AgentNames = Record<string, string>;
@@ -17,6 +20,7 @@ const toolTimes = new Map<string, { start: number; end?: number }>();
 
 export function messageSegments(message: UIMessage, agentNames: AgentNames): Segment[] {
   const segments: Segment[] = [];
+  const approvalData = toolCallApprovalData(message);
   message.parts.forEach((part, index) => {
     const key = `${message.id}:${index}`;
     if (isTextUIPart(part)) {
@@ -29,14 +33,29 @@ export function messageSegments(message: UIMessage, agentNames: AgentNames): Seg
     }
     if (isToolUIPart(part) && part.state === "approval-requested") {
       const toolName = getToolName(part);
-      segments.push({
-        kind: "approval",
-        approvalId: part.approval.id,
-        toolName,
-        label: toolLabel(toolName, agentNames),
-        input: part.input,
-        key,
-      });
+      // A delegated sub-agent's call surfaces on the "agent-<key>" delegation call; Mastra sends
+      // the real nested tool and arguments for the same call id (see toolCallApprovalData).
+      const nested = toolName.startsWith("agent-") ? approvalData.get(part.toolCallId) : undefined;
+      segments.push(
+        nested
+          ? {
+              kind: "approval",
+              approvalId: part.approval.id,
+              toolName: nested.toolName,
+              label: toolLabel(nested.toolName, agentNames),
+              input: nested.args,
+              agent: agentName(toolName, agentNames),
+              key,
+            }
+          : {
+              kind: "approval",
+              approvalId: part.approval.id,
+              toolName,
+              label: toolLabel(toolName, agentNames),
+              input: part.input,
+              key,
+            },
+      );
       return;
     }
     let step: { step: ToolStep; callId: string } | null = null;
@@ -85,13 +104,44 @@ export function toolsDurationMs(callIds: string[]): number | undefined {
   return end - start;
 }
 
+type ApprovalData = { toolName?: unknown; args?: unknown; toolCallId?: unknown };
+
+/**
+ * The tool name and arguments Mastra reports for each call awaiting approval, by tool call id. On
+ * a live stream they arrive as "data-tool-call-approval" parts (never rendered themselves); in
+ * loaded history they are the stored `metadata.pendingToolApprovals` entries, keyed by call id.
+ */
+function toolCallApprovalData(message: UIMessage): Map<string, { toolName: string; args: unknown }> {
+  const byCallId = new Map<string, { toolName: string; args: unknown }>();
+  const add = (callId: unknown, data: ApprovalData) => {
+    if (typeof callId !== "string" || typeof data.toolName !== "string" || !data.toolName) return;
+    byCallId.set(callId, { toolName: data.toolName, args: data.args });
+  };
+  const pending = (message.metadata as { pendingToolApprovals?: unknown } | undefined)?.pendingToolApprovals;
+  if (pending && typeof pending === "object") {
+    for (const [callId, entry] of Object.entries(pending)) {
+      const data = (entry ?? {}) as ApprovalData;
+      add(typeof data.toolCallId === "string" ? data.toolCallId : callId, data);
+    }
+  }
+  for (const part of message.parts) {
+    if (!isDataUIPart(part) || part.type !== "data-tool-call-approval") continue;
+    const data = (part.data ?? {}) as ApprovalData;
+    add(typeof data.toolCallId === "string" ? data.toolCallId : part.id, data);
+  }
+  return byCallId;
+}
+
 /** "agent-cfoAgent" → "Delegated to CFO Agent"; "crustdataCompanyEnrich" → "Crustdata company enrich". */
 export function toolLabel(toolName: string, agentNames: AgentNames): string {
-  if (toolName.startsWith("agent-")) {
-    const key = toolName.slice("agent-".length);
-    return `Delegated to ${agentNames[key] ?? humanize(key)}`;
-  }
+  if (toolName.startsWith("agent-")) return `Delegated to ${agentName(toolName, agentNames)}`;
   return humanize(toolName);
+}
+
+/** "agent-githubAgent" → "GitHub Agent". */
+function agentName(toolName: string, agentNames: AgentNames): string {
+  const key = toolName.slice("agent-".length);
+  return agentNames[key] ?? humanize(key);
 }
 
 function humanize(name: string): string {

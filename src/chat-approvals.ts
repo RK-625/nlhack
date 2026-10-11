@@ -28,8 +28,10 @@ export function pendingApprovalIds(messages: readonly StoredMessage[]): Set<stri
 /**
  * For dropping approvals the user moved on from: the stored assistant messages that still hold
  * pending approvals, reduced to { id, content } with those approvals removed, and the suspended
- * agent runs they belonged to. Storage merges metadata keys on update, so the key is set to
- * undefined (left out when serialized) rather than deleted.
+ * agent runs they belonged to. When the approval came from a delegated sub-agent, the entry also
+ * names that sub-agent's own suspended run (`delegatedRunId`), which is included too. Storage
+ * merges metadata keys on update, so the key is set to undefined (left out when serialized)
+ * rather than deleted.
  */
 export function withoutPendingApprovals<M extends StoredMessage & { id: string; content: { metadata?: Record<string, unknown> } }>(
   messages: readonly M[],
@@ -40,6 +42,12 @@ export function withoutPendingApprovals<M extends StoredMessage & { id: string; 
     const metadata = message.content.metadata;
     if (message.role !== "assistant" || !metadata?.pendingToolApprovals) continue;
     for (const id of pendingApprovalIds([message])) runIds.add(id.slice(0, id.lastIndexOf("::")));
+    if (typeof metadata.pendingToolApprovals === "object") {
+      for (const entry of Object.values(metadata.pendingToolApprovals as object)) {
+        const { delegatedRunId } = (entry ?? {}) as { delegatedRunId?: unknown };
+        if (typeof delegatedRunId === "string" && delegatedRunId) runIds.add(delegatedRunId);
+      }
+    }
     cleared.push({ id: message.id, content: { ...message.content, metadata: { ...metadata, pendingToolApprovals: undefined } } });
   }
   return { messages: cleared, runIds };
