@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_0163ktBhWYMKzgDckCAaJiHU",
+  "agent_id": "ac35b77912316d231",
+  "subagent_type": "general-purpose",
+  "task_description": "Recon rakazo UI for lean lift",
+  "token_usage": {
+    "input_tokens": 64,
+    "cache_creation_tokens": 109134,
+    "cache_read_tokens": 2416854,
+    "output_tokens": 564,
+    "api_call_count": 32
+  },
+  "started_at": "2026-10-11T01:53:20.367568+05:30",
+  "completed_at": "2026-10-11T01:56:55.901807+05:30"
+}
