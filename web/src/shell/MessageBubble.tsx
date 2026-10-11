@@ -26,12 +26,15 @@ function Row({ user, children }: { user: boolean; children: ReactNode }) {
 export function MessageBubble({
   message,
   streaming,
+  earlier,
   agentNames,
   onApproval,
 }: {
   message: UIMessage;
   /** This is the assistant message currently being streamed. */
   streaming: boolean;
+  /** A later message follows this one, so nothing in it is still in progress. */
+  earlier: boolean;
   agentNames: AgentNames;
   /** Answers a tool call awaiting approval; omitted when this message can't be answered now. */
   onApproval?: (approvalId: string, approved: boolean) => void;
@@ -59,12 +62,17 @@ export function MessageBubble({
         const last = index === segments.length - 1;
         if (segment.kind === "tools") {
           const live = streaming && segment.steps.some((step) => step.status === "running");
+          // In an earlier reply a call can't still be running: it never ran (an approval dropped
+          // when the user sent a new message), so it shows as declined.
+          const steps = earlier
+            ? segment.steps.map((step) => (step.status === "running" ? { ...step, status: "denied" as const } : step))
+            : segment.steps;
           return (
             <StandaloneToolActivity
               key={segment.key}
               live={live}
-              steps={segment.steps}
-              stepCount={toolStepCount(segment.steps)}
+              steps={steps}
+              stepCount={toolStepCount(steps)}
               durationMs={live ? undefined : toolsDurationMs(segment.callIds)}
             />
           );

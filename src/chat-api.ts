@@ -3,7 +3,7 @@ import { handleChatStream } from "@mastra/ai-sdk";
 import { toAISdkMessages } from "@mastra/ai-sdk/ui";
 import { createUIMessageStreamResponse, type UIMessage } from "ai";
 import { canUseAgent } from "./auth/access";
-import { approvalResumeMessage, pendingApprovalIds } from "./chat-approvals";
+import { approvalResumeMessage, pendingApprovalIds, withoutPendingApprovals } from "./chat-approvals";
 import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
 
@@ -75,6 +75,7 @@ export async function handleChat(
   if (last.role === "user") {
     // Namespace the id by user: storage upserts by message id, so a client-chosen id must not hit another user's rows.
     message = { ...last, id: `${user.id}:${last.id}` };
+    await dropPendingApprovals(agentId, user);
   } else {
     // Approval response: only decisions for approvals pending in the caller's own thread are kept.
     // It resumes the suspended run; the message itself is not stored.
@@ -176,6 +177,26 @@ async function ownThread(agentId: string, user: SessionUser) {
   const thread = memory ? await memory.getThreadById({ threadId }) : null;
   if (!memory || thread?.resourceId !== user.id) return undefined;
   return { memory, ids: { threadId, resourceId: user.id } };
+}
+
+/**
+ * A new user message moves past any approval still awaiting a decision: it is cleared from the
+ * stored history (so it is no longer offered, and a late decision gets 409) and its suspended run
+ * is discarded, deleting the same snapshot rows Mastra deletes when an agent run finishes.
+ */
+async function dropPendingApprovals(agentId: string, user: SessionUser): Promise<void> {
+  const thread = await ownThread(agentId, user);
+  if (!thread) return;
+  const { messages } = await thread.memory.recall({ ...thread.ids, perPage: false });
+  const dropped = withoutPendingApprovals(messages);
+  if (dropped.messages.length === 0) return;
+  const storage = mastra.getStorage();
+  await (await storage?.getStore("memory"))?.updateMessages({ messages: dropped.messages });
+  const workflows = await storage?.getStore("workflows");
+  for (const runId of dropped.runIds) {
+    await workflows?.deleteWorkflowRunById({ runId, workflowName: "agentic-loop" });
+    await workflows?.deleteWorkflowRunById({ runId, workflowName: "executionWorkflow" });
+  }
 }
 
 export function sendJson(res: http.ServerResponse, status: number, body: unknown): void {

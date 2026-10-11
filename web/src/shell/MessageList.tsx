@@ -170,6 +170,7 @@ export function MessageList({
                     <MessageBubble
                       message={message}
                       streaming={message.id === streamingId}
+                      earlier={index < messages.length - 1}
                       agentNames={agentNames}
                       // Only the latest reply can be answered (the AI SDK resumes from the last message), and not mid-request.
                       onApproval={index === messages.length - 1 && !running ? onApproval : undefined}
