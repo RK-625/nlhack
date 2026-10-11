@@ -1,4 +1,5 @@
 import { init, log, trace } from "neatlogs";
+import { recordTraceOwners } from "./neatlogs/trace-owners";
 
 export const telemetryReady = init({
   workflowName: "nlhack",
@@ -60,7 +61,16 @@ export async function traceRequest<T>(
       ...(threadId ? { "app.thread_id": threadId } : {}),
     },
   }, async (activeSpan) => {
-    console.info("Neatlogs trace started", { channel, traceId: activeSpan.spanContext().traceId, sessionId, agentId });
+    const traceId = activeSpan.spanContext().traceId;
+    console.info("Neatlogs trace started", { channel, traceId, sessionId, agentId });
+    // Web traces belong to the signed-in user; the Neat Bot shows non-admins only their own.
+    if (channel === "web" && userId) {
+      try {
+        recordTraceOwners(userId, [traceId]);
+      } catch (error) {
+        console.warn("[neatlogs] could not record trace owner:", error instanceof Error ? error.message : error);
+      }
+    }
     log("Request started", { channel });
     try {
       const result = await run();

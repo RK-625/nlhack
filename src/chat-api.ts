@@ -8,7 +8,7 @@ import { approvalResumeMessage, pendingApprovalIds, withoutPendingApprovals } fr
 import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
 import { traceRequest } from "./telemetry";
-import { WORKSPACE_USER_KEY } from "./mastra/workspace";
+import { USER_ROLE_KEY, WORKSPACE_USER_KEY } from "./mastra/workspace";
 
 const MAX_BODY_BYTES = 1024 * 1024;
 
@@ -101,8 +101,8 @@ export async function handleChat(
   // Only the message is taken from the client: other AgentExecutionOptions (instructions,
   // maxSteps, tools, runId...) must not be client-controlled. Memory thread and resource always
   // come from the session, never from the client, and so does the RequestContext that selects the
-  // user's private file folder and cfo.ai connection (also on approval resumes, so an approved
-  // delete or cfo.ai change runs as this user). With
+  // user's private file folder, cfo.ai connection and Neatlogs trace scope (also on approval
+  // resumes, so an approved delete or cfo.ai change runs as this user). With
   // an approval message (last role "assistant"), handleChatStream resumes each approved/denied
   // tool call by its run id instead.
   // The span covers stream creation and the whole response write, so it ends only once the run
@@ -110,7 +110,10 @@ export async function handleChat(
   // conversation with an agent groups as a single session.
   const threadId = chatThreadId(user.id, agentId);
   await traceRequest("web", threadId, async () => {
-    const requestContext = new RequestContext([[WORKSPACE_USER_KEY, user.id]]);
+    const requestContext = new RequestContext([
+      [WORKSPACE_USER_KEY, user.id],
+      [USER_ROLE_KEY, user.role],
+    ]);
     const stream = await handleChatStream({
       mastra,
       agentId,
