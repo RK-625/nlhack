@@ -1,0 +1,82 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NH9BS153CSXS2BXAB746M7",
+  "session_id": "70abb4be-95a9-49c1-b7cf-2f1fab827e45",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T13:09:01.035003Z",
+  "branch": "claude/trusting-hertz-b6479e",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "src/chat-api.ts",
+    "src/server.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "7d74609df4c4",
+  "checkpoint_transcript_start": 722,
+  "transcript_lines_at_start": 722,
+  "compact_transcript_start": 121,
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 3560,
+    "cache_read_tokens": 908468,
+    "output_tokens": 2503,
+    "api_call_count": 4,
+    "subagent_tokens": {
+      "input_tokens": 18,
+      "cache_creation_tokens": 153135,
+      "cache_read_tokens": 1031534,
+      "output_tokens": 100,
+      "api_call_count": 8
+    }
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-incremental-implementation-2026-10-11T06:31:35.013162Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "incremental-implementation"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "290d37a51a37",
+      "timestamp": "2026-10-11T06:31:35.013162Z",
+      "native": {
+        "command": "/incremental-implementation"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/incremental-implementation",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 30
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T13:09:00.986153Z",
+    "agent_lines": 250,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 250,
+    "total_lines_changed": 251,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
