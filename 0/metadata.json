@@ -1,0 +1,98 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P2JVVM7SGWF2FBRQWFJQP5",
+  "session_id": "e59c2249-0b87-4a1c-ba98-59e4bbeb45ac",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T18:11:17.05156Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    ".env.example",
+    "README.md",
+    "src/auth/access.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/index.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/neatlogs.ts",
+    "web/src/hooks/useAgents.ts",
+    "web/src/lib/agent-avatar.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "7b4f0be0243d",
+  "checkpoint_transcript_start": 411,
+  "transcript_lines_at_start": 411,
+  "compact_transcript_start": 69,
+  "token_usage": {
+    "input_tokens": 20,
+    "cache_creation_tokens": 11855,
+    "cache_read_tokens": 1300263,
+    "output_tokens": 6474,
+    "api_call_count": 9,
+    "subagent_tokens": {
+      "input_tokens": 42,
+      "cache_creation_tokens": 162228,
+      "cache_read_tokens": 1437123,
+      "output_tokens": 776,
+      "api_call_count": 21
+    }
+  },
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T18:11:16.992993Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 192,
+    "human_modified": 7,
+    "human_removed": 0,
+    "total_committed": 192,
+    "total_lines_changed": 199,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 199,
+      "user_lines_removed": 7,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".env.example": 1,
+        "README.md": 4,
+        "src/auth/access.ts": 1,
+        "src/mastra/agents/assistant.ts": 5,
+        "src/mastra/agents/neatlogs.ts": 39,
+        "src/mastra/index.ts": 2,
+        "src/mastra/prompts/index.ts": 39,
+        "src/mastra/tools/neatlogs.ts": 100,
+        "web/src/hooks/useAgents.ts": 7,
+        "web/src/lib/agent-avatar.ts": 1
+      },
+      "user_removed_per_file": {
+        ".env.example": 1,
+        "README.md": 1,
+        "src/mastra/agents/assistant.ts": 4,
+        "src/mastra/index.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 199,
+      "agent_lines_removed": 7
+    }
+  ]
+}
