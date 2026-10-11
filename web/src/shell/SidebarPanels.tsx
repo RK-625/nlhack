@@ -533,8 +533,8 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search
   );
 }
 
-// Shared controls: one element per control (layoutId) that travels between the expanded
-// header/footer and the rail during the morph, like the avatars, instead of fading.
+// Shared controls: the toggle and theme chip each travel between the expanded header/footer
+// and the rail during the morph, like the avatars (layoutId); new chat cross-fades instead.
 
 /** Collapse/expand: travels between the header's end and the rail's top; its icon cross-fades. */
 function ToggleButton({ compact = false, onToggle }: { compact?: boolean; onToggle: () => void }) {
@@ -563,32 +563,26 @@ function ToggleButton({ compact = false, onToggle }: { compact?: boolean; onTogg
 
 /**
  * New chat: a header icon button (32px) when expanded, a dashed 40px tile below the rail's
- * list. The icon is layout-corrected so it keeps its size while the button scales.
+ * list. It doesn't travel: each layout's copy cross-fades with the labels.
  */
 function NewChatButton({ compact = false, onNewChat }: { compact?: boolean; onNewChat: () => void }) {
-  const travel = useTravel();
   return (
-    <m.button
-      type="button"
-      layoutId="sidebar-new-chat"
-      {...travel}
-      data-morph-control="new-chat"
-      aria-label="New chat"
-      title="New chat"
-      onClick={onNewChat}
-      style={{ borderRadius: compact ? 12 : 8 }}
-      className={`group relative grid shrink-0 place-items-center text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground ${
-        compact ? "h-10 w-10" : "h-8 w-8 text-muted-foreground/80 hover:bg-sidebar-accent"
-      }`}
-    >
-      <SwapLayer
-        show={compact}
-        className="absolute inset-0 rounded-[inherit] border border-dashed border-border transition-colors duration-(--motion-fast) ease-(--ease-standard) group-hover:border-ring"
-      />
-      <m.span layout {...travel} className="relative grid place-items-center">
+    <Label inline className="grid shrink-0">
+      <button
+        type="button"
+        data-morph-control="new-chat"
+        aria-label="New chat"
+        title="New chat"
+        onClick={onNewChat}
+        className={`grid place-items-center text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground ${
+          compact
+            ? "h-10 w-10 rounded-xl border border-dashed border-border hover:border-ring"
+            : "h-8 w-8 rounded-lg text-muted-foreground/80 hover:bg-sidebar-accent"
+        }`}
+      >
         <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
-      </m.span>
-    </m.button>
+      </button>
+    </Label>
   );
 }
 
