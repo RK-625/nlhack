@@ -39,6 +39,13 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
     description:
       "Read-only inspection of GitHub repositories, issues, pull requests, and Actions runs.",
   },
+  {
+    key: "neatlogsAgent",
+    id: "neatlogs",
+    name: "Neatlogs Agent",
+    description:
+      "Analyzes the Neatlogs traces of this project's agent runs: errors, latency, token usage, evaluations, detections, and triage items.",
+  },
 ];
 
 function isAgentList(value: unknown): value is AgentSummary[] {

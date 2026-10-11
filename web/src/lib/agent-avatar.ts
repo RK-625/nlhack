@@ -11,6 +11,7 @@ const CURATED: Record<string, string> = {
   "market-researcher": "#06B6D4::shape_4", // cyan pebble
   cfo: "#10B981::shape_2", // green squircle
   github: "#64748B::shape_1", // slate wedge
+  neatlogs: "#F43F5E::shape_3", // rose tablet
 };
 
 export function agentAvatarValue(agentId: string): string {

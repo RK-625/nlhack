@@ -5,6 +5,7 @@ import { ASSISTANT_INSTRUCTIONS } from "../prompts";
 import { marketResearcher } from "./market-researcher";
 import { cfoAgent } from "./cfo";
 import { githubReaderAgent } from "./github";
+import { neatlogsReaderAgent } from "./neatlogs";
 
 export const assistant = wrapMastra(new Agent({
   id: "assistant",
@@ -13,10 +14,10 @@ export const assistant = wrapMastra(new Agent({
   instructions: ASSISTANT_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
-  // Delegation gets the read-only GitHub agent: neither the assistant's web chat nor WhatsApp can
-  // show an approval prompt for a sub-agent's write. Writes happen in the GitHub agent's own chat.
-  // The key stays "githubAgent" so the prompt and the web UI's "agent-githubAgent" label still match.
-  agents: { marketResearcher, cfoAgent, githubAgent: githubReaderAgent },
+  // Delegation gets the read-only GitHub and Neatlogs agents: neither the assistant's web chat nor WhatsApp can
+  // show an approval prompt for a sub-agent's write. Writes happen in each agent's own chat.
+  // The keys match the registered agents ("githubAgent", "neatlogsAgent") so the prompt and the web UI's "agent-<key>" labels still match.
+  agents: { marketResearcher, cfoAgent, githubAgent: githubReaderAgent, neatlogsAgent: neatlogsReaderAgent },
   defaultOptions: {
     maxSteps: 6,
     delegation: {

@@ -8,11 +8,13 @@ This project is being developed for the **NeatLogs Hackathon**.
 
 ## Overview
 
-WhatsApp messages go to the **Assistant**, the primary orchestrator. It handles general conversation directly and delegates company and market research to the **Market Researcher**, which owns the Crustdata company search, enrichment, and web search tools. Business financial analysis goes to the **CFO Agent**, which analyzes figures supplied in the conversation, including cash flow, runway, budgets, pricing, and hiring scenarios. For combined requests, the Assistant passes market research findings to the CFO Agent and synthesizes the final reply. GitHub questions (repositories, issues, pull requests, Actions runs) go to a read-only copy of the **GitHub Agent**.
+WhatsApp messages go to the **Assistant**, the primary orchestrator. It handles general conversation directly and delegates company and market research to the **Market Researcher**, which owns the Crustdata company search, enrichment, and web search tools. Business financial analysis goes to the **CFO Agent**, which analyzes figures supplied in the conversation, including cash flow, runway, budgets, pricing, and hiring scenarios. For combined requests, the Assistant passes market research findings to the CFO Agent and synthesizes the final reply. GitHub questions (repositories, issues, pull requests, Actions runs) go to a read-only copy of the **GitHub Agent**, and questions about past agent runs (failures, latency, token usage, detections, triage) go to a read-only copy of the **Neatlogs Agent**.
 
 The CFO Agent currently has no financial tools, document extraction, accounting access, or cfo.ai MCP connection. Its calculations include formulas and assumptions but are not verified by a calculation tool.
 
 The **GitHub Agent** connects to GitHub's official remote MCP server (repos, issues, pull requests, Actions, account context) using `GITHUB_PAT`. In the web chat it can also make changes, but every tool the server does not mark read-only (`readOnlyHint: true`) pauses for an inline Approve/Deny card; a denied call never runs, and sending a new message drops any approval left unanswered. The Assistant (and therefore WhatsApp) only ever gets its read-only tools, so it cannot write to GitHub. Without `GITHUB_PAT` the agent starts with no tools.
+
+The **Neatlogs Agent** is an observability analyst for the other agents: it connects to Neatlogs' hosted MCP server and reads the traces of their runs (search, trace context, evaluations, analytics, detections, triage items), reusing the same `NEATLOGS_API_KEY` as tracing. In the web chat it can also accept, dismiss, update, or restore triage items and create detections, but only a fixed allowlist of read tools runs without approval; every other tool (including any new one the server adds) pauses for the same inline Approve/Deny card. The `log_trace` ingestion tool is never exposed. The Assistant (and therefore WhatsApp) only gets its read tools. Without `NEATLOGS_API_KEY` the agent starts with no tools.
 
 The Assistant has a six-step execution limit, and each delegated specialist run has a twelve-step limit. All four agents remain registered in Mastra for direct development and inspection.
 
@@ -45,6 +47,7 @@ If Meta rejects the access token as expired (OAuth error 190, subcode 463), repl
 
 - **NeatLogs**: All Mastra agents are wrapped with `neatlogs/mastra`, recording agent runs, model steps, tool calls, inputs/outputs, timing, token usage when returned, and errors. CLI and WhatsApp runs have request traces; WhatsApp also records history message count/bytes and reply delivery. Tracing does not trim model context.
 - **GitHub MCP**: The GitHub Agent uses GitHub's hosted MCP server (`https://api.githubcopilot.com/mcp/`) through `@mastra/mcp`, limited to the context, repos, issues, pull_requests and actions toolsets.
+- **Neatlogs MCP**: The Neatlogs Agent uses Neatlogs' hosted MCP server (`https://ingest.neatlogs.com/mcp`) through `@mastra/mcp`, authenticated with the existing `NEATLOGS_API_KEY`. Tools are gated by name (the server sends no read-only annotations): reads run directly, writes and unknown tools need approval.
 - **Entire**: Coding-context hooks and checkpoint settings are configured.
 
 ## View Neatlogs traces
