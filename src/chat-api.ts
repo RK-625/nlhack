@@ -1,11 +1,14 @@
 import type http from "node:http";
 import { handleChatStream } from "@mastra/ai-sdk";
+import { RequestContext } from "@mastra/core/request-context";
 import { toAISdkMessages } from "@mastra/ai-sdk/ui";
 import { createUIMessageStreamResponse, type UIMessage } from "ai";
 import { canUseAgent } from "./auth/access";
 import { approvalResumeMessage, pendingApprovalIds, withoutPendingApprovals } from "./chat-approvals";
 import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
+import { traceRequest } from "./telemetry";
+import { WORKSPACE_USER_KEY } from "./mastra/workspace";
 
 const MAX_BODY_BYTES = 1024 * 1024;
 
@@ -97,38 +100,48 @@ export async function handleChat(
 
   // Only the message is taken from the client: other AgentExecutionOptions (instructions,
   // maxSteps, tools, runId...) must not be client-controlled. Memory thread and resource always
-  // come from the session, never from the client. With an approval message (last role
-  // "assistant"), handleChatStream resumes each approved/denied tool call by its run id instead.
-  const stream = await handleChatStream({
-    mastra,
-    agentId,
-    version: "v7",
-    params: {
-      messages: [message],
-      memory: { thread: chatThreadId(user.id, agentId), resource: user.id },
-      abortSignal: abort.signal,
-    },
-    onError: (error) => {
-      console.error("Web chat stream failed", { agentId, error });
-      return "Sorry, something went wrong while generating a reply.";
-    },
-  });
-  const response = createUIMessageStreamResponse({ stream });
+  // come from the session, never from the client, and so does the RequestContext that selects the
+  // user's private file folder (also on approval resumes, so an approved delete runs there). With
+  // an approval message (last role "assistant"), handleChatStream resumes each approved/denied
+  // tool call by its run id instead.
+  // The span covers stream creation and the whole response write, so it ends only once the run
+  // has finished (or the client disconnected). The thread id is the Neatlogs session, so one
+  // conversation with an agent groups as a single session.
+  const threadId = chatThreadId(user.id, agentId);
+  await traceRequest("web", threadId, async () => {
+    const requestContext = new RequestContext([[WORKSPACE_USER_KEY, user.id]]);
+    const stream = await handleChatStream({
+      mastra,
+      agentId,
+      version: "v7",
+      params: {
+        messages: [message],
+        memory: { thread: threadId, resource: user.id },
+        requestContext,
+        abortSignal: abort.signal,
+      },
+      onError: (error) => {
+        console.error("Web chat stream failed", { agentId, error });
+        return "Sorry, something went wrong while generating a reply.";
+      },
+    });
+    const response = createUIMessageStreamResponse({ stream });
 
-  res.writeHead(response.status, Object.fromEntries(response.headers));
-  res.flushHeaders();
-  if (!response.body) {
-    res.end();
-    return;
-  }
-  try {
-    for await (const chunk of response.body) {
-      if (abort.signal.aborted) break;
-      res.write(chunk);
+    res.writeHead(response.status, Object.fromEntries(response.headers));
+    res.flushHeaders();
+    if (!response.body) {
+      res.end();
+      return;
     }
-  } finally {
-    res.end();
-  }
+    try {
+      for await (const chunk of response.body) {
+        if (abort.signal.aborted) break;
+        res.write(chunk);
+      }
+    } finally {
+      res.end();
+    }
+  }, { agentId, role: last.role }, { userId: user.id, threadId, agentId, tags: last.role === "assistant" ? ["approval-resume"] : [] });
 }
 
 /** GET/DELETE /api/chat/:agentId/history — read or clear the caller's own chat with one agent. */

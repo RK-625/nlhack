@@ -13,8 +13,11 @@ import { legalAgent } from "./agents/legal";
 import { hrAgent } from "./agents/hr";
 import { marketingAgent } from "./agents/marketing";
 import { salesAgent } from "./agents/sales";
+import { workspace } from "./workspace";
 
 export const mastra = new Mastra({
   storage: new LibSQLStore({ id: "mastra", url: `file:${resolve(dataDir(), "mastra.db")}` }),
+  // Every agent (including sub-agents the Assistant delegates to) inherits the per-user file workspace.
+  workspace,
   agents: { assistant, marketResearcher, cfoAgent, customerSuccessAgent, legalAgent, hrAgent, marketingAgent, salesAgent, githubAgent, neatlogsAgent },
 });

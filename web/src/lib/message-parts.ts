@@ -132,10 +132,21 @@ function toolCallApprovalData(message: UIMessage): Map<string, { toolName: strin
   return byCallId;
 }
 
+/** Labels for the per-user file workspace tools (Mastra's "mastra_workspace_*" names). */
+const WORKSPACE_TOOL_LABELS: Record<string, string> = {
+  mastra_workspace_read_file: "Read file",
+  mastra_workspace_write_file: "Save file",
+  mastra_workspace_list_files: "List files",
+  mastra_workspace_grep: "Search files",
+  mastra_workspace_file_stat: "File info",
+  mastra_workspace_mkdir: "Create folder",
+  mastra_workspace_delete: "Delete file",
+};
+
 /** "agent-cfoAgent" → "Delegated to CFO Agent"; "crustdataCompanyEnrich" → "Crustdata company enrich". */
 export function toolLabel(toolName: string, agentNames: AgentNames): string {
   if (toolName.startsWith("agent-")) return `Delegated to ${agentName(toolName, agentNames)}`;
-  return humanize(toolName);
+  return WORKSPACE_TOOL_LABELS[toolName] ?? humanize(toolName);
 }
 
 /** "agent-githubAgent" → "GitHub Agent". */

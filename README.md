@@ -18,6 +18,10 @@ The **Neatlogs Agent** is an observability analyst for the other agents: it conn
 
 The Assistant has a six-step execution limit, and each delegated specialist run has a twelve-step limit. All ten agents remain registered in Mastra for direct development and inspection.
 
+## Files
+
+Every agent shares a private, per-user file workspace, so you can say "save this as runway-plan" and later ask any agent (in any chat, after restarts) to list, read, or search your files. Files live on disk under `DATA_DIR/files/<user id>/` (default `./data/files/`, already git-ignored); the CLI (`npm start`) and `npm run dev` use `DATA_DIR/files/local/`. Each user's folder is resolved on the server from the signed-in session, and paths outside it (`../`, absolute paths, symlink escapes) are refused. Agents can read, save (create or overwrite), list, search (grep), inspect, and create folders without asking; deleting a file pauses for the same inline Approve/Deny card, including when a specialist deletes during an Assistant delegation. In-place edit tools are disabled, and there is no command execution or search index. In `npm run dev` the playground can set any request context, so treat it as local-only.
+
 ## Run locally
 
 Copy `.env.example` to `.env` and fill in the provider and integration credentials. For the GitHub Agent, set `GITHUB_PAT` to a fine-grained personal access token scoped to the repositories it may use (read/write on Contents, Issues, Pull requests and Actions for changes; read-only permissions are enough for inspection).
