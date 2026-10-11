@@ -10,7 +10,8 @@
     "web:build": "npm --prefix web run build",
     "start:prod": "NODE_ENV=production tsx --env-file=.env src/server.ts",
     "typecheck": "tsc",
-    "seed": "tsx --env-file-if-exists=.env src/auth/seed.ts"
+    "seed": "tsx --env-file-if-exists=.env src/auth/seed.ts",
+    "cfo:register": "tsx --env-file-if-exists=.env src/cfo/register.ts"
   },
   "dependencies": {
     "@mastra/ai-sdk": "^1.10.7",

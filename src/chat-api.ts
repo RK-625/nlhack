@@ -101,7 +101,8 @@ export async function handleChat(
   // Only the message is taken from the client: other AgentExecutionOptions (instructions,
   // maxSteps, tools, runId...) must not be client-controlled. Memory thread and resource always
   // come from the session, never from the client, and so does the RequestContext that selects the
-  // user's private file folder (also on approval resumes, so an approved delete runs there). With
+  // user's private file folder and cfo.ai connection (also on approval resumes, so an approved
+  // delete or cfo.ai change runs as this user). With
   // an approval message (last role "assistant"), handleChatStream resumes each approved/denied
   // tool call by its run id instead.
   // The span covers stream creation and the whole response write, so it ends only once the run

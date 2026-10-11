@@ -2,10 +2,18 @@ import http from "node:http";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
 import { requireUser } from "./auth/session";
+import { cfoConfigError } from "./cfo/oauth";
+import { handleCfoCallback, handleCfoConnect, handleCfoDisconnect, handleCfoStatus } from "./cfo/routes";
+import { cfoDb } from "./cfo/store";
 import { handleChat, handleChatHistory, listAgents, sendJson } from "./chat-api";
 import { createWebHandler } from "./web";
 
 const authHandler = toNodeHandler(auth);
+
+// cfo.ai per-user OAuth: create tables now; routes answer 503 until configured.
+cfoDb();
+const cfoConfigIssue = cfoConfigError();
+if (cfoConfigIssue) console.warn(`cfo.ai connection disabled: ${cfoConfigIssue}. See README "cfo.ai connection".`);
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
@@ -75,6 +83,39 @@ const server = http.createServer(async (req, res) => {
     } catch (error: unknown) {
       console.error("Web chat failed", error);
       if (!res.headersSent) sendJson(res, 500, { error: "Chat failed" });
+      else res.end();
+    }
+    return;
+  }
+
+  // cfo.ai OAuth connection (per signed-in user)
+  if (url.pathname.startsWith("/api/cfo/")) {
+    const route = url.pathname.slice("/api/cfo/".length);
+    const allowed: Record<string, string[]> = {
+      connect: ["GET"],
+      callback: ["GET"],
+      status: ["GET"],
+      disconnect: ["POST", "DELETE"],
+    };
+    const methods = allowed[route];
+    if (!methods) {
+      res.writeHead(404).end();
+      return;
+    }
+    if (!methods.includes(req.method ?? "")) {
+      res.writeHead(405, { allow: methods.join(", ") }).end();
+      return;
+    }
+    try {
+      const user = await requireUser(req, res);
+      if (!user) return;
+      if (route === "connect") await handleCfoConnect(res, user);
+      else if (route === "callback") await handleCfoCallback(url, res, user);
+      else if (route === "status") handleCfoStatus(res, user);
+      else handleCfoDisconnect(res, user);
+    } catch (error: unknown) {
+      console.error("cfo.ai route failed", (error as Error).message);
+      if (!res.headersSent) sendJson(res, 500, { error: "cfo.ai request failed" });
       else res.end();
     }
     return;

@@ -30,7 +30,7 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
     id: "cfo",
     name: "CFO Agent",
     description:
-      "Analyzes business financials, cash flow, runway, budgets, pricing, unit economics, and hiring scenarios.",
+      "Analyzes business financials, cash flow, runway, budgets, pricing, unit economics, and hiring scenarios, using live data from your own cfo.ai workspace once connected. Reads run freely; changes need your approval.",
   },
   {
     key: "customerSuccessAgent",
