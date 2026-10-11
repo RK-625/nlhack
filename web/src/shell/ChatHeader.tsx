@@ -11,7 +11,8 @@ import { useAgentCaps } from "@/hooks/useAgentCaps";
 import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
 import { DURATION, enterTransition, exitTransition, pop } from "@/lib/motion";
-import type { TurnUsage } from "@/lib/turn-usage";
+import { useNeatlogsUsage } from "@/hooks/useNeatlogsUsage";
+import type { LatestTurnUsage } from "@/lib/turn-usage";
 import { cn } from "@/lib/utils";
 import { UsagePanel } from "./UsagePanel";
 
@@ -24,7 +25,7 @@ export function ChatHeader({
   agent: AgentSummary | null;
   running: boolean;
   /** The latest turn's usage (live while it streams), with the reply it belongs to. */
-  usage?: { messageId: string; usage: TurnUsage } | null;
+  usage?: LatestTurnUsage | null;
   onOpenMobileSidebar: () => void;
 }) {
   return (
@@ -60,12 +61,13 @@ function AgentPill({
 }: {
   agent: AgentSummary;
   running: boolean;
-  latest: { messageId: string; usage: TurnUsage } | null;
+  latest: LatestTurnUsage | null;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const caps = useAgentCaps(agent.key);
   const usage = latest?.usage ?? null;
+  const neatlogs = useNeatlogsUsage(agent.key, latest);
   const capped = usage?.capped === true;
 
   // Auto-expand once per capped reply (live or on reload), so the full bar is visible.
@@ -152,7 +154,7 @@ function AgentPill({
         </TooltipContent>
       </Tooltip>
       <Collapse open={open}>
-        <UsagePanel id={panelId} usage={usage} caps={caps} />
+        <UsagePanel id={panelId} usage={usage} neatlogs={neatlogs} caps={caps} />
       </Collapse>
     </>
   );

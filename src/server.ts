@@ -5,7 +5,7 @@ import { requireUser } from "./auth/session";
 import { cfoConfigError } from "./cfo/oauth";
 import { handleCfoCallback, handleCfoConnect, handleCfoDisconnect, handleCfoStatus } from "./cfo/routes";
 import { cfoDb } from "./cfo/store";
-import { handleChat, handleChatHistory, listAgents, sendJson } from "./chat-api";
+import { handleChat, handleChatHistory, handleNeatlogsUsage, listAgents, sendJson } from "./chat-api";
 import { capsDb } from "./usage/caps";
 import { handleAgentCaps } from "./usage/routes";
 import { createWebHandler } from "./web";
@@ -87,6 +87,20 @@ const server = http.createServer(async (req, res) => {
     } catch (error: unknown) {
       console.error("Chat history failed", error);
       if (!res.headersSent) sendJson(res, 500, { error: "Chat history failed" });
+      else res.end();
+    }
+    return;
+  }
+
+  const neatlogsUsageMatch = url.pathname.match(/^\/api\/chat\/([^/]+)\/messages\/([^/]+)\/neatlogs-usage$/);
+  if (neatlogsUsageMatch) {
+    try {
+      const user = await requireUser(req, res);
+      if (!user) return;
+      await handleNeatlogsUsage(decodeURIComponent(neatlogsUsageMatch[1]), decodeURIComponent(neatlogsUsageMatch[2]), req, res, user);
+    } catch (error: unknown) {
+      console.error("Neatlogs usage request failed", error);
+      if (!res.headersSent) sendJson(res, 500, { error: "Neatlogs usage request failed" });
       else res.end();
     }
     return;

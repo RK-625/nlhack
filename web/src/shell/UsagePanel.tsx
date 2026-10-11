@@ -1,5 +1,6 @@
 // Per-turn usage row under the chat header pill: the latest turn's cost and tokens against the
-// user's caps for this agent, with an inline editor for the caps.
+// user's caps for this agent (our estimate, which the caps use), Neatlogs' own numbers for the
+// turn's trace once they arrive, and an inline editor for the caps.
 import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils";
 import {
   formatTokens,
   formatUsd,
+  type NeatlogsUsage,
   parseCapsInput,
   type TurnUsage,
   type UsageLevel,
@@ -65,7 +67,57 @@ function UsageBar({
   );
 }
 
-export function UsagePanel({ id, usage, caps }: { id: string; usage: TurnUsage | null; caps: AgentCaps }) {
+/**
+ * Neatlogs' own cost and tokens for the turn's trace, next to our estimate in the bars above:
+ * "checking Neatlogs…" while the server waits for the trace, then the numbers, or "not available
+ * yet" when Neatlogs had no finalized trace in time.
+ */
+function NeatlogsLine({ usage, neatlogs }: { usage: TurnUsage; neatlogs: NeatlogsUsage }) {
+  const title = `Neatlogs trace ${neatlogs.traceId}`;
+  if (neatlogs.status === "pending") {
+    return (
+      <div data-testid="neatlogs-usage" data-status="pending" title={title} className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60" style={{ animation: "rkPulse 1.2s ease-in-out infinite" }} />
+        <span>Checking Neatlogs…</span>
+      </div>
+    );
+  }
+  if (neatlogs.status === "unavailable" || neatlogs.costUsd === undefined || neatlogs.tokens === undefined) {
+    return (
+      <div data-testid="neatlogs-usage" data-status="unavailable" title={title} className="text-[12px] text-muted-foreground">
+        Neatlogs: not available yet
+      </div>
+    );
+  }
+  return (
+    <div
+      data-testid="neatlogs-usage"
+      data-status="ready"
+      title={title}
+      className="flex items-baseline justify-between gap-2 text-[12.5px]"
+    >
+      <span className="text-muted-foreground">
+        Est. {formatUsd(usage.costUsd)} · {formatTokens(usage.tokens)}
+      </span>
+      <span className="tabular-nums text-foreground/85">
+        Neatlogs {formatUsd(neatlogs.costUsd)} · {formatTokens(neatlogs.tokens)} tokens
+      </span>
+    </div>
+  );
+}
+
+export function UsagePanel({
+  id,
+  usage,
+  neatlogs = null,
+  caps,
+}: {
+  id: string;
+  usage: TurnUsage | null;
+  /** Neatlogs' own numbers for the latest finished turn; null while it runs or without a trace. */
+  neatlogs?: NeatlogsUsage | null;
+  caps: AgentCaps;
+}) {
   const [editing, setEditing] = useState(false);
   const current = caps.caps ?? (usage ? { costCapUsd: usage.capCostUsd, tokenCap: usage.capTokens } : caps.defaults);
   const usedCost = usage?.costUsd ?? 0;
@@ -86,11 +138,12 @@ export function UsagePanel({ id, usage, caps }: { id: string; usage: TurnUsage |
           format={formatTokens}
         />
       </div>
+      {usage && neatlogs ? <NeatlogsLine usage={usage} neatlogs={neatlogs} /> : null}
       {editing ? (
         <CapsEditor caps={caps} current={current} onDone={() => setEditing(false)} />
       ) : (
         <div className="flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
-          <span>Latest turn, per-message limits for this bot.</span>
+          <span>Latest turn (estimated), per-message limits for this bot.</span>
           <Button size="xs" variant="ghost" onClick={() => setEditing(true)}>
             Edit
           </Button>

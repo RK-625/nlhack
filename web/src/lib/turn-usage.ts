@@ -16,7 +16,40 @@ export type TurnUsage = {
   capped: boolean;
   reason: "cost" | "tokens" | null;
   final: boolean;
+  /** The turn's Neatlogs trace id. */
+  traceId?: string;
 };
+
+/**
+ * Neatlogs' own cost and tokens for a turn's trace, fetched by the server after the turn and saved
+ * on the reply as `metadata.neatlogsUsage` (mirrors NeatlogsUsage in src/usage/neatlogs-usage.ts).
+ * Display only: the caps are enforced on our estimate.
+ */
+export type NeatlogsUsage = {
+  status: "pending" | "ready" | "unavailable";
+  traceId: string;
+  costUsd?: number;
+  tokens?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+  checkedAt: string;
+  fetchedAt?: string;
+};
+
+export function isNeatlogsUsage(value: unknown): value is NeatlogsUsage {
+  if (!value || typeof value !== "object") return false;
+  const usage = value as Partial<NeatlogsUsage>;
+  return (
+    (usage.status === "pending" || usage.status === "ready" || usage.status === "unavailable") &&
+    typeof usage.traceId === "string"
+  );
+}
+
+/** The Neatlogs usage saved on a reply (present after a reload or once the history is refetched). */
+export function messageNeatlogsUsage(message: UIMessage): NeatlogsUsage | null {
+  const saved = (message.metadata as { neatlogsUsage?: unknown } | undefined)?.neatlogsUsage;
+  return isNeatlogsUsage(saved) ? saved : null;
+}
 
 export type TurnCaps = { costCapUsd: number; tokenCap: number };
 
@@ -47,13 +80,15 @@ export function messageTurnUsage(message: UIMessage): TurnUsage | null {
   return isTurnUsage(saved) ? saved : null;
 }
 
+export type LatestTurnUsage = { messageId: string; usage: TurnUsage; neatlogs: NeatlogsUsage | null };
+
 /** Usage of the latest turn: the newest assistant reply's usage, or null when it has none. */
-export function latestTurnUsage(messages: UIMessage[]): { messageId: string; usage: TurnUsage } | null {
+export function latestTurnUsage(messages: UIMessage[]): LatestTurnUsage | null {
   for (let i = messages.length - 1; i >= 0; i--) {
     const message = messages[i];
     if (message.role === "user") return null; // A new turn has started and has no usage yet.
     const usage = messageTurnUsage(message);
-    if (usage) return { messageId: message.id, usage };
+    if (usage) return { messageId: message.id, usage, neatlogs: messageNeatlogsUsage(message) };
   }
   return null;
 }

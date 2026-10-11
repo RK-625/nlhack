@@ -25,6 +25,8 @@ export type TurnUsage = {
   reason: CapReason | null;
   /** True on the last part of a turn. */
   final: boolean;
+  /** The turn's Neatlogs trace id (set by src/chat-api.ts on what it streams and saves). */
+  traceId?: string;
 };
 
 type StepUsage = { inputTokens?: number; outputTokens?: number; totalTokens?: number };

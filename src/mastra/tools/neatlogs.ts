@@ -296,3 +296,49 @@ function scopedTools(all: NeatlogsTools, userId: string): NeatlogsTools {
   }
   return tools;
 }
+
+/** Neatlogs' own totals for one trace, as get_trace_context reports them. */
+export type TraceMetrics = {
+  /** False while Neatlogs is still ingesting the trace; the totals are 0 until it is finalized. */
+  finalized: boolean;
+  costUsd: number;
+  tokens: number;
+  inputTokens: number;
+  outputTokens: number;
+};
+
+const finite = (value: unknown): number => (typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : 0);
+
+/**
+ * Server-side lookup of one trace's cost and tokens through the shared (project-level) Neatlogs MCP
+ * client. Never exposed to an agent: callers must pass only a trace id the server itself created
+ * for the requesting user. Asks for a single span and no evaluations, since only the trace totals
+ * are read (span payloads are ignored; Neatlogs rejects `fields` projection for now). Resolves to
+ * null when the trace is not (yet) known to Neatlogs, the key is missing, or the result can't be read.
+ */
+export async function getTraceMetrics(traceId: string): Promise<TraceMetrics | null> {
+  const tool = (await getAllNeatlogsTools())[`${TOOL_KEY_PREFIX}get_trace_context`];
+  if (!tool?.execute) return null;
+  let raw: unknown;
+  try {
+    raw = await tool.execute(
+      { trace_id: traceId, include_evaluations: false, limit: 1 } as never,
+      {} as ExecuteContext,
+    );
+  } catch {
+    return null; // "Trace not found" (not ingested yet) is reported as a thrown tool error.
+  }
+  const parsed = parseResult(raw);
+  if (!isRecord(parsed) || typeof parsed.trace_id !== "string" || parsed.trace_id.toLowerCase() !== traceId.toLowerCase()) {
+    return null;
+  }
+  const inputTokens = finite(parsed.prompt_tokens);
+  const outputTokens = finite(parsed.completion_tokens);
+  return {
+    finalized: parsed.finalization_status === "finalized",
+    costUsd: finite(parsed.total_cost),
+    tokens: finite(parsed.total_tokens) || inputTokens + outputTokens,
+    inputTokens,
+    outputTokens,
+  };
+}

@@ -11,6 +11,15 @@ import { traceRequest } from "./telemetry";
 import { USER_ROLE_KEY, WORKSPACE_USER_KEY } from "./mastra/workspace";
 import { getCaps } from "./usage/caps";
 import { TURN_BUDGET_KEY, TurnBudget, type TurnUsage } from "./usage/turn-budget";
+import { isTraceOwner } from "./neatlogs/trace-owners";
+import {
+  checkNeatlogsUsageOnce,
+  isNeatlogsUsage,
+  isTrackingTrace,
+  type NeatlogsUsage,
+  pendingNeatlogsUsage,
+  trackNeatlogsUsage,
+} from "./usage/neatlogs-usage";
 
 const MAX_BODY_BYTES = 1024 * 1024;
 
@@ -115,8 +124,12 @@ export async function handleChat(
   // turn-budget processor on every agent adds each model step's usage to it (also for delegated
   // sub-agents, which share it through the RequestContext) and stops the run once a cap is
   // exceeded. The caps are the ones for the agent the user is chatting with, never a sub-agent's.
+  //
+  // Once the trace has ended (after the reply is sent), Neatlogs' own cost and tokens for this
+  // turn's trace are fetched in the background and saved on the reply as metadata.neatlogsUsage.
   const threadId = chatThreadId(user.id, agentId);
   const budget = new TurnBudget(getCaps(user.id, agentId));
+  let savedReply: { id: string; traceId: string } | undefined;
   await traceRequest("web", threadId, async (trace) => {
     const requestContext = new RequestContext<unknown>([
       [WORKSPACE_USER_KEY, user.id],
@@ -139,7 +152,7 @@ export async function handleChat(
       },
     });
     let replyId: string | undefined;
-    const stream = withTurnUsage(agentStream, budget, (id) => (replyId = id));
+    const stream = withTurnUsage(agentStream, budget, trace.traceId, (id) => (replyId = id));
     const response = createUIMessageStreamResponse({ stream });
 
     res.writeHead(response.status, Object.fromEntries(response.headers));
@@ -153,7 +166,7 @@ export async function handleChat(
       }
     } finally {
       res.end();
-      const usage = budget.snapshot(true);
+      const usage = { ...budget.snapshot(true), traceId: trace.traceId };
       trace.setAttributes({
         "app.turn_cost_usd": usage.costUsd,
         "app.turn_tokens": usage.tokens,
@@ -161,11 +174,20 @@ export async function handleChat(
         "app.turn_capped": usage.capped,
       });
       if (usage.reason) trace.addTags(usage.reason === "cost" ? "cost-capped" : "token-capped");
-      await saveTurnUsage(agentId, user, replyId, usage).catch((error: unknown) => {
+      const savedId = await saveTurnUsage(agentId, user, replyId, usage).catch((error: unknown) => {
         console.warn("Could not save turn usage", { agentId, error: error instanceof Error ? error.message : error });
+        return undefined;
       });
+      if (savedId) savedReply = { id: savedId, traceId: trace.traceId };
     }
   }, { agentId, role: last.role }, { userId: user.id, threadId, agentId, tags: last.role === "assistant" ? ["approval-resume"] : [] });
+
+  // The trace's root span has ended now, so the exporter can flush it. Not awaited: the reply is
+  // already complete; the browser polls GET .../messages/:id/neatlogs-usage for the result.
+  if (savedReply) {
+    const reply = savedReply;
+    void trackNeatlogsUsage(reply.traceId, (neatlogsUsage) => saveNeatlogsUsage(agentId, user, reply.id, neatlogsUsage));
+  }
 }
 
 const TURN_USAGE_PART_ID = "turn-usage";
@@ -179,13 +201,15 @@ const TURN_USAGE_PART_ID = "turn-usage";
 function withTurnUsage(
   stream: ReadableStream<UIMessageChunk>,
   budget: TurnBudget,
+  traceId: string,
   onReplyId: (id: string) => void,
 ): ReadableStream<UIMessageChunk> {
   return createUIMessageStream({
     execute: async ({ writer }) => {
       let open = false;
       let ended = false;
-      const writeUsage = (usage: TurnUsage) => writer.write({ type: "data-turn-usage", id: TURN_USAGE_PART_ID, data: usage });
+      const writeUsage = (usage: TurnUsage) =>
+        writer.write({ type: "data-turn-usage", id: TURN_USAGE_PART_ID, data: { ...usage, traceId } });
       const writeEnd = (): TurnUsage => {
         ended = true;
         if (budget.capped) {
@@ -194,7 +218,7 @@ function withTurnUsage(
           writer.write({ type: "text-delta", id, delta: `\n\n${budget.cappedMessage()}` });
           writer.write({ type: "text-end", id });
         }
-        const usage = budget.snapshot(true);
+        const usage = { ...budget.snapshot(true), traceId };
         writeUsage(usage);
         return usage;
       };
@@ -231,17 +255,97 @@ function withTurnUsage(
 
 /**
  * Saves the turn's final usage on the stored reply as `metadata.turnUsage`, so a reloaded chat can
- * show it. Falls back to the newest assistant message when the stream did not name the reply.
+ * show it, with `metadata.neatlogsUsage` marked pending until Neatlogs' own numbers arrive. Falls
+ * back to the newest assistant message when the stream did not name the reply. Resolves to the
+ * reply's id, or undefined when nothing was saved.
  */
-async function saveTurnUsage(agentId: string, user: SessionUser, replyId: string | undefined, usage: TurnUsage) {
-  if (usage.steps === 0) return;
+async function saveTurnUsage(
+  agentId: string,
+  user: SessionUser,
+  replyId: string | undefined,
+  usage: TurnUsage & { traceId: string },
+): Promise<string | undefined> {
+  if (usage.steps === 0) return undefined;
   const thread = await ownThread(agentId, user);
-  if (!thread) return;
+  if (!thread) return undefined;
   const { messages } = await thread.memory.recall({ ...thread.ids, perPage: false });
   const reply = (replyId && messages.find((m) => m.id === replyId && m.role === "assistant")) || [...messages].reverse().find((m) => m.role === "assistant");
-  if (!reply) return;
+  if (!reply) return undefined;
+  const neatlogsUsage = process.env.NEATLOGS_API_KEY ? pendingNeatlogsUsage(usage.traceId) : undefined;
   const store = await mastra.getStorage()?.getStore("memory");
-  await store?.updateMessages({ messages: [{ id: reply.id, content: { ...reply.content, metadata: { ...reply.content.metadata, turnUsage: usage } } }] });
+  await store?.updateMessages({
+    messages: [{ id: reply.id, content: { ...reply.content, metadata: { ...reply.content.metadata, turnUsage: usage, ...(neatlogsUsage ? { neatlogsUsage } : {}) } } }],
+  });
+  return neatlogsUsage ? reply.id : undefined;
+}
+
+/** The caller's own stored assistant message with this id, or undefined. */
+async function ownReply(agentId: string, user: SessionUser, messageId: string) {
+  const thread = await ownThread(agentId, user);
+  if (!thread) return undefined;
+  const { messages } = await thread.memory.recall({ ...thread.ids, perPage: false });
+  return messages.find((m) => m.id === messageId && m.role === "assistant");
+}
+
+/** Saves Neatlogs' numbers on the reply (re-read first, so other metadata is kept). */
+async function saveNeatlogsUsage(agentId: string, user: SessionUser, messageId: string, neatlogsUsage: NeatlogsUsage): Promise<void> {
+  const reply = await ownReply(agentId, user, messageId);
+  if (!reply) return; // the chat was cleared meanwhile
+  const store = await mastra.getStorage()?.getStore("memory");
+  await store?.updateMessages({ messages: [{ id: reply.id, content: { ...reply.content, metadata: { ...reply.content.metadata, neatlogsUsage } } }] });
+}
+
+/** A reply with no answer yet is looked up again at most this often (per request). */
+const RECHECK_AFTER_MS = 10_000;
+
+/**
+ * GET /api/chat/:agentId/messages/:messageId/neatlogs-usage — Neatlogs' own cost and tokens for one
+ * of the caller's own replies: `{ neatlogsUsage }` (pending, ready or unavailable). Only replies in
+ * the caller's own thread are found (404 otherwise), and only the trace id the server saved on that
+ * reply, recorded as the caller's own trace, is looked up. When no background poll is running for
+ * it (it gave up, or the server restarted) and the last check is old enough, it is checked once more.
+ */
+export async function handleNeatlogsUsage(
+  agentKeyOrId: string,
+  messageId: string,
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  user: SessionUser,
+): Promise<void> {
+  if (req.method !== "GET") {
+    res.writeHead(405, { allow: "GET" }).end();
+    return;
+  }
+  const agentId = resolveAgentId(agentKeyOrId);
+  if (!agentId) {
+    sendJson(res, 404, { error: `Unknown agent: ${agentKeyOrId}` });
+    return;
+  }
+  if (!canUseAgent(user, agentId)) {
+    sendJson(res, 403, { error: "Forbidden" });
+    return;
+  }
+  const reply = await ownReply(agentId, user, messageId);
+  if (!reply) {
+    sendJson(res, 404, { error: "Message not found" });
+    return;
+  }
+  const metadata = reply.content.metadata as { neatlogsUsage?: unknown } | undefined;
+  const stored = isNeatlogsUsage(metadata?.neatlogsUsage) ? metadata.neatlogsUsage : null;
+  if (!stored || stored.status === "ready" || isTrackingTrace(stored.traceId)) {
+    sendJson(res, 200, { neatlogsUsage: stored });
+    return;
+  }
+  const lastChecked = Date.parse(stored.checkedAt);
+  if ((Number.isFinite(lastChecked) && Date.now() - lastChecked < RECHECK_AFTER_MS) || !isTraceOwner(stored.traceId, user.id)) {
+    sendJson(res, 200, { neatlogsUsage: stored });
+    return;
+  }
+  const fresh = await checkNeatlogsUsageOnce(stored.traceId);
+  await saveNeatlogsUsage(agentId, user, reply.id, fresh).catch((error: unknown) => {
+    console.warn("Could not save Neatlogs usage", { agentId, error: error instanceof Error ? error.message : error });
+  });
+  sendJson(res, 200, { neatlogsUsage: fresh });
 }
 
 /** GET/DELETE /api/chat/:agentId/history — read or clear the caller's own chat with one agent. */

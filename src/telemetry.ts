@@ -36,6 +36,8 @@ export type TraceContext = {
 
 /** Lets a request annotate its own trace root span once it knows more (e.g. a capped turn). */
 export type TraceHandle = {
+  /** The Neatlogs (OpenTelemetry) trace id of this request. */
+  traceId: string;
   addTags(...tags: string[]): void;
   setAttributes(attributes: Record<string, string | number | boolean>): void;
 };
@@ -79,6 +81,7 @@ export async function traceRequest<T>(
     }
     // trace() records `tags` as the root span's "tags" attribute; re-setting it adds tags later.
     const handle: TraceHandle = {
+      traceId,
       addTags: (...extra) => {
         for (const tag of extra) if (!tags.includes(tag)) tags.push(tag);
         activeSpan.setAttribute("tags", [...tags]);
