@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4MYX2YK6D2ACRMA7SR7CW8Y",
+  "strategy": "manual-commit",
+  "branch": "claude/trusting-hertz-b6479e",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "web/package-lock.json",
+    "web/package.json",
+    "web/src/lib/auth.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 8,
+    "cache_creation_tokens": 2290,
+    "cache_read_tokens": 464136,
+    "output_tokens": 1308,
+    "api_call_count": 3,
+    "subagent_tokens": {
+      "input_tokens": 14,
+      "cache_creation_tokens": 70060,
+      "cache_read_tokens": 365550,
+      "output_tokens": 99,
+      "api_call_count": 7
+    }
+  }
+}
