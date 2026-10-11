@@ -26,6 +26,11 @@ function resolveAgentId(keyOrId: string): string | undefined {
   return listAgents().find((agent) => agent.key === keyOrId || agent.id === keyOrId)?.id;
 }
 
+/** One persisted chat per user per agent. */
+export function chatThreadId(userId: string, agentId: string): string {
+  return `${userId}:${agentId}`;
+}
+
 /** POST /api/chat/:agentId — streams an AI SDK v7 UI message stream (SSE). */
 export async function handleChat(
   agentKeyOrId: string,
@@ -47,15 +52,18 @@ export async function handleChat(
     return;
   }
 
-  let messages: UIMessage[];
+  // Memory already holds the history, so only the newest (user) message is taken from the body.
+  let message: UIMessage;
   try {
-    const body = JSON.parse(await readBody(req)) as { messages?: unknown };
-    if (!Array.isArray(body?.messages) || body.messages.length === 0) throw new Error("messages required");
-    messages = body.messages as UIMessage[];
+    const body = JSON.parse(await readBody(req)) as { messages?: unknown; message?: unknown };
+    const last = (Array.isArray(body?.messages) ? body.messages.at(-1) : body?.message) as UIMessage | undefined;
+    if (!last || last.role !== "user" || typeof last.id !== "string") throw new Error("user message required");
+    // Namespace the id by user: storage upserts by message id, so a client-chosen id must not hit another user's rows.
+    message = { ...last, id: `${user.id}:${last.id}` };
   } catch (error) {
     const tooLarge = error instanceof BodyTooLargeError;
     sendJson(res, tooLarge ? 413 : 400, {
-      error: tooLarge ? "Request body too large" : "Expected JSON body with a non-empty messages array",
+      error: tooLarge ? "Request body too large" : "Expected JSON body whose last message has role \"user\"",
     });
     return;
   }
@@ -66,13 +74,18 @@ export async function handleChat(
     if (!res.writableFinished) abort.abort();
   });
 
-  // Only `messages` is taken from the client: other AgentExecutionOptions (instructions,
-  // maxSteps, tools...) must not be client-controlled.
+  // Only the user message is taken from the client: other AgentExecutionOptions (instructions,
+  // maxSteps, tools...) must not be client-controlled. Memory thread and resource always come
+  // from the session, never from the client.
   const stream = await handleChatStream({
     mastra,
     agentId,
     version: "v7",
-    params: { messages, abortSignal: abort.signal },
+    params: {
+      messages: [message],
+      memory: { thread: chatThreadId(user.id, agentId), resource: user.id },
+      abortSignal: abort.signal,
+    },
     onError: (error) => {
       console.error("Web chat stream failed", { agentId, error });
       return "Sorry, something went wrong while generating a reply.";
