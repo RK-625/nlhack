@@ -1,0 +1,25 @@
+{
+  "tool_use_id": "toolu_01T1t3sXvyyXuaCqHbnzrCfy",
+  "agent_id": "af9c2e952d0418819",
+  "subagent_type": "general-purpose",
+  "task_description": "Enforce per-user Neat Bot trace scoping",
+  "files": [
+    "README.md",
+    "src/chat-api.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/neatlogs.ts",
+    "src/mastra/workspace.ts",
+    "src/neatlogs/trace-owners.ts",
+    "src/telemetry.ts"
+  ],
+  "token_usage": {
+    "input_tokens": 60,
+    "cache_creation_tokens": 95718,
+    "cache_read_tokens": 2998744,
+    "output_tokens": 1239,
+    "api_call_count": 30
+  },
+  "started_at": "2026-10-12T03:18:02.569369+05:30",
+  "completed_at": "2026-10-12T03:18:02.570052+05:30"
+}
