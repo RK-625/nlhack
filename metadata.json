@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NCKQ4QF0NBEV6MCP13ZHDH",
+  "strategy": "manual-commit",
+  "branch": "worktree-web-ui-scaffold",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "web/src/shell/SidebarPanels.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 72371,
+    "cache_read_tokens": 1012619,
+    "output_tokens": 4213,
+    "api_call_count": 12
+  }
+}

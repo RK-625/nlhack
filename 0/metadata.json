@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NCKQ4QF0NBEV6MCP13ZHDH",
+  "session_id": "6b9b5b9e-2e45-4a3e-9e8a-c1339196bf25",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T11:47:17.587873Z",
+  "branch": "worktree-web-ui-scaffold",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "web/src/shell/SidebarPanels.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "13664a95fe7c",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 72371,
+    "cache_read_tokens": 1012619,
+    "output_tokens": 4213,
+    "api_call_count": 12
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T11:47:17.570412Z",
+    "agent_lines": 660,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 660,
+    "total_lines_changed": 660,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
