@@ -1,259 +1,298 @@
-// Layout and classes ported from rakazo's bots sidebar (apps/web/src/pages/Shell.tsx ~2811-3263),
-// Apache-2.0, github.com/elie222/rakazo@912c977. Groups, spaces, archive and the user menu are stripped.
-import { Moon, PanelLeftClose, Search, SquarePen, Sun } from "lucide-react";
-import { AnimatePresence, useReducedMotion, type Variants } from "motion/react";
+// Grok Bot–style sidebar: docked on desktop as either the expanded panel or a compact avatar
+// rail, resizable by its edge; a slide-in overlay (always expanded) on mobile.
+import { animate, delay, type Transition, useMotionValue, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
-import { useState } from "react";
-import { UserMenu } from "@/auth/UserMenu";
-import { BotAvatar } from "@/components/avatar/bot-avatar";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import type { AgentRowState } from "@/hooks/useAgentChat";
-import type { AgentSummary } from "@/hooks/useAgents";
-import { agentAvatarValue } from "@/lib/agent-avatar";
-import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
-import { messageTime } from "@/lib/chats";
-import {
-  DURATION,
-  enterTransition,
-  exitTransition,
-  fade,
-  instant,
-  pop,
-  SIDEBAR_WIDTH,
-  SPRING,
-  STAGGER,
-  STAGGER_CAP,
-  sidebarContent,
-  sidebarDesktop,
-  sidebarMobile,
-} from "@/lib/motion";
+import { type KeyboardEvent, type PointerEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { DURATION, SIDEBAR_SLIDE, sidebarMobile } from "@/lib/motion";
+import { clampWidth, readSidebarCompact, readSidebarWidth, SIDEBAR, writeSidebarLayout } from "@/lib/sidebar";
+import { ExpandedPanel, RailPanel, SidebarMorphContext, type SidebarPanelProps } from "./SidebarPanels";
 
-/** Rows rise in one after another; a filtered-out row leaves the way it came. */
-const rowVariants: Variants = {
-  hidden: { opacity: 0, y: 6, transition: exitTransition(DURATION.base) },
-  visible: (index: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: enterTransition(DURATION.base, Math.min(index, STAGGER_CAP) * STAGGER),
-  }),
-};
+export type { SidebarSearch } from "./SidebarPanels";
 
-/**
- * Mounted only while visible (App wraps it in AnimatePresence), so opening and closing are
- * one enter/exit pair: docked on desktop the width grows/shrinks and the content fades;
- * as a mobile overlay it slides in from the start edge.
- */
-export function Sidebar({
-  docked,
-  agents,
-  rows,
-  activeKey,
-  onSelect,
-  onNewChat,
-  onCollapse,
-}: {
-  docked: boolean;
-  agents: AgentSummary[];
-  rows: Record<string, AgentRowState>;
-  activeKey: string | null;
-  onSelect: (key: string) => void;
-  onNewChat: () => void;
-  onCollapse: () => void;
-}) {
-  const [query, setQuery] = useState("");
-  const reduce = useReducedMotion();
-  const needle = query.trim().toLowerCase();
-  const visible = needle
-    ? agents.filter((agent) => `${agent.name} ${agent.description}`.toLowerCase().includes(needle))
-    : agents;
+/** How long pointer moves are ignored after a snap, so the spring isn't cut short. */
+const SNAP_SETTLE_MS = 180;
+/** If no shared avatar starts travelling after a flip, start the width anyway. */
+const TRAVEL_FALLBACK_MS = 50;
 
+export function Sidebar({ docked, ...props }: SidebarPanelProps & { docked: boolean }) {
+  return docked ? <DockedSidebar {...props} /> : <OverlaySidebar {...props} />;
+}
+
+/** Mobile: slides in from the start edge (App mounts it under AnimatePresence). */
+function OverlaySidebar(props: SidebarPanelProps) {
   return (
     <m.aside
       data-testid="sidebar"
-      variants={docked ? (reduce ? instant(sidebarDesktop) : sidebarDesktop) : sidebarMobile}
+      data-layout="overlay"
+      variants={sidebarMobile}
       initial="hidden"
       animate="visible"
       exit="hidden"
-      className={
-        docked
-          ? "relative flex h-full shrink-0 overflow-hidden border-e border-sidebar-border bg-sidebar"
-          : "absolute inset-y-0 start-0 z-40 flex w-[calc(100%-48px)] max-w-[284px] flex-col border-e border-sidebar-border bg-sidebar"
-      }
+      className="absolute inset-y-0 start-0 z-40 flex w-[calc(100%-48px)] max-w-[284px] flex-col border-e border-sidebar-border bg-sidebar"
     >
-      <m.div
-        variants={docked ? sidebarContent : undefined}
-        className="flex h-full min-h-0 w-full shrink-0 flex-col"
-        style={docked ? { width: SIDEBAR_WIDTH } : undefined}
-      >
-      <div className="flex items-center justify-between px-[18px] pb-3 pt-4">
-        <span className="text-[17px] font-semibold tracking-tight text-foreground">nlhack</span>
-        <div className="flex items-center gap-2.5">
-          {docked ? (
-            <button
-              type="button"
-              aria-label="Hide agents"
-              title="Hide agents"
-              onClick={onCollapse}
-              className="inline-flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground/70 hover:text-foreground/75"
-            >
-              <PanelLeftClose size={15} strokeWidth={1.8} aria-hidden="true" />
-            </button>
-          ) : null}
-          <button
-            type="button"
-            aria-label="New chat"
-            title="New chat"
-            onClick={onNewChat}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground/70 hover:text-foreground/75"
-          >
-            <SquarePen size={15} strokeWidth={1.8} aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-
-      <InputGroup className="mx-2.5 mb-3 w-auto rounded-xl border border-border bg-card text-muted-foreground focus-within:border-ring dark:bg-input">
-        <InputGroupAddon>
-          <Search size={16} strokeWidth={1.8} aria-hidden="true" />
-        </InputGroupAddon>
-        <InputGroupInput
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search"
-          aria-label="Search agents"
-          autoComplete="off"
-          name="sidebar-search"
-        />
-      </InputGroup>
-
-      <nav aria-label="Agents" className="rk-scroll relative flex flex-1 flex-col gap-0.5 overflow-y-auto px-2.5 pb-2.5">
-        {/* Own AnimatePresence (initial on) so rows stagger in each time the sidebar mounts.
-            Filtered-out rows fade in place, then the rest glide up (layout) — no overlap. */}
-        <AnimatePresence>
-        {visible.map((agent, index) => {
-          const row = rows[agent.key];
-          const last = row?.messages.at(-1);
-          const selected = agent.key === activeKey;
-          const lastTime = last ? messageTime(last.id) : undefined;
-          return (
-            <m.button
-              key={agent.key}
-              type="button"
-              layout="position"
-              custom={index}
-              variants={rowVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              aria-current={selected ? "page" : undefined}
-              onClick={() => onSelect(agent.key)}
-              className="relative flex w-full items-center gap-3 rounded-xl px-2.5 py-[10px] text-start transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent"
-            >
-              {selected ? (
-                // One highlight shared across rows: it slides to the newly selected agent.
-                <m.span
-                  layoutId="agent-selected"
-                  transition={SPRING}
-                  aria-hidden="true"
-                  // z-0 / z-[1]: while sliding it passes under the other rows' content too.
-                  className="absolute inset-0 z-0 rounded-xl bg-sidebar-accent"
-                />
-              ) : null}
-              <span className="relative z-[1] shrink-0">
-                <BotAvatar
-                  color={agentAvatarValue(agent.id)}
-                  identity={agent.id}
-                  size={38}
-                  status={row?.running ? "running" : undefined}
-                />
-              </span>
-              <div className="relative z-[1] min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-1.5">
-                  <span
-                    dir="auto"
-                    className={`min-w-0 truncate text-[14px] text-foreground ${
-                      row?.unread ? "font-semibold" : "font-medium"
-                    }`}
-                  >
-                    {agent.name}
-                    {row?.unread ? <span className="sr-only"> (unread)</span> : null}
-                  </span>
-                  <div className="flex shrink-0 items-center gap-1.5">
-                    {lastTime !== undefined ? (
-                      <span className="text-[11.5px] tabular-nums text-muted-foreground/60">
-                        {formatRosterTime(lastTime)}
-                      </span>
-                    ) : null}
-                    <AnimatePresence initial={false}>
-                      {row?.unread ? (
-                        <m.span
-                          key="unread"
-                          data-testid="unread-dot"
-                          aria-hidden="true"
-                          variants={pop}
-                          initial="hidden"
-                          animate="visible"
-                          exit="hidden"
-                          className="inline-block h-2 w-2 rounded-full bg-foreground"
-                        />
-                      ) : null}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-            </m.button>
-          );
-        })}
-        {visible.length === 0 ? (
-          <m.p
-            key="no-match"
-            variants={fade}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="px-2.5 py-6 text-center text-[13px] text-muted-foreground"
-          >
-            No agents match “{query}”.
-          </m.p>
-        ) : null}
-        </AnimatePresence>
-      </nav>
-
-      <ThemeToggle />
-      <UserMenu />
-      </m.div>
+      <ExpandedPanel {...props} />
     </m.aside>
   );
 }
 
-function ThemeToggle() {
-  const [theme, setTheme] = useState<ResolvedAppearance>(() =>
-    document.documentElement.dataset.theme === "light" ? "light" : "dark",
-  );
-  const next = theme === "dark" ? "light" : "dark";
-  return (
-    <button
-      type="button"
-      onClick={() => setTheme(setUiAppearance(next))}
-      className="mx-3 mb-3 flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-sidebar-accent"
-    >
-      <span className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-accent text-foreground/80">
-        {theme === "dark" ? <Sun size={15} strokeWidth={1.8} /> : <Moon size={15} strokeWidth={1.8} />}
-      </span>
-      <span className="text-[14px] font-medium text-foreground/90">
-        {theme === "dark" ? "Light mode" : "Dark mode"}
-      </span>
-    </button>
-  );
-}
+/**
+ * Desktop: always docked. Width is a motion value so dragging follows the pointer 1:1 with
+ * no animation. Switching layouts is a three-phase morph (see SidebarMorphContext): labels
+ * fade out, then the layouts flip while the shared avatars and the width travel together
+ * (one uniform ease-in-out tween, the same for opening, closing and drag snaps), then labels
+ * fade in. Collapse plays the same sequence backwards.
+ */
+function DockedSidebar(props: SidebarPanelProps) {
+  const reduce = useReducedMotion();
+  const [compact, setCompact] = useState(readSidebarCompact);
+  const [width, setWidth] = useState(readSidebarWidth);
+  const [dragging, setDragging] = useState(false);
+  const [chrome, setChromeState] = useState(true);
+  const [travel, setTravel] = useState<Transition | undefined>(undefined);
+  /** Layout currently rendered. */
+  const compactRef = useRef(compact);
+  /** Layout being moved to (differs from compactRef while phase 1 is pending). */
+  const targetRef = useRef(compact);
+  const chromeRef = useRef(true);
+  const widthRef = useRef(width);
+  const size = useMotionValue(compact ? SIDEBAR.RAIL : width);
+  // The expanded panel's own width, pinned to its target (not derived from `size`), so its
+  // layout — the centered tile, row widths — doesn't drift while the aside animates.
+  const panelWidth = useMotionValue(width);
+  // origin: the expanded width when the drag began — what a snap back to expanded restores.
+  const drag = useRef<{ startX: number; base: number; origin: number } | null>(null);
+  const settleUntil = useRef(0);
+  /** Increments per setMode; stale timers/animation callbacks compare against it. */
+  const runRef = useRef(0);
+  const cancelFlip = useRef<(() => void) | null>(null);
+  const pendingTravel = useRef<{ run: number; target: number; transition: Transition } | null>(null);
+  const [flipCount, setFlipCount] = useState(0);
 
-/** Time for today, weekday within a week, else a short date (as in rakazo's roster). */
-function formatRosterTime(timestamp: number): string {
-  const date = new Date(timestamp);
-  const now = new Date();
-  if (date.toDateString() === now.toDateString()) {
-    return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
-  }
-  const days = (now.getTime() - timestamp) / 86_400_000;
-  if (days < 7) return date.toLocaleDateString(undefined, { weekday: "short" });
-  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  const setChrome = (value: boolean) => {
+    chromeRef.current = value;
+    setChromeState(value);
+  };
+
+  const commit = (nextWidth: number, nextCompact: boolean) => {
+    widthRef.current = nextWidth;
+    compactRef.current = nextCompact;
+    setWidth(nextWidth);
+    setCompact(nextCompact);
+    writeSidebarLayout(nextWidth, nextCompact);
+  };
+
+  const setMode = (nextCompact: boolean, how: "toggle" | "snap") => {
+    if (nextCompact === targetRef.current) return;
+    targetRef.current = nextCompact;
+    const run = ++runRef.current;
+    cancelFlip.current?.();
+    cancelFlip.current = null;
+
+    // Reversed during phase 1: the layouts never flipped, so just bring the labels back.
+    if (nextCompact === compactRef.current) {
+      setChrome(true);
+      return;
+    }
+
+    const target = nextCompact ? SIDEBAR.RAIL : widthRef.current;
+    if (reduce) {
+      size.jump(target);
+      if (!nextCompact) panelWidth.jump(widthRef.current);
+      commit(widthRef.current, nextCompact);
+      setChrome(true);
+      return;
+    }
+
+    const transition = SIDEBAR_SLIDE;
+    // Phase 2: flip the layouts; shared avatars travel with the width. The width animation
+    // itself starts in the flip's layout effect (below), i.e. after React commits the new
+    // layout — the same frame the avatars' layout animations start — so both land together.
+    const flip = () => {
+      if (run !== runRef.current) return;
+      cancelFlip.current = null;
+      // A reversal mid-travel: hold the width where it is until the new travel starts with
+      // the shared elements, instead of letting the old tween run on for a frame.
+      size.stop();
+      settleUntil.current = performance.now() + SNAP_SETTLE_MS;
+      if (!nextCompact) panelWidth.jump(widthRef.current);
+      pendingTravel.current = { run, target, transition };
+      setTravel(transition);
+      setFlipCount((count) => count + 1);
+      commit(widthRef.current, nextCompact);
+    };
+
+    // Phase 1: labels fade out first (skipped if they're already hidden mid-morph).
+    if (chromeRef.current) {
+      setChrome(false);
+      cancelFlip.current = delay(flip, DURATION.base * 1000);
+    } else {
+      flip();
+    }
+  };
+  const toggle = () => setMode(!targetRef.current, "toggle");
+  /** Phase 1 in progress: the layouts are about to flip. */
+  const flipPending = () => cancelFlip.current !== null;
+
+  /**
+   * Phase 2's width animation starts together with the shared avatars' layout animations
+   * (their onLayoutAnimationStart), so width and avatars run on one clock and land on the
+   * same frame. Depending on the layout being mounted, Motion starts those a frame after
+   * the commit, so starting the width at commit time would let it lead by a frame.
+   */
+  const startTravel = () => {
+    const pending = pendingTravel.current;
+    if (!pending) return;
+    pendingTravel.current = null;
+    // onStop as well as onComplete: a stopped animation never resolves (a drag jump or a
+    // newer run stops it); the run id ignores stale ones.
+    const landed = () => {
+      if (pending.run === runRef.current) setChrome(true);
+    };
+    animate(size, pending.target, { ...pending.transition, onComplete: landed, onStop: landed });
+  };
+  // Fallback when no avatar travels (e.g. no agents): start shortly after the flip commits.
+  useLayoutEffect(() => {
+    if (!pendingTravel.current) return;
+    return delay(startTravel, TRAVEL_FALLBACK_MS);
+  }, [flipCount]);
+
+  // No text selection and a resize cursor everywhere while dragging.
+  useEffect(() => {
+    if (!dragging) return;
+    const { style } = document.body;
+    const previous = { userSelect: style.userSelect, cursor: style.cursor };
+    style.userSelect = "none";
+    style.cursor = "col-resize";
+    return () => {
+      style.userSelect = previous.userSelect;
+      style.cursor = previous.cursor;
+    };
+  }, [dragging]);
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drag.current = {
+      startX: event.clientX,
+      base: compactRef.current ? SIDEBAR.RAIL : size.get(),
+      origin: widthRef.current,
+    };
+    setDragging(true);
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const current = drag.current;
+    // Ignore moves while a snap is fading its labels out (phase 1) or its spring is settling.
+    if (!current || flipPending() || performance.now() < settleUntil.current) return;
+    const candidate = current.base + (event.clientX - current.startX);
+    if (compactRef.current) {
+      if (candidate > SIDEBAR.SNAP_TO_EXPANDED) {
+        setMode(false, "snap");
+        drag.current = { ...current, startX: event.clientX, base: widthRef.current };
+      }
+      return;
+    }
+    if (candidate < SIDEBAR.SNAP_TO_RAIL) {
+      // The edge passed through MIN on the way here; remember the width the drag started at.
+      widthRef.current = current.origin;
+      setMode(true, "snap");
+      drag.current = { ...current, startX: event.clientX, base: SIDEBAR.RAIL };
+      return;
+    }
+    // Between MIN and the snap threshold the edge holds at MIN (a little resistance).
+    const next = clampWidth(candidate);
+    size.jump(next);
+    panelWidth.jump(next);
+    widthRef.current = next;
+  };
+
+  const endDrag = () => {
+    if (!drag.current) return;
+    drag.current = null;
+    setDragging(false);
+    commit(widthRef.current, compactRef.current);
+  };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggle();
+      return;
+    }
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    // Arrow resizing waits for an in-flight morph (Enter can still reverse it).
+    if (flipPending() || !chromeRef.current) return;
+    const step = event.shiftKey ? SIDEBAR.STEP_LARGE : SIDEBAR.STEP;
+    const grow = event.key === "ArrowRight";
+    if (compactRef.current) {
+      if (grow) setMode(false, "toggle");
+      return;
+    }
+    if (!grow && widthRef.current <= SIDEBAR.MIN) {
+      setMode(true, "toggle");
+      return;
+    }
+    const next = clampWidth(widthRef.current + (grow ? step : -step));
+    size.jump(next);
+    panelWidth.jump(next);
+    commit(next, false);
+  };
+
+  const panelProps = { ...props, onToggleCompact: toggle };
+
+  return (
+    <m.aside
+      data-testid="sidebar"
+      data-layout={compact ? "rail" : "expanded"}
+      data-morph={chrome ? "idle" : "morphing"}
+      data-dragging={dragging || undefined}
+      style={{ width: size }}
+      className="relative h-full shrink-0 border-e border-sidebar-border bg-sidebar"
+    >
+      <SidebarMorphContext.Provider value={{ chrome, travel, onTravelStart: startTravel }}>
+        {/* No AnimatePresence: by the flip the old layout holds only faded labels and the
+            shared avatars, which hand off to the new layout's copies (layoutId). */}
+        <div className="absolute inset-0 overflow-hidden">
+          {compact ? (
+            <div key="rail" className="absolute inset-0">
+              <RailPanel {...panelProps} />
+            </div>
+          ) : (
+            <m.div key="expanded" className="absolute inset-y-0 start-0" style={{ width: panelWidth }}>
+              <ExpandedPanel {...panelProps} />
+            </m.div>
+          )}
+        </div>
+      </SidebarMorphContext.Provider>
+      {/* Resize handle on the end edge: drag, double-click, or keyboard (arrows resize, Enter toggles). */}
+      <div
+        role="separator"
+        tabIndex={0}
+        aria-orientation="vertical"
+        aria-label="Resize sidebar"
+        aria-valuemin={SIDEBAR.RAIL}
+        aria-valuemax={SIDEBAR.MAX}
+        aria-valuenow={compact ? SIDEBAR.RAIL : width}
+        aria-valuetext={compact ? "Compact" : `${width} pixels`}
+        data-testid="sidebar-resize"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onLostPointerCapture={endDrag}
+        onDoubleClick={toggle}
+        onKeyDown={onKeyDown}
+        className="group absolute inset-y-0 -end-1.5 z-30 w-3 cursor-col-resize touch-none outline-none"
+      >
+        <span
+          aria-hidden="true"
+          className={`absolute inset-y-0 start-1/2 w-0.5 -translate-x-1/2 transition-colors duration-(--motion-fast) ease-(--ease-standard) group-hover:bg-ring/45 group-focus-visible:bg-ring ${
+            dragging ? "bg-ring/70" : "bg-transparent"
+          }`}
+        />
+      </div>
+    </m.aside>
+  );
 }

@@ -31,6 +31,8 @@ export const EASE_ENTER: Bezier = [0.22, 1, 0.36, 1];
 export const EASE_EXIT: Bezier = mirrorBezier(EASE_ENTER);
 /** Self-mirroring curve for two-way state changes (CSS hover/focus). */
 export const EASE_STANDARD: Bezier = [0.45, 0, 0.55, 1];
+/** Gentle self-mirroring ease-in-out (sine) for the sidebar: open and close move identically. */
+export const EASE_SLIDE: Bezier = [0.37, 0, 0.63, 1];
 
 /** Critically damped spring for layout moves (same response in both directions). */
 export const SPRING: Transition = { type: "spring", stiffness: 520, damping: 44, mass: 0.9 };
@@ -68,6 +70,16 @@ export function staggerGroup(stagger = STAGGER): Variants {
 }
 
 export const fade = symmetric({}, DURATION.fast);
+/**
+ * Every sidebar open/close (button, double-click, Enter, drag snap): the width and the shared
+ * avatars, highlight and controls travel on this one tween, identical in both directions.
+ */
+export const SIDEBAR_SLIDE: Transition = { duration: DURATION.slow, ease: EASE_SLIDE };
+/** Sidebar morph labels (phases 1 and 3): same curve both ways, like the slide. */
+export const labelFade: Variants = {
+  hidden: { opacity: 0, transition: { duration: DURATION.base, ease: EASE_SLIDE } },
+  visible: { opacity: 1, transition: { duration: DURATION.base, ease: EASE_SLIDE } },
+};
 export const rise = symmetric({ y: DISTANCE.md });
 export const pop = symmetric({ scale: 0.6 }, DURATION.fast);
 /** User bubbles arrive from the send side (right, slightly below). */
@@ -81,20 +93,10 @@ export const collapse: Variants = {
   visible: { height: "auto", opacity: 1, transition: enterTransition(DURATION.base) },
 };
 
-/** Desktop sidebar: width opens/closes, content fades. */
-export const SIDEBAR_WIDTH = 284;
-export const sidebarDesktop: Variants = {
-  hidden: { width: 0, transition: exitTransition(DURATION.slow) },
-  visible: { width: SIDEBAR_WIDTH, transition: enterTransition(DURATION.slow) },
-};
-export const sidebarContent: Variants = {
-  hidden: { opacity: 0, transition: exitTransition(DURATION.slow) },
-  visible: { opacity: 1, transition: enterTransition(DURATION.slow) },
-};
-/** Mobile sidebar: slides in from the start edge. */
+/** Mobile sidebar: slides in from the start edge, same tween both ways. */
 export const sidebarMobile: Variants = {
-  hidden: { x: "-100%", transition: exitTransition(DURATION.slow) },
-  visible: { x: 0, transition: enterTransition(DURATION.slow) },
+  hidden: { x: "-100%", transition: SIDEBAR_SLIDE },
+  visible: { x: 0, transition: SIDEBAR_SLIDE },
 };
 export const backdrop = symmetric({}, DURATION.slow);
 

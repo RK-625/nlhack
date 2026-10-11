@@ -22,15 +22,11 @@ const DEFAULT_SUGGESTIONS = ["What can you help with?", "Give me an example task
 export function ChatPane({
   agent,
   agents,
-  sidebarCollapsed,
   onOpenMobileSidebar,
-  onRestoreSidebar,
 }: {
   agent: AgentSummary | null;
   agents: AgentSummary[];
-  sidebarCollapsed: boolean;
   onOpenMobileSidebar: () => void;
-  onRestoreSidebar: () => void;
 }) {
   const agentNames = useMemo<AgentNames>(
     () => Object.fromEntries(agents.flatMap((a) => [[a.key, a.name], [a.id, a.name]])),
@@ -38,16 +34,10 @@ export function ChatPane({
   );
   if (!agent) {
     return (
-      <>
-        <ChatHeader
-          agent={null}
-          running={false}
-          sidebarCollapsed={sidebarCollapsed}
-          onOpenMobileSidebar={onOpenMobileSidebar}
-          onRestoreSidebar={onRestoreSidebar}
-        />
+      <div className="relative flex min-h-0 flex-1 flex-col">
+        <ChatHeader agent={null} running={false} onOpenMobileSidebar={onOpenMobileSidebar} />
         <div className="grid flex-1 place-items-center text-[14px] text-muted-foreground">Pick an agent to start.</div>
-      </>
+      </div>
     );
   }
   return (
@@ -59,15 +49,10 @@ export function ChatPane({
         initial="hidden"
         animate="visible"
         exit="hidden"
-        className="flex min-h-0 min-w-0 flex-1 flex-col"
+        // relative: the header pill floats over the top of the transcript.
+        className="relative flex min-h-0 min-w-0 flex-1 flex-col"
       >
-        <AgentConversation
-          agent={agent}
-          agentNames={agentNames}
-          sidebarCollapsed={sidebarCollapsed}
-          onOpenMobileSidebar={onOpenMobileSidebar}
-          onRestoreSidebar={onRestoreSidebar}
-        />
+        <AgentConversation agent={agent} agentNames={agentNames} onOpenMobileSidebar={onOpenMobileSidebar} />
       </m.div>
     </AnimatePresence>
   );
@@ -76,26 +61,16 @@ export function ChatPane({
 function AgentConversation({
   agent,
   agentNames,
-  sidebarCollapsed,
   onOpenMobileSidebar,
-  onRestoreSidebar,
 }: {
   agent: AgentSummary;
   agentNames: AgentNames;
-  sidebarCollapsed: boolean;
   onOpenMobileSidebar: () => void;
-  onRestoreSidebar: () => void;
 }) {
   const chat = useAgentChat(agent.key);
   return (
     <>
-      <ChatHeader
-        agent={agent}
-        running={chat.running}
-        sidebarCollapsed={sidebarCollapsed}
-        onOpenMobileSidebar={onOpenMobileSidebar}
-        onRestoreSidebar={onRestoreSidebar}
-      />
+      <ChatHeader agent={agent} running={chat.running} onOpenMobileSidebar={onOpenMobileSidebar} />
       <MessageList
         messages={chat.messages}
         status={chat.status}
@@ -118,7 +93,7 @@ function EmptyState({ agent, onPick }: { agent: AgentSummary; onPick: (text: str
   return (
     <m.div
       variants={staggerGroup()}
-      className="m-auto flex max-w-md flex-col items-center gap-3 px-6 py-10 text-center"
+      className="m-auto flex max-w-md flex-col items-center gap-3 px-6 pb-10 pt-16 text-center"
     >
       <m.div variants={rise}>
         <BotAvatar color={agentAvatarValue(agent.id)} identity={agent.id} size={64} />

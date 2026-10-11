@@ -13,7 +13,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { clearSessionState, signOut } from "@/lib/auth";
 
 /** Signed-in user in the sidebar footer: name (+ Admin badge), and a menu with Sign out. */
-export function UserMenu() {
+export function UserMenu({ compact = false }: { compact?: boolean }) {
   const { user, isAdmin } = useCurrentUser();
   const [signingOut, setSigningOut] = useState(false);
   if (!user) return null;
@@ -35,7 +35,12 @@ export function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Account menu"
-        className="mx-3 mb-3 flex min-w-0 items-center gap-3 rounded-xl px-2.5 py-2 text-start outline-none hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-ring/50 data-popup-open:bg-sidebar-accent"
+        title={compact ? user.name : undefined}
+        className={
+          compact
+            ? "grid h-10 w-10 place-items-center rounded-xl outline-none transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-ring/50 data-popup-open:bg-sidebar-accent"
+            : "mx-3 mb-3 flex min-w-0 items-center gap-3 rounded-xl px-2.5 py-2 text-start outline-none hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-ring/50 data-popup-open:bg-sidebar-accent"
+        }
       >
         <span
           aria-hidden="true"
@@ -43,15 +48,19 @@ export function UserMenu() {
         >
           {initial}
         </span>
-        <span className="min-w-0 flex-1 truncate text-[14px] font-medium text-foreground/90">{user.name}</span>
-        {isAdmin ? (
+        {compact ? null : (
+          <span className="min-w-0 flex-1 truncate text-[14px] font-medium text-foreground/90">{user.name}</span>
+        )}
+        {isAdmin && !compact ? (
           <span className="shrink-0 rounded-full bg-accent px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
             Admin
           </span>
         ) : null}
-        <ChevronsUpDown size={14} strokeWidth={1.8} aria-hidden="true" className="shrink-0 text-muted-foreground/60" />
+        {compact ? null : (
+          <ChevronsUpDown size={14} strokeWidth={1.8} aria-hidden="true" className="shrink-0 text-muted-foreground/60" />
+        )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="top" align="start" className="w-60">
+      <DropdownMenuContent side={compact ? "right" : "top"} align={compact ? "end" : "start"} className="w-60">
         <DropdownMenuGroup>
           <DropdownMenuLabel className="flex flex-col gap-0.5 px-2 py-1.5">
             <span className="truncate text-[13px] font-medium text-foreground">{user.name}</span>
