@@ -11,11 +11,35 @@ export const CFO_CONNECT_PATH = "/api/cfo/connect";
 /**
  * Deny by default: cfo.ai annotates every tool with an explicit readOnlyHint (the inspect_* tools,
  * list_orgs and validate_code_blocks are true; every edit_*, call_connected_api and notify_user is
- * false). Only `readOnlyHint: true` skips approval; any other tool, or one without annotations,
+ * false; the risky ones are excluded entirely, see CFO_EXCLUDED_TOOLS). Only `readOnlyHint: true` skips approval; any other tool, or one without annotations,
  * needs the user's approval.
  */
 export function cfoToolNeedsApproval({ annotations }: Pick<RequireToolApprovalContext, "annotations">): boolean {
   return annotations?.readOnlyHint !== true;
+}
+
+/**
+ * Never exposed to the agent, even behind approval: they reach outside cfo.ai (email/Slack,
+ * third-party APIs) or change account-level settings (team, org, integrations, triggers).
+ */
+const CFO_EXCLUDED_TOOLS: ReadonlySet<string> = new Set([
+  "notify_user",
+  "call_connected_api",
+  "edit_team",
+  "edit_org",
+  "edit_integrations",
+  "edit_triggers",
+]);
+
+const CFO_TOOL_KEY_PREFIX = "cfo_"; // listTools() namespaces tools as `<server>_<tool>`.
+
+/** Drops the excluded cfo.ai tools from a listTools() result. */
+function withoutExcludedTools(tools: McpTools): McpTools {
+  return Object.fromEntries(
+    Object.entries(tools).filter(
+      ([key]) => !(key.startsWith(CFO_TOOL_KEY_PREFIX) && CFO_EXCLUDED_TOOLS.has(key.slice(CFO_TOOL_KEY_PREFIX.length))),
+    ),
+  ) as McpTools;
 }
 
 /** The signed-in user's id, set only by the server (src/chat-api.ts); undefined for the CLI. */
@@ -121,7 +145,7 @@ export async function getCfoTools({ requestContext }: { requestContext?: Request
   try {
     const tools = await entry.tools;
     if (Object.keys(tools).length === 0) console.warn("[cfo] cfo.ai returned no tools for this user");
-    return { ...tools, ...base };
+    return { ...withoutExcludedTools(tools), ...base };
   } catch (error) {
     console.warn("[cfo] could not load cfo.ai MCP tools:", error instanceof Error ? error.message : error);
     return base;
