@@ -13,6 +13,7 @@ import { useSession } from "@/lib/auth";
 import { clearChatHistory, setActiveChat } from "@/lib/chats";
 import { backdrop } from "@/lib/motion";
 import { ChatPane } from "@/shell/ChatPane";
+import { CfoReturnNotice } from "@/shell/CfoConnect";
 import { Sidebar, type SidebarSearch } from "@/shell/Sidebar";
 
 const ACTIVE_KEY = "nlhack.activeAgent";
@@ -111,6 +112,7 @@ function Shell() {
         >
           <ChatPane agent={active} agents={agents} onOpenMobileSidebar={() => setMobileOpen(true)} />
         </main>
+        <CfoReturnNotice />
       </div>
     </TooltipProvider>
   );

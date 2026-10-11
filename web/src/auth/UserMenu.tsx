@@ -1,4 +1,4 @@
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, Link2, Link2Off, LogOut } from "lucide-react";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { disconnectCfo, startCfoConnect, useCfoStatus } from "@/hooks/useCfoStatus";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { clearSessionState, signOut } from "@/lib/auth";
 
@@ -16,6 +17,7 @@ import { clearSessionState, signOut } from "@/lib/auth";
 export function UserMenu({ compact = false }: { compact?: boolean }) {
   const { user, isAdmin } = useCurrentUser();
   const [signingOut, setSigningOut] = useState(false);
+  const { status: cfo } = useCfoStatus();
   if (!user) return null;
 
   const initial = (user.name || user.username || "?").trim().charAt(0).toUpperCase();
@@ -71,6 +73,31 @@ export function UserMenu({ compact = false }: { compact?: boolean }) {
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        {cfo?.connected ? (
+          <DropdownMenuItem
+            onClick={() => {
+              if (window.confirm("Disconnect cfo.ai? The CFO Agent will lose access to your workspace data.")) {
+                void disconnectCfo();
+              }
+            }}
+          >
+            <Link2Off aria-hidden="true" />
+            <span className="flex min-w-0 flex-1 flex-col">
+              <span>Disconnect cfo.ai</span>
+              <span className="text-xs text-muted-foreground">cfo.ai connected</span>
+            </span>
+          </DropdownMenuItem>
+        ) : cfo?.configured ? (
+          <DropdownMenuItem onClick={startCfoConnect}>
+            <Link2 aria-hidden="true" />
+            Connect cfo.ai
+          </DropdownMenuItem>
+        ) : cfo ? (
+          <DropdownMenuItem disabled title="The server has no cfo.ai OAuth client configured">
+            <Link2 aria-hidden="true" />
+            Connect cfo.ai (not configured)
+          </DropdownMenuItem>
+        ) : null}
         <DropdownMenuItem disabled={signingOut} onClick={() => void handleSignOut()}>
           <LogOut aria-hidden="true" />
           Sign out

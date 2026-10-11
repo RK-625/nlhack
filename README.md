@@ -41,7 +41,7 @@ The CFO Agent uses each user's own connection: per request it reads the signed-i
 
 1. `npm run cfo:register` — registers this app once as a public OAuth client with redirect URI `${APP_URL or BETTER_AUTH_URL}/api/cfo/callback` and prints `CFO_OAUTH_CLIENT_ID=...`. Re-run it if that origin changes.
 2. In `.env`, set `CFO_OAUTH_CLIENT_ID` to the printed value and `CFO_TOKEN_KEY` to the output of `openssl rand -base64 32`, then restart `npm run serve`.
-3. Sign in to the web app, then open `http://localhost:3000/api/cfo/connect`. After approving on cfo.ai you return to `/?cfo=connected` (or `/?cfo=error`; the server log says why).
+3. Sign in to the web app and click **Connect cfo.ai** (in the account menu at the bottom of the sidebar, or the banner above the CFO Agent's composer; it is the same as opening `/api/cfo/connect`). The same menu has **Disconnect cfo.ai**. After approving on cfo.ai you return to `/?cfo=connected` (or `/?cfo=error`; the server log says why).
 
 `GET /api/cfo/status` returns `{ configured, connected, expiresAt? }` (never tokens); `POST /api/cfo/disconnect` forgets the current user's tokens. Without the two variables the server starts with a warning and the connect/callback routes return 503.
 

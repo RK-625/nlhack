@@ -8,6 +8,7 @@ import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
 import type { AgentNames } from "@/lib/message-parts";
 import { paneSwap, rise, staggerGroup } from "@/lib/motion";
+import { CfoConnectBanner } from "./CfoConnect";
 import { ChatHeader } from "./ChatHeader";
 import { Composer } from "./Composer";
 import { MessageList } from "./MessageList";
@@ -81,6 +82,7 @@ function AgentConversation({
         onApproval={chat.respondToApproval}
         empty={chat.loading ? <HistorySkeleton /> : <EmptyState agent={agent} onPick={chat.send} />}
       />
+      {agent.id === "cfo" ? <CfoConnectBanner /> : null}
       <Composer agentName={agent.name} running={chat.running} disabled={chat.loading} onSend={chat.send} onStop={chat.stop} />
     </>
   );
