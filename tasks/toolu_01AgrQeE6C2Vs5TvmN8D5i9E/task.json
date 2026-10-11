@@ -1,0 +1,37 @@
+{
+  "tool_use_id": "toolu_01AgrQeE6C2Vs5TvmN8D5i9E",
+  "agent_id": "a40d3c60b7ca357d0",
+  "subagent_type": "general-purpose",
+  "task_description": "Rename agent display names to bots",
+  "files": [
+    "README.md",
+    "src/cfo/register.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/cfo.ts",
+    "src/mastra/agents/customer-success.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/agents/hr.ts",
+    "src/mastra/agents/legal.ts",
+    "src/mastra/agents/market-researcher.ts",
+    "src/mastra/agents/marketing.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/agents/sales.ts",
+    "src/mastra/index.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/cfo.ts",
+    "src/mastra/tools/github.ts",
+    "web/src/auth/UserMenu.tsx",
+    "web/src/hooks/useAgents.ts",
+    "web/src/lib/message-parts.ts",
+    "web/src/shell/CfoConnect.tsx"
+  ],
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 79018,
+    "cache_read_tokens": 479232,
+    "output_tokens": 142,
+    "api_call_count": 8
+  },
+  "started_at": "2026-10-12T02:23:09.178263+05:30",
+  "completed_at": "2026-10-12T02:23:09.178668+05:30"
+}
