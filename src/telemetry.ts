@@ -34,10 +34,16 @@ export type TraceContext = {
   tags?: string[];
 };
 
+/** Lets a request annotate its own trace root span once it knows more (e.g. a capped turn). */
+export type TraceHandle = {
+  addTags(...tags: string[]): void;
+  setAttributes(attributes: Record<string, string | number | boolean>): void;
+};
+
 export async function traceRequest<T>(
   channel: "cli" | "web",
   sessionId: string,
-  run: () => Promise<T>,
+  run: (trace: TraceHandle) => Promise<T>,
   input?: unknown,
   context: TraceContext = {},
 ): Promise<T> {
@@ -71,9 +77,17 @@ export async function traceRequest<T>(
         console.warn("[neatlogs] could not record trace owner:", error instanceof Error ? error.message : error);
       }
     }
+    // trace() records `tags` as the root span's "tags" attribute; re-setting it adds tags later.
+    const handle: TraceHandle = {
+      addTags: (...extra) => {
+        for (const tag of extra) if (!tags.includes(tag)) tags.push(tag);
+        activeSpan.setAttribute("tags", [...tags]);
+      },
+      setAttributes: (attributes) => activeSpan.setAttributes(attributes),
+    };
     log("Request started", { channel });
     try {
-      const result = await run();
+      const result = await run(handle);
       log("Request completed", { channel });
       return result;
     } catch (error) {

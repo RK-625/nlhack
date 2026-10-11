@@ -45,6 +45,15 @@ The CFO Bot uses each user's own connection: per request it reads the signed-in 
 
 `GET /api/cfo/status` returns `{ configured, connected, expiresAt? }` (never tokens); `POST /api/cfo/disconnect` forgets the current user's tokens. Without the two variables the server starts with a warning and the connect/callback routes return 503.
 
+## Usage caps
+
+Every chat turn (one user message, or one approval resume, and everything the agent does to answer it: all model steps, tool calls and delegated sub-agent calls) is limited per user and per agent by a **cost cap** (default $0.25) and a **token cap** (default 300,000 tokens). Each user sets their own caps per agent; they are stored in `data/auth.db` (`agent_caps`) and persist across sessions and restarts. The caps of the agent being chatted with apply, including to the sub-agents it delegates to.
+
+- `GET /api/agents/:agentId/caps` returns `{ costCapUsd, tokenCap, defaults }`; `PUT` with `{ costCapUsd, tokenCap }` saves them (both must be greater than 0; at most 1000 USD and 100,000,000 tokens); `DELETE` resets to the defaults. Signed-in users only, own caps only.
+- Cost is estimated from `src/usage/pricing.ts` (DeepSeek's published peak prices, every input token at the cache-miss rate; unknown models use a high fallback price).
+- A processor on every agent (`src/usage/turn-budget.ts`) adds up each model step's usage. Once a cap is exceeded the run stops before the next model call (tools the last step requested still run); the partial reply is kept and a closing note explains which limit was hit.
+- The chat stream carries a `data-turn-usage` part (`{ costUsd, tokens, inputTokens, outputTokens, steps, capCostUsd, capTokens, capped, reason, final }`) after each model step and once more at the end. The final usage is also on the finish part and on the saved reply as `metadata.turnUsage`. Neatlogs traces get `app.turn_cost_usd`, `app.turn_tokens`, `app.turn_steps` and `app.turn_capped`, plus a `cost-capped` or `token-capped` tag.
+
 ## Key Integrations
 
 - **NeatLogs**: All Mastra agents are wrapped with `neatlogs/mastra`, recording agent runs, model steps, tool calls, inputs/outputs, timing, token usage when returned, and errors. CLI runs have request traces. Tracing does not trim model context.

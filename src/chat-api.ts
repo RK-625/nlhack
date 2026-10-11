@@ -2,13 +2,15 @@ import type http from "node:http";
 import { handleChatStream } from "@mastra/ai-sdk";
 import { RequestContext } from "@mastra/core/request-context";
 import { toAISdkMessages } from "@mastra/ai-sdk/ui";
-import { createUIMessageStreamResponse, type UIMessage } from "ai";
+import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage, type UIMessageChunk } from "ai";
 import { canUseAgent } from "./auth/access";
 import { approvalResumeMessage, pendingApprovalIds, withoutPendingApprovals } from "./chat-approvals";
 import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
 import { traceRequest } from "./telemetry";
 import { USER_ROLE_KEY, WORKSPACE_USER_KEY } from "./mastra/workspace";
+import { getCaps } from "./usage/caps";
+import { TURN_BUDGET_KEY, TurnBudget, type TurnUsage } from "./usage/turn-budget";
 
 const MAX_BODY_BYTES = 1024 * 1024;
 
@@ -27,7 +29,7 @@ export function listAgents(user?: SessionUser): AgentSummary[] {
 }
 
 /** Accepts either the Mastra registry key ("cfoAgent") or the agent id ("cfo"). */
-function resolveAgentId(keyOrId: string): string | undefined {
+export function resolveAgentId(keyOrId: string): string | undefined {
   return listAgents().find((agent) => agent.key === keyOrId || agent.id === keyOrId)?.id;
 }
 
@@ -108,13 +110,20 @@ export async function handleChat(
   // The span covers stream creation and the whole response write, so it ends only once the run
   // has finished (or the client disconnected). The thread id is the Neatlogs session, so one
   // conversation with an agent groups as a single session.
+  //
+  // Each turn (this request) gets a TurnBudget holding the user's caps for this agent; the
+  // turn-budget processor on every agent adds each model step's usage to it (also for delegated
+  // sub-agents, which share it through the RequestContext) and stops the run once a cap is
+  // exceeded. The caps are the ones for the agent the user is chatting with, never a sub-agent's.
   const threadId = chatThreadId(user.id, agentId);
-  await traceRequest("web", threadId, async () => {
-    const requestContext = new RequestContext([
+  const budget = new TurnBudget(getCaps(user.id, agentId));
+  await traceRequest("web", threadId, async (trace) => {
+    const requestContext = new RequestContext<unknown>([
       [WORKSPACE_USER_KEY, user.id],
       [USER_ROLE_KEY, user.role],
+      [TURN_BUDGET_KEY, budget],
     ]);
-    const stream = await handleChatStream({
+    const agentStream = await handleChatStream({
       mastra,
       agentId,
       version: "v7",
@@ -129,23 +138,110 @@ export async function handleChat(
         return "Sorry, something went wrong while generating a reply.";
       },
     });
+    let replyId: string | undefined;
+    const stream = withTurnUsage(agentStream, budget, (id) => (replyId = id));
     const response = createUIMessageStreamResponse({ stream });
 
     res.writeHead(response.status, Object.fromEntries(response.headers));
     res.flushHeaders();
-    if (!response.body) {
-      res.end();
-      return;
-    }
     try {
-      for await (const chunk of response.body) {
-        if (abort.signal.aborted) break;
-        res.write(chunk);
+      if (response.body) {
+        for await (const chunk of response.body) {
+          if (abort.signal.aborted) break;
+          res.write(chunk);
+        }
       }
     } finally {
       res.end();
+      const usage = budget.snapshot(true);
+      trace.setAttributes({
+        "app.turn_cost_usd": usage.costUsd,
+        "app.turn_tokens": usage.tokens,
+        "app.turn_steps": usage.steps,
+        "app.turn_capped": usage.capped,
+      });
+      if (usage.reason) trace.addTags(usage.reason === "cost" ? "cost-capped" : "token-capped");
+      await saveTurnUsage(agentId, user, replyId, usage).catch((error: unknown) => {
+        console.warn("Could not save turn usage", { agentId, error: error instanceof Error ? error.message : error });
+      });
     }
   }, { agentId, role: last.role }, { userId: user.id, threadId, agentId, tags: last.role === "assistant" ? ["approval-resume"] : [] });
+}
+
+const TURN_USAGE_PART_ID = "turn-usage";
+
+/**
+ * Passes the agent's UI stream through, adding a `data-turn-usage` part after every model step
+ * (same part id, so the client keeps one up-to-date part per reply) and a final one before the
+ * reply finishes. A capped reply also gets a closing text note saying why it stopped. The final
+ * usage is attached to the finish part as `messageMetadata.turnUsage`.
+ */
+function withTurnUsage(
+  stream: ReadableStream<UIMessageChunk>,
+  budget: TurnBudget,
+  onReplyId: (id: string) => void,
+): ReadableStream<UIMessageChunk> {
+  return createUIMessageStream({
+    execute: async ({ writer }) => {
+      let open = false;
+      let ended = false;
+      const writeUsage = (usage: TurnUsage) => writer.write({ type: "data-turn-usage", id: TURN_USAGE_PART_ID, data: usage });
+      const writeEnd = (): TurnUsage => {
+        ended = true;
+        if (budget.capped) {
+          const id = `turn-cap-note-${crypto.randomUUID()}`;
+          writer.write({ type: "text-start", id });
+          writer.write({ type: "text-delta", id, delta: `\n\n${budget.cappedMessage()}` });
+          writer.write({ type: "text-end", id });
+        }
+        const usage = budget.snapshot(true);
+        writeUsage(usage);
+        return usage;
+      };
+      budget.onStep = (usage) => {
+        if (!open || ended) return;
+        try {
+          writeUsage(usage);
+        } catch {
+          // The response is already closed (client gone); usage is still saved at the end.
+        }
+      };
+      try {
+        for await (const part of stream) {
+          if (part.type === "start") {
+            open = true;
+            if (part.messageId) onReplyId(part.messageId);
+          }
+          if (part.type === "finish" && open && !ended) {
+            const usage = writeEnd();
+            const metadata = typeof part.messageMetadata === "object" && part.messageMetadata ? part.messageMetadata : {};
+            writer.write({ ...part, messageMetadata: { ...metadata, turnUsage: usage } });
+            continue;
+          }
+          writer.write(part);
+        }
+        // A stream that ended without a finish part (aborted or failed) still reports its usage.
+        if (open && !ended) writeEnd();
+      } finally {
+        budget.onStep = undefined;
+      }
+    },
+  });
+}
+
+/**
+ * Saves the turn's final usage on the stored reply as `metadata.turnUsage`, so a reloaded chat can
+ * show it. Falls back to the newest assistant message when the stream did not name the reply.
+ */
+async function saveTurnUsage(agentId: string, user: SessionUser, replyId: string | undefined, usage: TurnUsage) {
+  if (usage.steps === 0) return;
+  const thread = await ownThread(agentId, user);
+  if (!thread) return;
+  const { messages } = await thread.memory.recall({ ...thread.ids, perPage: false });
+  const reply = (replyId && messages.find((m) => m.id === replyId && m.role === "assistant")) || [...messages].reverse().find((m) => m.role === "assistant");
+  if (!reply) return;
+  const store = await mastra.getStorage()?.getStore("memory");
+  await store?.updateMessages({ messages: [{ id: reply.id, content: { ...reply.content, metadata: { ...reply.content.metadata, turnUsage: usage } } }] });
 }
 
 /** GET/DELETE /api/chat/:agentId/history — read or clear the caller's own chat with one agent. */

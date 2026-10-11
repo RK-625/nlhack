@@ -1,5 +1,6 @@
 import { Agent } from "@mastra/core/agent";
 import { memory } from "../memory";
+import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { CFO_INSTRUCTIONS } from "../prompts";
 import { getCfoTools } from "../tools/cfo";
@@ -17,6 +18,8 @@ export const cfoAgent = wrapMastra(new Agent({
   instructions: CFO_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
+  // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
+  ...turnCapProcessors,
   // Resolved per request: each user gets their own cfo.ai connection, or only the status tool.
   tools: ({ requestContext }) => getCfoTools({ requestContext }),
   defaultOptions: { maxSteps: 12 },

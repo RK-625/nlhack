@@ -1,5 +1,6 @@
 import { Agent } from "@mastra/core/agent";
 import { memory } from "../memory";
+import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { ASSISTANT_INSTRUCTIONS } from "../prompts";
 import { marketResearcher } from "./market-researcher";
@@ -19,6 +20,8 @@ export const assistant = wrapMastra(new Agent({
   instructions: ASSISTANT_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
+  // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
+  ...turnCapProcessors,
   // The GitHub and Neatlogs agents are the same write-capable agents the web app chats with. A
   // sub-agent tool call that needs approval suspends this run too: the approval request surfaces
   // on the "agent-<key>" delegation call in the Primary Bot's own chat (carrying the real nested

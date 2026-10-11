@@ -1,5 +1,6 @@
 import { Agent } from "@mastra/core/agent";
 import { memory } from "../memory";
+import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { CUSTOMER_SUCCESS_INSTRUCTIONS } from "../prompts";
 
@@ -11,5 +12,7 @@ export const customerSuccessAgent = wrapMastra(new Agent({
   instructions: CUSTOMER_SUCCESS_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
+  // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
+  ...turnCapProcessors,
   defaultOptions: { maxSteps: 12 },
 }));

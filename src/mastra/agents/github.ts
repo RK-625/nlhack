@@ -1,5 +1,6 @@
 import { Agent } from "@mastra/core/agent";
 import { memory } from "../memory";
+import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { GITHUB_INSTRUCTIONS } from "../prompts";
 import { getGithubTools } from "../tools/github";
@@ -17,6 +18,8 @@ export const githubAgent = wrapMastra(new Agent({
   instructions: GITHUB_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
+  // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
+  ...turnCapProcessors,
   // Resolved per request so a missing token or GitHub outage never blocks server startup.
   tools: () => getGithubTools(),
   defaultOptions: { maxSteps: 12 },

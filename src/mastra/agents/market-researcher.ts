@@ -1,5 +1,6 @@
 import { Agent } from "@mastra/core/agent";
 import { memory } from "../memory";
+import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { MARKET_RESEARCHER_INSTRUCTIONS } from "../prompts";
 import { crustdataTools } from "../tools/crustdata";
@@ -12,6 +13,8 @@ export const marketResearcher = wrapMastra(new Agent({
   instructions: MARKET_RESEARCHER_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
+  // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
+  ...turnCapProcessors,
   tools: crustdataTools,
   defaultOptions: { maxSteps: 12 },
 }));

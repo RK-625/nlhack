@@ -6,12 +6,16 @@ import { cfoConfigError } from "./cfo/oauth";
 import { handleCfoCallback, handleCfoConnect, handleCfoDisconnect, handleCfoStatus } from "./cfo/routes";
 import { cfoDb } from "./cfo/store";
 import { handleChat, handleChatHistory, listAgents, sendJson } from "./chat-api";
+import { capsDb } from "./usage/caps";
+import { handleAgentCaps } from "./usage/routes";
 import { createWebHandler } from "./web";
 
 const authHandler = toNodeHandler(auth);
 
 // cfo.ai per-user OAuth: create tables now; routes answer 503 until configured.
 cfoDb();
+// Per-user, per-agent turn caps (src/usage): create the table now.
+capsDb();
 const cfoConfigIssue = cfoConfigError();
 if (cfoConfigIssue) console.warn(`cfo.ai connection disabled: ${cfoConfigIssue}. See README "cfo.ai connection".`);
 
@@ -57,6 +61,20 @@ const server = http.createServer(async (req, res) => {
     const user = await requireUser(req, res);
     if (!user) return;
     sendJson(res, 200, listAgents(user));
+    return;
+  }
+
+  const capsMatch = url.pathname.match(/^\/api\/agents\/([^/]+)\/caps$/);
+  if (capsMatch) {
+    try {
+      const user = await requireUser(req, res);
+      if (!user) return;
+      await handleAgentCaps(decodeURIComponent(capsMatch[1]), req, res, user);
+    } catch (error: unknown) {
+      console.error("Agent caps request failed", error);
+      if (!res.headersSent) sendJson(res, 500, { error: "Agent caps request failed" });
+      else res.end();
+    }
     return;
   }
 
