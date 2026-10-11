@@ -19,6 +19,8 @@
     "@mastra/ai-sdk": "^1.10.7",
     "@mastra/core": "^1.75.0",
     "ai": "^7.0.137",
+    "better-auth": "^1.7.7",
+    "better-sqlite3": "^13.0.3",
     "chat": "^4.41.1",
     "neatlogs": "^1.1.28",
     "zod": "^4.6.5"
