@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4P9G376487STP4M1ZHCTCT9",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
     "README.md",
     "src/chat-api.ts",
@@ -19,20 +19,27 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 186,
-    "cache_creation_tokens": 247852,
-    "cache_read_tokens": 12397433,
-    "output_tokens": 61782,
-    "api_call_count": 93,
+    "input_tokens": 202,
+    "cache_creation_tokens": 283182,
+    "cache_read_tokens": 12956011,
+    "output_tokens": 67442,
+    "api_call_count": 101,
     "subagent_tokens": {
-      "input_tokens": 572,
-      "cache_creation_tokens": 1334587,
-      "cache_read_tokens": 27922151,
-      "output_tokens": 28473,
-      "api_call_count": 287
+      "input_tokens": 608,
+      "cache_creation_tokens": 1417988,
+      "cache_read_tokens": 29202464,
+      "output_tokens": 28704,
+      "api_call_count": 305
     }
   }
 }

@@ -1,0 +1,71 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P9G376487STP4M1ZHCTCT9",
+  "session_id": "8ed3b96c-d206-42ff-be5e-fc85dd663700",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T20:12:06.167321Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "README.md",
+    "src/chat-api.ts",
+    "src/mastra/index.ts",
+    "src/mastra/prompts/index.ts",
+    "web/src/lib/message-parts.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "52d5d58478f9",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 35330,
+    "cache_read_tokens": 558578,
+    "output_tokens": 5660,
+    "api_call_count": 8,
+    "subagent_tokens": {
+      "input_tokens": 36,
+      "cache_creation_tokens": 83401,
+      "cache_read_tokens": 1280313,
+      "output_tokens": 231,
+      "api_call_count": 18
+    }
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T20:12:06.145252Z",
+    "agent_lines": 92,
+    "agent_removed": 52,
+    "human_added": 0,
+    "human_modified": 1,
+    "human_removed": 9,
+    "total_committed": 93,
+    "total_lines_changed": 154,
+    "agent_percentage": 93.5064935064935,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 203,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/cfo/crypto.ts": 37,
+        "src/cfo/store.ts": 97,
+        "src/mastra/workspace.ts": 69
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 797,
+      "agent_lines_removed": 57
+    }
+  ]
+}
