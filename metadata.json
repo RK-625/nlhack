@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NEZ70DHNHXZKZHV5NGS3D2",
+  "strategy": "manual-commit",
+  "branch": "claude/trusting-hertz-b6479e",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "package-lock.json",
+    "package.json",
+    "src/auth/index.ts",
+    "src/data-dir.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/cfo.ts",
+    "src/mastra/agents/market-researcher.ts",
+    "src/mastra/index.ts",
+    "src/mastra/memory.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 8,
+    "cache_creation_tokens": 4795,
+    "cache_read_tokens": 636656,
+    "output_tokens": 1601,
+    "api_call_count": 3,
+    "subagent_tokens": {
+      "input_tokens": 38,
+      "cache_creation_tokens": 129949,
+      "cache_read_tokens": 2041818,
+      "output_tokens": 238,
+      "api_call_count": 18
+    }
+  }
+}
