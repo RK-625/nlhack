@@ -17,7 +17,7 @@ import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
 import { messageTime } from "@/lib/chats";
 import { messageText } from "@/lib/message-parts";
 import { DURATION, enterTransition, exitTransition, fade, pop, SPRING, STAGGER, STAGGER_CAP } from "@/lib/motion";
-import { agentMatches, groupAgents } from "@/lib/sidebar";
+import { agentMatches, groupAgents, PRIMARY_AGENT_KEY } from "@/lib/sidebar";
 
 export type SidebarSearch = {
   query: string;
@@ -154,6 +154,25 @@ function AgentAvatar({
   );
 }
 
+/**
+ * The one selection highlight, shared by the rail square, the featured tile and the rows:
+ * it springs between agents within a layout and travels with the morph between layouts.
+ * Radius lives in `style` (14/16/12) so Motion corrects the corners while it stretches.
+ */
+function SelectedHighlight({ radius }: { radius: number }) {
+  const { chrome, travel } = useMorph();
+  return (
+    <m.span
+      layoutId="sidebar-selected"
+      data-morph-highlight=""
+      transition={chrome ? SPRING : travel}
+      aria-hidden="true"
+      className="absolute inset-0 z-0 bg-sidebar-accent"
+      style={{ borderRadius: radius }}
+    />
+  );
+}
+
 const iconButton =
   "grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground/80 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent hover:text-foreground";
 
@@ -259,12 +278,13 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
                     exit="hidden"
                     aria-current={selected ? "page" : undefined}
                     onClick={() => onSelect(agent.key)}
-                    className={`flex w-24 flex-col items-center gap-2 rounded-2xl px-2 pb-2.5 pt-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) ${
-                      selected ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/60"
+                    className={`relative flex w-24 flex-col items-center gap-2 rounded-2xl px-2 pb-2.5 pt-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) ${
+                      selected ? "" : "hover:bg-sidebar-accent/60"
                     }`}
                   >
+                    {selected ? <SelectedHighlight radius={16} /> : null}
                     <AgentAvatar agent={agent} size={56} row={rows[agent.key]} />
-                    <Label inline className="w-full truncate text-center text-[13px] font-medium text-foreground">
+                    <Label inline className="relative w-full truncate text-center text-[13px] font-medium text-foreground">
                       {agent.name}
                     </Label>
                   </m.button>
@@ -349,16 +369,8 @@ function SpecialistRow({
       onClick={() => onSelect(agent.key)}
       className="relative flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-start transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent/60"
     >
-      {selected ? (
-        // One highlight shared across rows: it slides to the newly selected agent,
-        // under the other rows' content (z-0 vs z-[1]).
-        <m.span
-          layoutId="agent-selected"
-          transition={SPRING}
-          aria-hidden="true"
-          className="absolute inset-0 z-0 rounded-xl bg-sidebar-accent"
-        />
-      ) : null}
+      {/* Under the other rows' content too (z-0 vs z-[1]) while it slides between rows. */}
+      {selected ? <SelectedHighlight radius={12} /> : null}
       <span className="relative z-[1]">
         <AgentAvatar agent={agent} size={36} row={row} activityOnly />
       </span>
@@ -417,6 +429,7 @@ function SpecialistRow({
 /** Compact rail: avatars only, featured agent first, then a divider and the specialists. */
 export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search, onToggleCompact }: SidebarPanelProps) {
   const stagger = useFirstLoadStagger();
+  const { chrome } = useMorph();
   const { primary, specialists } = groupAgents(agents);
   const item = (agent: AgentSummary, index: number) => {
     const node = railItem(agent, index);
@@ -432,8 +445,10 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search
   };
   const railItem = (agent: AgentSummary, index: number) => {
     const selected = agent.key === activeKey;
+    const specialist = agent.key !== PRIMARY_AGENT_KEY;
     return (
-      <Tooltip key={agent.key}>
+      // Disabled mid-morph: closes an open tooltip and blocks new ones while avatars travel.
+      <Tooltip key={agent.key} disabled={!chrome}>
         <TooltipTrigger
           render={
             <button
@@ -446,14 +461,7 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search
             />
           }
         >
-          {selected ? (
-            <m.span
-              layoutId="rail-selected"
-              transition={SPRING}
-              aria-hidden="true"
-              className="absolute inset-0 z-0 rounded-[14px] bg-sidebar-accent"
-            />
-          ) : null}
+          {selected ? <SelectedHighlight radius={14} /> : null}
           <m.span
             className="relative z-[1] inline-flex"
             custom={index}
@@ -461,7 +469,9 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search
             initial={stagger ? "hidden" : false}
             animate="visible"
           >
-            <AgentAvatar agent={agent} size={40} row={rows[agent.key]} />
+            {/* A specialist's unread badge counts as a label here: it fades out before the
+                morph and the row's inline unread dot fades in after (and the reverse). */}
+            <AgentAvatar agent={agent} size={40} row={rows[agent.key]} activityOnly={specialist && !chrome} />
           </m.span>
         </TooltipTrigger>
         <TooltipContent side="right" sideOffset={8}>
