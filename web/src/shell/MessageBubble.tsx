@@ -1,7 +1,7 @@
 // Bubble markup ported from rakazo's Transcript/MessageView (apps/web/src/pages/Shell.tsx
 // ~5092-5112 and ~6847-6880), Apache-2.0, github.com/elie222/rakazo@912c977.
 import type { UIMessage } from "ai";
-import { Check, ChevronRight, RotateCcw, ShieldAlert, X } from "lucide-react";
+import { Check, ChevronRight, OctagonAlert, RotateCcw, ShieldAlert, X } from "lucide-react";
 import * as m from "motion/react-m";
 import { type ReactNode, useState } from "react";
 import { StandaloneToolActivity } from "@/components/chat/ToolActivityDisclosure";
@@ -11,6 +11,7 @@ import { DURATION, enterTransition, exitTransition } from "@/lib/motion";
 import { ChatMarkdown, LinkifiedText } from "@/components/markdown/markdown.web";
 import { type AgentNames, messageSegments, messageText, toolsDurationMs } from "@/lib/message-parts";
 import { toolStepCount } from "@/lib/tool-activity-view";
+import { capNoticeText, messageTurnUsage } from "@/lib/turn-usage";
 
 const USER_WIDTH = "max-w-[min(84%,calc(100%_-_8rem))] max-md:max-w-[84%] [@media(hover:none)]:max-w-[84%]";
 const BOT_WIDTH = "max-w-[min(88%,calc(100%_-_8rem))] max-md:max-w-[92%] [@media(hover:none)]:max-w-[88%]";
@@ -56,6 +57,7 @@ export function MessageBubble({
   }
 
   const segments = messageSegments(message, agentNames);
+  const usage = messageTurnUsage(message);
   return (
     <div className="relative flex flex-col gap-1.5">
       {segments.map((segment, index) => {
@@ -104,7 +106,24 @@ export function MessageBubble({
           </Row>
         );
       })}
+      {usage?.capped ? <CapNotice text={capNoticeText(usage)} /> : null}
     </div>
+  );
+}
+
+/** End-of-reply notice when the turn hit the user's cost or token cap for this agent. */
+function CapNotice({ text }: { text: string }) {
+  return (
+    <Row user={false}>
+      <div
+        role="note"
+        data-testid="turn-cap-notice"
+        className="flex max-w-full items-start gap-2 rounded-[16px] border border-destructive/35 bg-destructive/8 px-3.5 py-2 text-[13.5px] leading-[1.45] text-foreground/85"
+      >
+        <OctagonAlert size={15} strokeWidth={1.8} className="mt-[2px] shrink-0 text-destructive" />
+        <span className="min-w-0 break-words">{text}</span>
+      </div>
+    </Row>
   );
 }
 

@@ -7,6 +7,7 @@ import { useAgentChat } from "@/hooks/useAgentChat";
 import type { AgentSummary } from "@/hooks/useAgents";
 import { agentAvatarValue } from "@/lib/agent-avatar";
 import type { AgentNames } from "@/lib/message-parts";
+import { latestTurnUsage } from "@/lib/turn-usage";
 import { paneSwap, rise, staggerGroup } from "@/lib/motion";
 import { CfoConnectBanner } from "./CfoConnect";
 import { ChatHeader } from "./ChatHeader";
@@ -71,7 +72,12 @@ function AgentConversation({
   const chat = useAgentChat(agent.key);
   return (
     <>
-      <ChatHeader agent={agent} running={chat.running} onOpenMobileSidebar={onOpenMobileSidebar} />
+      <ChatHeader
+        agent={agent}
+        running={chat.running}
+        usage={latestTurnUsage(chat.messages)}
+        onOpenMobileSidebar={onOpenMobileSidebar}
+      />
       <MessageList
         messages={chat.messages}
         status={chat.status}

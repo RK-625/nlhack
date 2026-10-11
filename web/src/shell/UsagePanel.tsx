@@ -1,0 +1,232 @@
+// Per-turn usage row under the chat header pill: the latest turn's cost and tokens against the
+// user's caps for this agent, with an inline editor for the caps.
+import { useId, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { AgentCaps } from "@/hooks/useAgentCaps";
+import { cn } from "@/lib/utils";
+import {
+  formatTokens,
+  formatUsd,
+  parseCapsInput,
+  type TurnUsage,
+  type UsageLevel,
+  usageFraction,
+  usageLevel,
+} from "@/lib/turn-usage";
+
+const BAR_COLOR: Record<UsageLevel, string> = {
+  normal: "bg-foreground/55",
+  warn: "bg-warning",
+  capped: "bg-destructive",
+};
+
+function UsageBar({
+  label,
+  used,
+  cap,
+  capped,
+  format,
+}: {
+  label: string;
+  used: number;
+  cap: number;
+  capped: boolean;
+  format: (value: number) => string;
+}) {
+  const level = usageLevel(used, cap, capped);
+  const percent = Math.round(usageFraction(used, cap) * 100);
+  return (
+    <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className="flex items-baseline justify-between gap-2 text-[12.5px]">
+        <span className="text-muted-foreground">{label}</span>
+        <span className={cn("tabular-nums", level === "capped" ? "text-destructive" : "text-foreground/85")}>
+          {format(used)} / {format(cap)}
+        </span>
+      </div>
+      <div
+        role="meter"
+        aria-label={`${label} used this turn`}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={percent}
+        aria-valuetext={`${format(used)} of ${format(cap)}`}
+        className="h-1 overflow-hidden rounded-full bg-muted"
+      >
+        <div
+          className={cn(
+            "h-full rounded-full transition-[width,background-color] duration-(--motion-base) ease-(--ease-standard)",
+            BAR_COLOR[level],
+          )}
+          style={{ width: `${percent}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export function UsagePanel({ id, usage, caps }: { id: string; usage: TurnUsage | null; caps: AgentCaps }) {
+  const [editing, setEditing] = useState(false);
+  const current = caps.caps ?? (usage ? { costCapUsd: usage.capCostUsd, tokenCap: usage.capTokens } : caps.defaults);
+  const usedCost = usage?.costUsd ?? 0;
+  const usedTokens = usage?.tokens ?? 0;
+  return (
+    <section
+      id={id}
+      aria-label="Usage this turn"
+      className="pointer-events-auto mt-2 flex w-[min(380px,calc(100vw-2rem))] flex-col gap-2.5 rounded-2xl border border-border bg-card/95 px-3.5 py-3 shadow-sm backdrop-blur"
+    >
+      <div className="flex items-end gap-4">
+        <UsageBar label="Cost" used={usedCost} cap={current.costCapUsd} capped={usage?.reason === "cost"} format={formatUsd} />
+        <UsageBar
+          label="Tokens"
+          used={usedTokens}
+          cap={current.tokenCap}
+          capped={usage?.reason === "tokens"}
+          format={formatTokens}
+        />
+      </div>
+      {editing ? (
+        <CapsEditor caps={caps} current={current} onDone={() => setEditing(false)} />
+      ) : (
+        <div className="flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
+          <span>Latest turn, per-message limits for this bot.</span>
+          <Button size="xs" variant="ghost" onClick={() => setEditing(true)}>
+            Edit
+          </Button>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CapsEditor({
+  caps,
+  current,
+  onDone,
+}: {
+  caps: AgentCaps;
+  current: { costCapUsd: number; tokenCap: number };
+  onDone: () => void;
+}) {
+  const ids = useId();
+  const [cost, setCost] = useState(String(current.costCapUsd));
+  const [tokens, setTokens] = useState(String(current.tokenCap));
+  const [errors, setErrors] = useState<{ cost?: string; tokens?: string; form?: string }>({});
+  const [busy, setBusy] = useState(false);
+
+  const run = async (action: () => Promise<string | null>) => {
+    setBusy(true);
+    const error = await action();
+    setBusy(false);
+    if (error) setErrors({ form: error });
+    else onDone();
+  };
+  const save = () => {
+    const parsed = parseCapsInput(cost, tokens);
+    if (!parsed.ok) {
+      setErrors(parsed.errors);
+      return;
+    }
+    setErrors({});
+    void run(() => caps.save(parsed.caps));
+  };
+
+  return (
+    <form
+      className="flex flex-col gap-2"
+      onSubmit={(event) => {
+        event.preventDefault();
+        save();
+      }}
+    >
+      <div className="flex gap-3">
+        <CapField
+          id={`${ids}-cost`}
+          label="Cost cap ($)"
+          value={cost}
+          onChange={setCost}
+          error={errors.cost}
+          inputMode="decimal"
+          placeholder={String(caps.defaults.costCapUsd)}
+        />
+        <CapField
+          id={`${ids}-tokens`}
+          label="Token cap"
+          value={tokens}
+          onChange={setTokens}
+          error={errors.tokens}
+          inputMode="numeric"
+          placeholder={String(caps.defaults.tokenCap)}
+        />
+      </div>
+      {errors.form ? (
+        <p role="alert" className="text-[12px] text-destructive">
+          {errors.form}
+        </p>
+      ) : null}
+      <div className="flex items-center justify-end gap-1.5">
+        <Button
+          size="xs"
+          variant="ghost"
+          className="me-auto"
+          disabled={busy}
+          onClick={() => {
+            setErrors({});
+            void run(caps.reset);
+          }}
+        >
+          Reset to defaults
+        </Button>
+        <Button size="xs" variant="outline" disabled={busy} onClick={onDone}>
+          Cancel
+        </Button>
+        <Button size="xs" type="submit" disabled={busy}>
+          Save
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function CapField({
+  id,
+  label,
+  value,
+  onChange,
+  error,
+  inputMode,
+  placeholder,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+  inputMode: "decimal" | "numeric";
+  placeholder: string;
+}) {
+  return (
+    <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <label htmlFor={id} className="text-[12px] text-muted-foreground">
+        {label}
+      </label>
+      <Input
+        id={id}
+        value={value}
+        inputMode={inputMode}
+        placeholder={placeholder}
+        autoComplete="off"
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
+        onChange={(event) => onChange(event.target.value)}
+        className="h-7 text-[13px] md:text-[13px]"
+      />
+      {error ? (
+        <p id={`${id}-error`} className="text-[11.5px] leading-[1.35] text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}

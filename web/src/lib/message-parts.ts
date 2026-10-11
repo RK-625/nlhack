@@ -1,5 +1,6 @@
 import { getToolName, isDataUIPart, isReasoningUIPart, isTextUIPart, isToolUIPart, type UIMessage } from "ai";
 import type { ToolStep } from "@/components/chat/ToolActivityDisclosure";
+import { isCapNoteText, messageTurnUsage } from "@/lib/turn-usage";
 
 /** What a message renders, in stream order. Consecutive tool/data parts merge into one card. */
 export type Segment =
@@ -21,9 +22,13 @@ const toolTimes = new Map<string, { start: number; end?: number }>();
 export function messageSegments(message: UIMessage, agentNames: AgentNames): Segment[] {
   const segments: Segment[] = [];
   const approvalData = toolCallApprovalData(message);
+  // A capped reply's streamed closing note is replaced by CapNotice (built from the usage, so it
+  // also shows on reload, where the note is not saved); hide the note so it never shows twice.
+  const capped = messageTurnUsage(message)?.capped === true;
   message.parts.forEach((part, index) => {
     const key = `${message.id}:${index}`;
     if (isTextUIPart(part)) {
+      if (capped && isCapNoteText(part.text)) return;
       if (part.text.trim()) segments.push({ kind: "text", text: part.text, key });
       return;
     }
@@ -76,7 +81,9 @@ export function messageSegments(message: UIMessage, agentNames: AgentNames): Seg
       const name = typeof data.name === "string" ? data.name : typeof data.agentName === "string" ? data.agentName : null;
       step = { step: { label: name ? `${name} working` : "Sub-agent step", count: 1, status: "done" }, callId: key };
     }
-    if (!step) return; // step-start, sources, files and unknown parts render nothing.
+    // step-start, sources, files, data-turn-usage (shown by the header and CapNotice) and other
+    // unknown parts render nothing.
+    if (!step) return;
     const last = segments.at(-1);
     if (last?.kind === "tools") {
       last.steps.push(step.step);
