@@ -14,9 +14,14 @@ export const authClient = createAuthClient({
 
 export const { useSession, signOut } = authClient;
 
-export function signInWithUsername(username: string, password: string) {
-  return authClient.signIn.username({ username, password });
+export async function signInWithUsername(username: string, password: string) {
+  const result = await authClient.signIn.username({ username, password });
+  if (!result.error) unauthorizedHandled = false;
+  return result;
 }
+
+/** One 401 round per session: repeated notifications would keep cancelling the session re-check. */
+let unauthorizedHandled = false;
 
 /** The server stores any string; only these two roles are known to the UI. */
 export function toRole(role: string | null | undefined): Role {
@@ -40,6 +45,8 @@ export function clearSessionState() {
  * login page makes no requests of its own, so a dead cookie cannot loop.
  */
 export function handleUnauthorized() {
+  if (unauthorizedHandled) return;
+  unauthorizedHandled = true;
   clearSessionState();
   authClient.$store.notify("$sessionSignal");
 }
