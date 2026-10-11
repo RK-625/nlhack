@@ -9,16 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { clearSessionState, signOut, toRole, useSession } from "@/lib/auth";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { clearSessionState, signOut } from "@/lib/auth";
 
 /** Signed-in user in the sidebar footer: name (+ Admin badge), and a menu with Sign out. */
 export function UserMenu() {
-  const { data: session } = useSession();
+  const { user, isAdmin } = useCurrentUser();
   const [signingOut, setSigningOut] = useState(false);
-  const user = session?.user;
   if (!user) return null;
 
-  const isAdmin = toRole(user.role) === "admin";
   const initial = (user.name || user.username || "?").trim().charAt(0).toUpperCase();
 
   const handleSignOut = async () => {

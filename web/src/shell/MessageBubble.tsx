@@ -165,6 +165,7 @@ function describeError(error: Error): string {
   // DefaultChatTransport surfaces the response body; unwrap our JSON errors.
   try {
     const parsed = JSON.parse(raw) as { error?: unknown };
+    if (parsed.error === "Forbidden") return "You don't have access to this agent.";
     if (typeof parsed.error === "string") return parsed.error;
   } catch {}
   if (/failed to fetch|networkerror|load failed/i.test(raw)) return "Can't reach the server. Check that it is running.";
