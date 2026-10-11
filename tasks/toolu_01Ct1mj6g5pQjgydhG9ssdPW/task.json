@@ -1,0 +1,22 @@
+{
+  "tool_use_id": "toolu_01Ct1mj6g5pQjgydhG9ssdPW",
+  "agent_id": "a5f5e3e2f9809ac49",
+  "subagent_type": "general-purpose",
+  "task_description": "Drop stale approvals on new message",
+  "files": [
+    "src/chat-api.ts",
+    "src/chat-approvals.ts",
+    "tmp-drop-approval-check.ts",
+    "web/src/shell/MessageBubble.tsx",
+    "web/src/shell/MessageList.tsx"
+  ],
+  "token_usage": {
+    "input_tokens": 86,
+    "cache_creation_tokens": 129790,
+    "cache_read_tokens": 3792491,
+    "output_tokens": 971,
+    "api_call_count": 43
+  },
+  "started_at": "2026-10-11T22:19:37.504311+05:30",
+  "completed_at": "2026-10-11T22:19:37.504659+05:30"
+}
