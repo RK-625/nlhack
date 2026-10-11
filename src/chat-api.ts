@@ -1,5 +1,6 @@
 import type http from "node:http";
 import { handleChatStream } from "@mastra/ai-sdk";
+import { toAISdkMessages } from "@mastra/ai-sdk/ui";
 import { createUIMessageStreamResponse, type UIMessage } from "ai";
 import { canUseAgent } from "./auth/access";
 import type { SessionUser } from "./auth/session";
@@ -107,6 +108,47 @@ export async function handleChat(
   } finally {
     res.end();
   }
+}
+
+/** GET/DELETE /api/chat/:agentId/history — read or clear the caller's own chat with one agent. */
+export async function handleChatHistory(
+  agentKeyOrId: string,
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  user: SessionUser,
+): Promise<void> {
+  if (req.method !== "GET" && req.method !== "DELETE") {
+    res.writeHead(405, { allow: "GET, DELETE" }).end();
+    return;
+  }
+  const agentId = resolveAgentId(agentKeyOrId);
+  if (!agentId) {
+    sendJson(res, 404, { error: `Unknown agent: ${agentKeyOrId}` });
+    return;
+  }
+  if (!canUseAgent(user, agentId)) {
+    sendJson(res, 403, { error: "Forbidden" });
+    return;
+  }
+
+  // The thread id embeds the user id and the resource id is checked, so only the caller's own chat is reachable.
+  const agent = Object.values(mastra.listAgents()).find((a) => a.id === agentId);
+  const memory = await agent?.getMemory();
+  const threadId = chatThreadId(user.id, agentId);
+  const thread = memory ? await memory.getThreadById({ threadId }) : null;
+  const owned = thread?.resourceId === user.id;
+
+  if (req.method === "DELETE") {
+    if (memory && owned) await memory.deleteThread(threadId);
+    res.writeHead(204).end();
+    return;
+  }
+  if (!memory || !owned) {
+    sendJson(res, 200, { messages: [] });
+    return;
+  }
+  const { messages } = await memory.recall({ threadId, resourceId: user.id, perPage: false });
+  sendJson(res, 200, { messages: toAISdkMessages(messages, { version: "v7" }) });
 }
 
 export function sendJson(res: http.ServerResponse, status: number, body: unknown): void {

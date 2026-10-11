@@ -4,7 +4,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
 import { requireUser } from "./auth/session";
 import { bot } from "./bot/whatsapp";
-import { handleChat, listAgents, sendJson } from "./chat-api";
+import { handleChat, handleChatHistory, listAgents, sendJson } from "./chat-api";
 import { createWebHandler } from "./web";
 
 const policyPages: Record<string, URL> = {
@@ -90,6 +90,20 @@ const server = http.createServer(async (req, res) => {
     const user = await requireUser(req, res);
     if (!user) return;
     sendJson(res, 200, listAgents(user));
+    return;
+  }
+
+  const historyMatch = url.pathname.match(/^\/api\/chat\/([^/]+)\/history$/);
+  if (historyMatch) {
+    try {
+      const user = await requireUser(req, res);
+      if (!user) return;
+      await handleChatHistory(decodeURIComponent(historyMatch[1]), req, res, user);
+    } catch (error: unknown) {
+      console.error("Chat history failed", error);
+      if (!res.headersSent) sendJson(res, 500, { error: "Chat history failed" });
+      else res.end();
+    }
     return;
   }
 
