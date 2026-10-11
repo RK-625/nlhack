@@ -11,6 +11,11 @@ const agentAccess: Record<string, AgentAccess> = {
   cfo: "all",
   github: "all",
   neatlogs: "all",
+  "customer-success": "all",
+  legal: "all",
+  hr: "all",
+  marketing: "all",
+  sales: "all",
 };
 
 // Admins can use every agent; everyone else only agents marked "all" (unlisted agents default to "all").

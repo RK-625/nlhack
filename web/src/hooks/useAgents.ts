@@ -33,6 +33,41 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
       "Analyzes business financials, cash flow, runway, budgets, pricing, unit economics, and hiring scenarios.",
   },
   {
+    key: "customerSuccessAgent",
+    id: "customer-success",
+    name: "Customer Success",
+    description:
+      "Helps with customer onboarding, adoption, churn risk, renewals, health scores, support escalations, and customer communication drafts.",
+  },
+  {
+    key: "legalAgent",
+    id: "legal",
+    name: "Legal Agent",
+    description:
+      "Reviews contracts, NDAs, and MSAs, explains clauses, outlines GDPR, DPDP, and SOC 2 compliance, and drafts policies. Not legal advice.",
+  },
+  {
+    key: "hrAgent",
+    id: "hr",
+    name: "HR Agent",
+    description:
+      "Helps with hiring plans, job descriptions, interview loops, onboarding, policies, performance reviews, and compensation bands.",
+  },
+  {
+    key: "marketingAgent",
+    id: "marketing",
+    name: "Marketing Agent",
+    description:
+      "Helps with positioning, messaging, campaigns, content calendars, SEO briefs, launch plans, and channel strategy.",
+  },
+  {
+    key: "salesAgent",
+    id: "sales",
+    name: "Sales Agent",
+    description:
+      "Helps with ICPs, prospecting sequences, outreach emails, discovery questions, objection handling, pipeline reviews, and deal strategy.",
+  },
+  {
     key: "githubAgent",
     id: "github",
     name: "GitHub Agent",

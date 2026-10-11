@@ -12,6 +12,11 @@ const CURATED: Record<string, string> = {
   cfo: "#10B981::shape_2", // green squircle
   github: "#64748B::shape_1", // slate wedge
   neatlogs: "#F43F5E::shape_3", // rose tablet
+  "customer-success": "#F59E0B::shape_5", // amber blob
+  legal: "#6366F1::shape_7", // indigo cloud
+  hr: "#EC4899::shape_6", // pink teardrop
+  marketing: "#F97316::shape_4", // orange pebble
+  sales: "#14B8A6::shape_0", // teal hex
 };
 
 export function agentAvatarValue(agentId: string): string {
