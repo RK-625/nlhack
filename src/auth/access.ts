@@ -9,6 +9,7 @@ const agentAccess: Record<string, AgentAccess> = {
   assistant: "all",
   "market-researcher": "all",
   cfo: "all",
+  github: "all",
 };
 
 // Admins can use every agent; everyone else only agents marked "all" (unlisted agents default to "all").

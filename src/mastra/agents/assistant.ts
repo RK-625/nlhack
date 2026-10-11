@@ -4,6 +4,7 @@ import { wrapMastra } from "neatlogs/mastra";
 import { ASSISTANT_INSTRUCTIONS } from "../prompts";
 import { marketResearcher } from "./market-researcher";
 import { cfoAgent } from "./cfo";
+import { githubAgent } from "./github";
 
 export const assistant = wrapMastra(new Agent({
   id: "assistant",
@@ -12,7 +13,7 @@ export const assistant = wrapMastra(new Agent({
   instructions: ASSISTANT_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
-  agents: { marketResearcher, cfoAgent },
+  agents: { marketResearcher, cfoAgent, githubAgent },
   defaultOptions: {
     maxSteps: 6,
     delegation: {

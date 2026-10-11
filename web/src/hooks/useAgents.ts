@@ -32,6 +32,13 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
     description:
       "Analyzes business financials, cash flow, runway, budgets, pricing, unit economics, and hiring scenarios.",
   },
+  {
+    key: "githubAgent",
+    id: "github",
+    name: "GitHub Agent",
+    description:
+      "Read-only inspection of GitHub repositories, issues, pull requests, and Actions runs.",
+  },
 ];
 
 function isAgentList(value: unknown): value is AgentSummary[] {

@@ -10,6 +10,7 @@ const CURATED: Record<string, string> = {
   assistant: "#8B5CF6::shape_0", // violet hex
   "market-researcher": "#06B6D4::shape_4", // cyan pebble
   cfo: "#10B981::shape_2", // green squircle
+  github: "#64748B::shape_1", // slate wedge
 };
 
 export function agentAvatarValue(agentId: string): string {
