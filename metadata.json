@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4PA2K3M4ZP5DK9ZYF69SCD3",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     "src/telemetry.ts"
   ],
@@ -21,13 +21,27 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 196,
-    "cache_creation_tokens": 251499,
-    "cache_read_tokens": 12817165,
-    "output_tokens": 63370,
-    "api_call_count": 98
+    "input_tokens": 198,
+    "cache_creation_tokens": 252349,
+    "cache_read_tokens": 13027053,
+    "output_tokens": 63742,
+    "api_call_count": 99,
+    "subagent_tokens": {
+      "input_tokens": 140,
+      "cache_creation_tokens": 243555,
+      "cache_read_tokens": 7905392,
+      "output_tokens": 5790,
+      "api_call_count": 70
+    }
   }
 }
