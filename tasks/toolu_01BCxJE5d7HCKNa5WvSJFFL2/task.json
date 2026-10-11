@@ -1,0 +1,28 @@
+{
+  "tool_use_id": "toolu_01BCxJE5d7HCKNa5WvSJFFL2",
+  "agent_id": "ada8dcea3c30b18cd",
+  "subagent_type": "general-purpose",
+  "task_description": "Show Neatlogs cost after each turn",
+  "files": [
+    "README.md",
+    "src/chat-api.ts",
+    "src/mastra/tools/neatlogs.ts",
+    "src/server.ts",
+    "src/telemetry.ts",
+    "src/usage/neatlogs-usage.ts",
+    "src/usage/turn-budget.ts",
+    "web/src/hooks/useNeatlogsUsage.ts",
+    "web/src/lib/turn-usage.ts",
+    "web/src/shell/ChatHeader.tsx",
+    "web/src/shell/UsagePanel.tsx"
+  ],
+  "token_usage": {
+    "input_tokens": 78,
+    "cache_creation_tokens": 152312,
+    "cache_read_tokens": 4320709,
+    "output_tokens": 3983,
+    "api_call_count": 39
+  },
+  "started_at": "2026-10-12T04:54:58.73222+05:30",
+  "completed_at": "2026-10-12T04:54:58.732859+05:30"
+}
