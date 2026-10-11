@@ -1,13 +1,24 @@
 import { useChat } from "@ai-sdk/react";
 import type { ChatStatus, UIMessage } from "ai";
 import { useSyncExternalStore } from "react";
-import { chatsVersion, getChat, isUnread, subscribeChats } from "@/lib/chats";
+import {
+  chatsVersion,
+  dismissHistoryError,
+  getChat,
+  historyError,
+  isHistoryLoading,
+  isUnread,
+  retryHistory,
+  subscribeChats,
+} from "@/lib/chats";
 
 export type AgentChat = {
   messages: UIMessage[];
   status: ChatStatus;
   /** True while a request is submitted or a reply is streaming. */
   running: boolean;
+  /** True while the saved conversation is being fetched; sending is disabled until then. */
+  loading: boolean;
   error: Error | undefined;
   send: (text: string) => void;
   stop: () => void;
@@ -24,14 +35,18 @@ export function isRunning(status: ChatStatus): boolean {
 export function useAgentChat(agentKey: string): AgentChat {
   const chat = getChat(agentKey);
   const helpers = useChat({ chat, throttle: 50 });
+  useSyncExternalStore(subscribeChats, chatsVersion);
+  const loading = isHistoryLoading(agentKey);
+  const loadError = historyError(agentKey);
   return {
     messages: helpers.messages,
     status: helpers.status,
     running: isRunning(helpers.status),
-    error: helpers.error,
+    loading,
+    error: helpers.error ?? loadError,
     send: (text) => {
       const trimmed = text.trim();
-      if (!trimmed || isRunning(chat.status)) return;
+      if (!trimmed || isRunning(chat.status) || isHistoryLoading(agentKey)) return;
       void helpers.sendMessage({ text: trimmed });
     },
     stop: () => void helpers.stop(),
@@ -41,10 +56,14 @@ export function useAgentChat(agentKey: string): AgentChat {
       helpers.setMessages([]);
     },
     retry: () => {
+      if (loadError) return retryHistory(agentKey);
       helpers.clearError();
       void helpers.regenerate();
     },
-    dismissError: () => helpers.clearError(),
+    dismissError: () => {
+      helpers.clearError();
+      dismissHistoryError(agentKey);
+    },
   };
 }
 

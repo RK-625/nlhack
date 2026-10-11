@@ -9,7 +9,7 @@ import { useAgentChatSummaries } from "@/hooks/useAgentChat";
 import { useAgents } from "@/hooks/useAgents";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 import { useSession } from "@/lib/auth";
-import { getChat, setActiveChat } from "@/lib/chats";
+import { clearChatHistory, setActiveChat } from "@/lib/chats";
 import { backdrop } from "@/lib/motion";
 import { ChatPane } from "@/shell/ChatPane";
 import { Sidebar } from "@/shell/Sidebar";
@@ -103,12 +103,7 @@ function Shell() {
             activeKey={active?.key ?? null}
             onSelect={select}
             onNewChat={() => {
-              if (active) {
-                const chat = getChat(active.key);
-                void chat.stop();
-                chat.clearError();
-                chat.messages = [];
-              }
+              if (active) void clearChatHistory(active.key);
               setMobileOpen(false);
             }}
             onCollapse={() => setCollapsedPref(true)}

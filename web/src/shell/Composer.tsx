@@ -11,17 +11,20 @@ import { pop, SPRING } from "@/lib/motion";
 export function Composer({
   agentName,
   running,
+  disabled = false,
   onSend,
   onStop,
 }: {
   agentName?: string;
   running: boolean;
+  /** Sending is paused (e.g. while the saved conversation loads); typing still works. */
+  disabled?: boolean;
   onSend: (text: string) => void;
   onStop: () => void;
 }) {
   const [draft, setDraft] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const canSend = draft.trim().length > 0 && !running;
+  const canSend = draft.trim().length > 0 && !running && !disabled;
 
   // Auto-size: grow with content up to max-h-25, then scroll.
   useLayoutEffect(() => {

@@ -14,6 +14,13 @@ const listeners = new Set<() => void>();
 const unread = new Set<string>();
 /** Client-side receive time per message id (the stream carries no timestamps). */
 const stamps = new Map<string, number>();
+/** Agents whose saved history is still being fetched; sending waits for it. */
+const loading = new Set<string>();
+/** Last history load/clear failure per agent, shown like any other chat error. */
+const historyErrors = new Map<string, Error>();
+const clearing = new Set<string>();
+/** Bumped by resetChats so a history response for a previous user is dropped. */
+let epoch = 0;
 let version = 0;
 let activeKey: string | null = null;
 
@@ -24,7 +31,10 @@ function notify() {
 
 function stampAll(chat: Chat<UIMessage>) {
   for (const message of chat.messages) {
-    if (!stamps.has(message.id)) stamps.set(message.id, Date.now());
+    if (stamps.has(message.id)) continue;
+    const created = (message.metadata as { createdAt?: string | number } | undefined)?.createdAt;
+    const at = created ? new Date(created).getTime() : Number.NaN;
+    stamps.set(message.id, Number.isNaN(at) ? Date.now() : at);
   }
 }
 
@@ -36,6 +46,8 @@ export function getChat(agentKey: string): Chat<UIMessage> {
     transport: new DefaultChatTransport({
       api: `/api/chat/${encodeURIComponent(agentKey)}`,
       // Same response goes back to useChat (its error flow is unchanged); a 401 also ends the session.
+      // History lives server-side (Mastra Memory), so only the newest message is sent.
+      prepareSendMessagesRequest: ({ messages, body }) => ({ body: { ...body, message: messages.at(-1) } }),
       fetch: async (input, init) => {
         const res = await fetch(input, init);
         if (res.status === 401) handleUnauthorized();
@@ -57,7 +69,81 @@ export function getChat(agentKey: string): Chat<UIMessage> {
   created["~registerStatusCallback"](notify);
   created["~registerErrorCallback"](notify);
   chats.set(agentKey, created);
+  void loadHistory(agentKey, created);
   return created;
+}
+
+const historyUrl = (agentKey: string) => `/api/chat/${encodeURIComponent(agentKey)}/history`;
+
+/** Seeds the Chat from the saved thread. Resolves before anything can be sent (the composer waits on `loading`). */
+async function loadHistory(agentKey: string, chat: Chat<UIMessage>) {
+  const mine = epoch;
+  loading.add(agentKey);
+  historyErrors.delete(agentKey);
+  notify();
+  try {
+    const res = await fetch(historyUrl(agentKey));
+    if (mine !== epoch) return;
+    if (res.status === 401) {
+      handleUnauthorized();
+      return;
+    }
+    if (!res.ok) throw new Error(`Couldn't load the conversation (${res.status}).`);
+    const data = (await res.json()) as { messages?: UIMessage[] };
+    if (mine === epoch && chat.messages.length === 0 && Array.isArray(data.messages)) {
+      chat.messages = data.messages;
+    }
+  } catch (error) {
+    if (mine === epoch) historyErrors.set(agentKey, error instanceof Error ? error : new Error(String(error)));
+  } finally {
+    if (mine === epoch) {
+      loading.delete(agentKey);
+      notify();
+    }
+  }
+}
+
+export function isHistoryLoading(agentKey: string): boolean {
+  return loading.has(agentKey);
+}
+
+export function historyError(agentKey: string): Error | undefined {
+  return historyErrors.get(agentKey);
+}
+
+export function dismissHistoryError(agentKey: string) {
+  if (historyErrors.delete(agentKey)) notify();
+}
+
+export function retryHistory(agentKey: string) {
+  const chat = chats.get(agentKey);
+  if (chat) void loadHistory(agentKey, chat);
+}
+
+/** New chat: delete the saved thread first; on failure keep the messages and surface the error. */
+export async function clearChatHistory(agentKey: string) {
+  if (clearing.has(agentKey)) return;
+  const chat = getChat(agentKey);
+  const mine = epoch;
+  clearing.add(agentKey);
+  void chat.stop();
+  chat.clearError();
+  historyErrors.delete(agentKey);
+  try {
+    const res = await fetch(historyUrl(agentKey), { method: "DELETE" });
+    if (mine !== epoch) return;
+    if (res.status === 401) {
+      handleUnauthorized();
+      return;
+    }
+    if (!res.ok) throw new Error(`Couldn't clear the conversation (${res.status}).`);
+    chat.messages = [];
+  } catch (error) {
+    if (mine === epoch) historyErrors.set(agentKey, error instanceof Error ? error : new Error(String(error)));
+  } finally {
+    clearing.delete(agentKey);
+    notify();
+  }
 }
 
 export function subscribeChats(listener: () => void): () => void {
@@ -88,6 +174,10 @@ export function resetChats() {
   chats.clear();
   unread.clear();
   stamps.clear();
+  loading.clear();
+  historyErrors.clear();
+  clearing.clear();
+  epoch += 1;
   activeKey = null;
   notify();
 }

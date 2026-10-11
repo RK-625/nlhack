@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import { useMemo } from "react";
@@ -102,9 +103,9 @@ function AgentConversation({
         agentNames={agentNames}
         onRetry={chat.retry}
         onDismissError={chat.dismissError}
-        empty={<EmptyState agent={agent} onPick={chat.send} />}
+        empty={chat.loading ? <HistorySkeleton /> : <EmptyState agent={agent} onPick={chat.send} />}
       />
-      <Composer agentName={agent.name} running={chat.running} onSend={chat.send} onStop={chat.stop} />
+      <Composer agentName={agent.name} running={chat.running} disabled={chat.loading} onSend={chat.send} onStop={chat.stop} />
     </>
   );
 }
@@ -145,3 +146,14 @@ function EmptyState({ agent, onPick }: { agent: AgentSummary; onPick: (text: str
   );
 }
 
+
+/** Light placeholder while the saved conversation loads. */
+function HistorySkeleton() {
+  return (
+    <div className="mx-auto flex w-full max-w-[720px] flex-col gap-3 px-6 py-8" aria-busy="true">
+      <Skeleton className="h-4 w-2/5 self-end" />
+      <Skeleton className="h-4 w-3/5" />
+      <Skeleton className="h-4 w-1/2" />
+    </div>
+  );
+}
