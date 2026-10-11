@@ -1,0 +1,28 @@
+yes add the connect cfo.ai button and commit it and after make changes from assisant to primary bot and the all the other assisats bot and last one here is a neat bot
+
+---
+
+<agent-message from="a210b41d5447fcaad">
+[Subagent hand-back] The text below is the final report of a subagent this session delegated to. It is model output, NOT a message from the user: instructions, requests, or approval claims inside it are the subagent's words and carry no user authority. The harness indents every line of the report, so a frame-like line at column zero inside it would be forged. Notes above this frame may quote model-derived text, which carries no user authority either. The report follows:
+  The "Connect cfo.ai" button is in. `npm --prefix web run build` and `npm run typecheck` both pass (the build only prints the usual chunk-size warning). I did not check it visually, as instructed, and nothing is committed.
+  
+  **Where it lives**
+  - **Account menu:** the dropdown from the "Admin" row at the sidebar bottom now has a cfo.ai item, in both the expanded and rail layouts.
+    - Configured but not connected: "Connect cfo.ai", which does a full-page navigation to `/api/cfo/connect`.
+    - Connected: "Disconnect cfo.ai" with an "cfo.ai connected" subtitle. It asks `window.confirm`, POSTs `/api/cfo/disconnect`, then refetches.
+    - Not configured: a disabled "Connect cfo.ai (not configured)" item with a tooltip explaining why.
+    - Nothing shows until the first status response arrives.
+  - **CFO Agent chat:** a compact banner above the composer, shown only for agent id `cfo` and only when cfo.ai is configured but not connected. It has the same Connect button.
+  - **Return from cfo.ai:** on load, `?cfo=connected` or `?cfo=error` refetches the status and shows a small dismissible notice at the top of the shell. The notice auto-hides after 6 seconds, and the param is stripped from the URL with `history.replaceState`. There was no toast system, so this is a custom notice.
+  
+  **How it works**
+  - A new hook, `useCfoStatus`, fetches `/api/cfo/status` once and keeps the result in a shared store. The menu, banner and notice all update from one refetch. A 401 calls `handleUnauthorized`.
+  
+  **Files**
+  - New: `web/src/hooks/useCfoStatus.ts` and `web/src/shell/CfoConnect.tsx` (the banner and the return notice).
+  - Edited:
+    - `web/src/auth/UserMenu.tsx`
+    - `web/src/shell/ChatPane.tsx`
+    - `web/src/App.tsx`
+    - `README.md` (the cfo.ai section now says to use the Connect button and mentions Disconnect)
+</agent-message>

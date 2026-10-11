@@ -1,0 +1,38 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4PBS9DKGMNJ15TRE30TTM61",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "web/src/App.tsx",
+    "web/src/auth/UserMenu.tsx",
+    "web/src/hooks/useCfoStatus.ts",
+    "web/src/shell/CfoConnect.tsx",
+    "web/src/shell/ChatPane.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 230,
+    "cache_creation_tokens": 280051,
+    "cache_read_tokens": 17262514,
+    "output_tokens": 74061,
+    "api_call_count": 115,
+    "subagent_tokens": {
+      "input_tokens": 14,
+      "cache_creation_tokens": 80190,
+      "cache_read_tokens": 401566,
+      "output_tokens": 97,
+      "api_call_count": 7
+    }
+  }
+}

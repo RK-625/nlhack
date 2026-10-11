@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01FHrjbLjAAsZ7FXzSfBHXhd",
+  "agent_id": "a210b41d5447fcaad",
+  "subagent_type": "general-purpose",
+  "task_description": "Add Connect cfo.ai button",
+  "token_usage": {
+    "input_tokens": 14,
+    "cache_creation_tokens": 80190,
+    "cache_read_tokens": 401566,
+    "output_tokens": 97,
+    "api_call_count": 7
+  },
+  "started_at": "2026-10-12T02:19:22.44262+05:30",
+  "completed_at": "2026-10-12T02:20:11.201097+05:30"
+}

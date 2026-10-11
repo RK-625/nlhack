@@ -1,0 +1,102 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4PBS9DKGMNJ15TRE30TTM61",
+  "session_id": "f069c5e8-b124-4c85-8d8f-3503d01f5666",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T20:52:06.435812Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "web/src/App.tsx",
+    "web/src/auth/UserMenu.tsx",
+    "web/src/hooks/useCfoStatus.ts",
+    "web/src/shell/CfoConnect.tsx",
+    "web/src/shell/ChatPane.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "1e918504a73f",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 230,
+    "cache_creation_tokens": 280051,
+    "cache_read_tokens": 17262514,
+    "output_tokens": 74061,
+    "api_call_count": 115,
+    "subagent_tokens": {
+      "input_tokens": 14,
+      "cache_creation_tokens": 80190,
+      "cache_read_tokens": 401566,
+      "output_tokens": 97,
+      "api_call_count": 7
+    }
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01MuFVcd3qC2MQ9niLBDABWc",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "anthropic-skills:computer-use"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "1e918504a73f",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 592,
+        "end": 593,
+        "entry_ids": [
+          "cced5f6f-7391-4b3a-8618-e3c27bfbe255"
+        ],
+        "tool_use_id": "toolu_01MuFVcd3qC2MQ9niLBDABWc"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01MuFVcd3qC2MQ9niLBDABWc"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: anthropic-skills:computer-use",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T20:52:06.358846Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 2,
+    "total_committed": 0,
+    "total_lines_changed": 2,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 159,
+      "user_lines_removed": 2,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "README.md": 1,
+        "web/src/App.tsx": 2,
+        "web/src/auth/UserMenu.tsx": 28,
+        "web/src/hooks/useCfoStatus.ts": 59,
+        "web/src/shell/CfoConnect.tsx": 67,
+        "web/src/shell/ChatPane.tsx": 2
+      },
+      "user_removed_per_file": {
+        "README.md": 1,
+        "web/src/auth/UserMenu.tsx": 1
+      }
+    }
+  ]
+}
