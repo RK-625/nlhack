@@ -1,0 +1,29 @@
+so that issue here the neatlogs here is build with the agent i build here right na tell me ???
+
+---
+
+so does the neatlogs support all kind of agents here tell me
+
+---
+
+hey but that's the issue here i done only deepseek api key here btw or openrouter key or a vercel key here will help thoses sdk here tell me ???
+
+---
+
+instead of python here i am good with typscript here here sdks here what
+
+---
+
+i want prefer the mastra here btw here instead of these other coz the agent i build here does need full ai or interface here for it work here right now it like chat bot in telegram slack or the whatsapp too here so it direct converstaion interface i only build the back for it here btw
+
+---
+
+i want to use whatsapp specifically here can build it btw here tell me
+
+---
+
+and all the necessaryu files here in the gitignore here btw tell me
+
+---
+
+add it and make commit here btw for these changes here btw
