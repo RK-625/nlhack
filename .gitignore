@@ -16,6 +16,10 @@ build/
 *.db
 *.db-journal
 
+# App data (SQLite files) + seeded user credentials
+data/
+seed-users.json
+
 # Next.js / Vercel
 .next/
 .vercel/
