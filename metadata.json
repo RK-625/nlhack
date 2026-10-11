@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P8RQXXBKP67KCHH3T29H50",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "README.md",
+    "src/auth/access.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/customer-success.ts",
+    "src/mastra/agents/hr.ts",
+    "src/mastra/agents/legal.ts",
+    "src/mastra/agents/marketing.ts",
+    "src/mastra/agents/sales.ts",
+    "src/mastra/index.ts",
+    "src/mastra/prompts/index.ts",
+    "web/src/hooks/useAgents.ts",
+    "web/src/lib/agent-avatar.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 7845,
+    "cache_read_tokens": 2035234,
+    "output_tokens": 6262,
+    "api_call_count": 11,
+    "subagent_tokens": {
+      "input_tokens": 110,
+      "cache_creation_tokens": 313229,
+      "cache_read_tokens": 5539790,
+      "output_tokens": 2452,
+      "api_call_count": 55
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P8RQXXBKP67KCHH3T29H50",
+  "session_id": "e59c2249-0b87-4a1c-ba98-59e4bbeb45ac",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T19:59:20.066808Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "save_step_count": 4,
+  "files_touched": [
+    "README.md",
+    "src/auth/access.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/customer-success.ts",
+    "src/mastra/agents/hr.ts",
+    "src/mastra/agents/legal.ts",
+    "src/mastra/agents/marketing.ts",
+    "src/mastra/agents/sales.ts",
+    "src/mastra/index.ts",
+    "src/mastra/prompts/index.ts",
+    "web/src/hooks/useAgents.ts",
+    "web/src/lib/agent-avatar.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "f6e07ab0aea8",
+  "checkpoint_transcript_start": 621,
+  "transcript_lines_at_start": 621,
+  "compact_transcript_start": 97,
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 7845,
+    "cache_read_tokens": 2035234,
+    "output_tokens": 6262,
+    "api_call_count": 11,
+    "subagent_tokens": {
+      "input_tokens": 110,
+      "cache_creation_tokens": 313229,
+      "cache_read_tokens": 5539790,
+      "output_tokens": 2452,
+      "api_call_count": 55
+    }
+  },
+  "session_metrics": {
+    "turn_count": 23
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T19:59:20.017654Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 388,
+    "human_modified": 4,
+    "human_removed": 0,
+    "total_committed": 388,
+    "total_lines_changed": 392,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 242,
+      "user_lines_removed": 4,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "README.md": 2,
+        "src/auth/access.ts": 5,
+        "src/mastra/agents/assistant.ts": 6,
+        "src/mastra/agents/customer-success.ts": 15,
+        "src/mastra/agents/hr.ts": 15,
+        "src/mastra/agents/legal.ts": 15,
+        "src/mastra/agents/marketing.ts": 15,
+        "src/mastra/agents/sales.ts": 15,
+        "src/mastra/index.ts": 6,
+        "src/mastra/prompts/index.ts": 108,
+        "web/src/hooks/useAgents.ts": 35,
+        "web/src/lib/agent-avatar.ts": 5
+      },
+      "user_removed_per_file": {
+        "README.md": 2,
+        "src/mastra/agents/assistant.ts": 1,
+        "src/mastra/index.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 75,
+      "user_lines_removed": 0,
+      "agent_lines_added": 167,
+      "agent_lines_removed": 4,
+      "user_added_per_file": {
+        "src/mastra/agents/customer-success.ts": 15,
+        "src/mastra/agents/hr.ts": 15,
+        "src/mastra/agents/legal.ts": 15,
+        "src/mastra/agents/marketing.ts": 15,
+        "src/mastra/agents/sales.ts": 15
+      }
+    }
+  ]
+}
