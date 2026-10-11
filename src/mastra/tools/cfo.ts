@@ -89,7 +89,7 @@ export const cfoConnectionStatus = createTool({
 });
 
 /**
- * The CFO agent's tools for this request: the connection status tool, plus the user's cfo.ai MCP
+ * The CFO Bot's tools for this request: the connection status tool, plus the user's cfo.ai MCP
  * tools when they have linked an account. Degrades to the status tool alone when there is no
  * signed-in user, no connection, a failed refresh, or a cfo.ai outage. Only a non-empty tool list
  * is cached, so a later request can recover.

@@ -44,7 +44,7 @@ let cached: GithubTools | undefined;
 export async function getGithubTools(): Promise<GithubTools> {
   if (cached) return cached;
   if (!process.env.GITHUB_PAT) {
-    console.warn("[github] GITHUB_PAT is not set; the GitHub agent has no tools");
+    console.warn("[github] GITHUB_PAT is not set; the GitHub Bot has no tools");
     return {};
   }
   try {

@@ -6,7 +6,7 @@ import { crustdataTools } from "../tools/crustdata";
 
 export const marketResearcher = wrapMastra(new Agent({
   id: "market-researcher",
-  name: "Market Researcher",
+  name: "Research Bot",
   description:
     "Researches companies, competitors, pricing, funding, headcount, and market trends using Crustdata and live web search. Returns focused findings with sources and data gaps. Delegate factual market research here.",
   instructions: MARKET_RESEARCHER_INSTRUCTIONS,

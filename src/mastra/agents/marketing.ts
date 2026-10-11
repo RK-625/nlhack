@@ -5,7 +5,7 @@ import { MARKETING_INSTRUCTIONS } from "../prompts";
 
 export const marketingAgent = wrapMastra(new Agent({
   id: "marketing",
-  name: "Marketing Agent",
+  name: "Marketing Bot",
   description:
     "Helps with positioning, messaging, campaigns, content calendars, SEO briefs, launch plans, and channel strategy from information you provide. No analytics or live search data is connected yet.",
   instructions: MARKETING_INSTRUCTIONS,

@@ -5,7 +5,7 @@ import { LEGAL_INSTRUCTIONS } from "../prompts";
 
 export const legalAgent = wrapMastra(new Agent({
   id: "legal",
-  name: "Legal Agent",
+  name: "Legal Bot",
   description:
     "Prepares contract, NDA, and MSA review checklists, explains clauses, gives GDPR, DPDP, and SOC 2 compliance overviews, and drafts policies from information you provide. Not legal advice; flags when a qualified lawyer is needed. No live legal data is connected yet.",
   instructions: LEGAL_INSTRUCTIONS,

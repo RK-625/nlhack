@@ -143,13 +143,13 @@ const WORKSPACE_TOOL_LABELS: Record<string, string> = {
   mastra_workspace_delete: "Delete file",
 };
 
-/** "agent-cfoAgent" → "Delegated to CFO Agent"; "crustdataCompanyEnrich" → "Crustdata company enrich". */
+/** "agent-cfoAgent" → "Delegated to CFO Bot"; "crustdataCompanyEnrich" → "Crustdata company enrich". */
 export function toolLabel(toolName: string, agentNames: AgentNames): string {
   if (toolName.startsWith("agent-")) return `Delegated to ${agentName(toolName, agentNames)}`;
   return WORKSPACE_TOOL_LABELS[toolName] ?? humanize(toolName);
 }
 
-/** "agent-githubAgent" → "GitHub Agent". */
+/** "agent-githubAgent" → "GitHub Bot". */
 function agentName(toolName: string, agentNames: AgentNames): string {
   const key = toolName.slice("agent-".length);
   return agentNames[key] ?? humanize(key);

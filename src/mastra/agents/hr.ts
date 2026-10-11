@@ -5,7 +5,7 @@ import { HR_INSTRUCTIONS } from "../prompts";
 
 export const hrAgent = wrapMastra(new Agent({
   id: "hr",
-  name: "HR Agent",
+  name: "HR Bot",
   description:
     "Helps with hiring plans, job descriptions, interview loops, onboarding, people policies, performance reviews, and compensation band framing from information you provide, handling personal data carefully. No HR system is connected yet.",
   instructions: HR_INSTRUCTIONS,

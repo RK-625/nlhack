@@ -76,7 +76,7 @@ export function UserMenu({ compact = false }: { compact?: boolean }) {
         {cfo?.connected ? (
           <DropdownMenuItem
             onClick={() => {
-              if (window.confirm("Disconnect cfo.ai? The CFO Agent will lose access to your workspace data.")) {
+              if (window.confirm("Disconnect cfo.ai? The CFO Bot will lose access to your workspace data.")) {
                 void disconnectCfo();
               }
             }}

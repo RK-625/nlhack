@@ -5,7 +5,7 @@ import { SALES_INSTRUCTIONS } from "../prompts";
 
 export const salesAgent = wrapMastra(new Agent({
   id: "sales",
-  name: "Sales Agent",
+  name: "Sales Bot",
   description:
     "Helps with ICPs, prospecting sequences, outreach emails, discovery questions, objection handling, pipeline and forecast reviews, and deal strategy from information you provide. No CRM or live data is connected yet.",
   instructions: SALES_INSTRUCTIONS,

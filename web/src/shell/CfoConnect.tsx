@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { refetchCfoStatus, startCfoConnect, useCfoStatus } from "@/hooks/useCfoStatus";
 
-/** Compact prompt above the CFO Agent's composer while cfo.ai isn't linked. */
+/** Compact prompt above the CFO Bot's composer while cfo.ai isn't linked. */
 export function CfoConnectBanner() {
   const { status } = useCfoStatus();
   if (!status?.configured || status.connected) return null;
   return (
     <div className="mx-auto mb-2 flex w-full max-w-[720px] items-center gap-3 rounded-xl border border-border bg-card px-3 py-2 text-[13px]">
       <span className="min-w-0 flex-1 text-muted-foreground">
-        Connect your cfo.ai account so the CFO Agent can use your live financial data.
+        Connect your cfo.ai account so the CFO Bot can use your live financial data.
       </span>
       <Button size="sm" onClick={startCfoConnect}>
         <Link2 aria-hidden="true" />

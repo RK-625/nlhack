@@ -17,7 +17,7 @@ import { workspace } from "./workspace";
 
 export const mastra = new Mastra({
   storage: new LibSQLStore({ id: "mastra", url: `file:${resolve(dataDir(), "mastra.db")}` }),
-  // Every agent (including sub-agents the Assistant delegates to) inherits the per-user file workspace.
+  // Every agent (including sub-agents the Primary Bot delegates to) inherits the per-user file workspace.
   workspace,
   agents: { assistant, marketResearcher, cfoAgent, customerSuccessAgent, legalAgent, hrAgent, marketingAgent, salesAgent, githubAgent, neatlogsAgent },
 });
