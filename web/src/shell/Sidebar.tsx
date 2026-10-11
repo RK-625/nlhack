@@ -4,6 +4,7 @@ import { Moon, PanelLeftClose, Search, SquarePen, Sun } from "lucide-react";
 import { AnimatePresence, useReducedMotion, type Variants } from "motion/react";
 import * as m from "motion/react-m";
 import { useState } from "react";
+import { UserMenu } from "@/auth/UserMenu";
 import { BotAvatar } from "@/components/avatar/bot-avatar";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import type { AgentRowState } from "@/hooks/useAgentChat";
@@ -218,6 +219,7 @@ export function Sidebar({
       </nav>
 
       <ThemeToggle />
+      <UserMenu />
       </m.div>
     </m.aside>
   );

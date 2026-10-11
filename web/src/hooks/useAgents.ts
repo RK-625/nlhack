@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { handleUnauthorized } from "@/lib/auth";
 
 export type AgentSummary = {
   /** Mastra registry key (e.g. "marketResearcher"). */
@@ -48,7 +49,13 @@ export function useAgents(): AgentSummary[] {
   useEffect(() => {
     const abort = new AbortController();
     fetch("/api/agents", { signal: abort.signal })
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => {
+        if (res.status === 401) {
+          handleUnauthorized();
+          return null;
+        }
+        return res.ok ? res.json() : null;
+      })
       .then((list: unknown) => {
         if (isAgentList(list) && list.length > 0) setAgents(list);
       })

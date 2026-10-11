@@ -69,7 +69,7 @@ export function LoginPage({ onSignedIn }: { onSignedIn?: () => void }) {
                 setUsername(event.target.value);
                 setError(null);
               }}
-              className="h-9"
+              className="h-9 border-border bg-background dark:bg-background"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-[13px] font-medium text-foreground/90">
@@ -86,15 +86,14 @@ export function LoginPage({ onSignedIn }: { onSignedIn?: () => void }) {
                 setPassword(event.target.value);
                 setError(null);
               }}
-              className="h-9"
+              className="h-9 border-border bg-background dark:bg-background"
             />
           </label>
 
-          {error ? (
-            <p role="alert" className="text-[13px] text-destructive">
-              {error}
-            </p>
-          ) : null}
+          {/* Fixed-height slot: the card doesn't jump when the error appears or clears. */}
+          <div className="-my-1 min-h-5 text-[13px] leading-5 text-destructive">
+            {error ? <p role="alert">{error}</p> : null}
+          </div>
 
           <Button type="submit" size="lg" disabled={submitting} className="mt-1 h-9 w-full">
             {submitting ? <Spinner aria-hidden="true" role="presentation" /> : null}

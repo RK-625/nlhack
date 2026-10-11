@@ -1,5 +1,6 @@
 import { Chat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
+import { handleUnauthorized, onSessionReset } from "@/lib/auth";
 
 /**
  * One AI SDK `Chat` per agent, kept for the whole session. useChat({ chat }) renders whichever
@@ -32,7 +33,15 @@ export function getChat(agentKey: string): Chat<UIMessage> {
   if (chat) return chat;
   chat = new Chat<UIMessage>({
     id: agentKey,
-    transport: new DefaultChatTransport({ api: `/api/chat/${encodeURIComponent(agentKey)}` }),
+    transport: new DefaultChatTransport({
+      api: `/api/chat/${encodeURIComponent(agentKey)}`,
+      // Same response goes back to useChat (its error flow is unchanged); a 401 also ends the session.
+      fetch: async (input, init) => {
+        const res = await fetch(input, init);
+        if (res.status === 401) handleUnauthorized();
+        return res;
+      },
+    }),
     onFinish: ({ isAbort, isError }) => {
       if (!isAbort && !isError && activeKey !== agentKey) {
         unread.add(agentKey);
@@ -72,3 +81,15 @@ export function isUnread(agentKey: string): boolean {
 export function messageTime(messageId: string): number | undefined {
   return stamps.get(messageId);
 }
+
+/** Forget every conversation: the next user in this tab must not see the previous user's chats. */
+export function resetChats() {
+  for (const chat of chats.values()) void chat.stop();
+  chats.clear();
+  unread.clear();
+  stamps.clear();
+  activeKey = null;
+  notify();
+}
+
+onSessionReset(resetChats);
