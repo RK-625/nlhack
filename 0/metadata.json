@@ -1,0 +1,142 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NWZ3R52TD4F6EGAX2CDHTX",
+  "session_id": "e59c2249-0b87-4a1c-ba98-59e4bbeb45ac",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T16:33:07.416029Z",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "save_step_count": 7,
+  "files_touched": [
+    "src/chat-api.ts",
+    "src/chat-approvals.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/github.ts",
+    "web/src/hooks/useAgentChat.ts",
+    "web/src/lib/chats.ts",
+    "web/src/lib/message-parts.ts",
+    "web/src/shell/ChatPane.tsx",
+    "web/src/shell/MessageBubble.tsx",
+    "web/src/shell/MessageList.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "994854514b0e",
+  "checkpoint_transcript_start": 110,
+  "transcript_lines_at_start": 110,
+  "compact_transcript_start": 16,
+  "token_usage": {
+    "input_tokens": 46,
+    "cache_creation_tokens": 92809,
+    "cache_read_tokens": 2336097,
+    "output_tokens": 13033,
+    "api_call_count": 24,
+    "subagent_tokens": {
+      "input_tokens": 212,
+      "cache_creation_tokens": 347089,
+      "cache_read_tokens": 12514174,
+      "output_tokens": 11250,
+      "api_call_count": 107
+    }
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T16:33:07.344822Z",
+    "agent_lines": 0,
+    "agent_removed": 6,
+    "human_added": 239,
+    "human_modified": 49,
+    "human_removed": 0,
+    "total_committed": 274,
+    "total_lines_changed": 297,
+    "agent_percentage": 2.0202020202020203,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 271,
+      "user_lines_removed": 44,
+      "agent_lines_added": 46,
+      "agent_lines_removed": 7,
+      "user_added_per_file": {
+        "src/chat-api.ts": 47,
+        "src/chat-approvals.ts": 44,
+        "src/mastra/agents/assistant.ts": 5,
+        "src/mastra/agents/github.ts": 24,
+        "src/mastra/prompts/index.ts": 33,
+        "src/mastra/tools/github.ts": 6,
+        "web/src/hooks/useAgentChat.ts": 6,
+        "web/src/lib/chats.ts": 5,
+        "web/src/lib/message-parts.ts": 15,
+        "web/src/shell/ChatPane.tsx": 1,
+        "web/src/shell/MessageBubble.tsx": 74,
+        "web/src/shell/MessageList.tsx": 11
+      },
+      "user_removed_per_file": {
+        "src/chat-api.ts": 20,
+        "src/mastra/agents/assistant.ts": 2,
+        "src/mastra/agents/github.ts": 3,
+        "src/mastra/prompts/index.ts": 11,
+        "src/mastra/tools/github.ts": 3,
+        "web/src/lib/chats.ts": 2,
+        "web/src/lib/message-parts.ts": 1,
+        "web/src/shell/MessageBubble.tsx": 1,
+        "web/src/shell/MessageList.tsx": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 316,
+      "agent_lines_removed": 50
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 316,
+      "agent_lines_removed": 50
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 318,
+      "agent_lines_removed": 50
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 306,
+      "agent_lines_removed": 50
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 306,
+      "agent_lines_removed": 50
+    }
+  ]
+}

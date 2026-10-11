@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NWZ3R52TD4F6EGAX2CDHTX",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "src/chat-api.ts",
+    "src/chat-approvals.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/github.ts",
+    "web/src/hooks/useAgentChat.ts",
+    "web/src/lib/chats.ts",
+    "web/src/lib/message-parts.ts",
+    "web/src/shell/ChatPane.tsx",
+    "web/src/shell/MessageBubble.tsx",
+    "web/src/shell/MessageList.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 46,
+    "cache_creation_tokens": 92809,
+    "cache_read_tokens": 2336097,
+    "output_tokens": 13033,
+    "api_call_count": 24,
+    "subagent_tokens": {
+      "input_tokens": 212,
+      "cache_creation_tokens": 347089,
+      "cache_read_tokens": 12514174,
+      "output_tokens": 11250,
+      "api_call_count": 107
+    }
+  }
+}
