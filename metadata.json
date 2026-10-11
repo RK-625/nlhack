@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P43PDKN2JQCNTJ38KYTPGC",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    ".env.example",
+    ".gitignore",
+    "README.md",
+    "package-lock.json",
+    "package.json",
+    "public/data-deletion.html",
+    "public/privacy.html",
+    "src/bot/whatsapp.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/github.ts",
+    "src/mastra/tools/neatlogs.ts",
+    "src/server.ts",
+    "src/telemetry.ts",
+    "web/src/hooks/useAgents.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 20122,
+    "cache_read_tokens": 1754210,
+    "output_tokens": 9108,
+    "api_call_count": 11,
+    "subagent_tokens": {
+      "input_tokens": 46,
+      "cache_creation_tokens": 106356,
+      "cache_read_tokens": 1885790,
+      "output_tokens": 701,
+      "api_call_count": 23
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P43PDKN2JQCNTJ38KYTPGC",
+  "session_id": "e59c2249-0b87-4a1c-ba98-59e4bbeb45ac",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T18:37:56.830292Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "save_step_count": 4,
+  "files_touched": [
+    ".env.example",
+    ".gitignore",
+    "README.md",
+    "package-lock.json",
+    "package.json",
+    "public/data-deletion.html",
+    "public/privacy.html",
+    "src/bot/whatsapp.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/github.ts",
+    "src/mastra/tools/neatlogs.ts",
+    "src/server.ts",
+    "src/telemetry.ts",
+    "web/src/hooks/useAgents.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "0f6478a10ec2",
+  "checkpoint_transcript_start": 486,
+  "transcript_lines_at_start": 486,
+  "compact_transcript_start": 80,
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 20122,
+    "cache_read_tokens": 1754210,
+    "output_tokens": 9108,
+    "api_call_count": 11,
+    "subagent_tokens": {
+      "input_tokens": 46,
+      "cache_creation_tokens": 106356,
+      "cache_read_tokens": 1885790,
+      "output_tokens": 701,
+      "api_call_count": 23
+    }
+  },
+  "session_metrics": {
+    "turn_count": 19
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T18:37:56.786055Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 42,
+    "human_removed": 440,
+    "total_committed": 0,
+    "total_lines_changed": 482,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 21,
+      "user_lines_removed": 241,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".env.example": 1,
+        ".gitignore": 1,
+        "README.md": 8,
+        "package.json": 1,
+        "src/mastra/agents/assistant.ts": 1,
+        "src/mastra/agents/github.ts": 1,
+        "src/mastra/agents/neatlogs.ts": 1,
+        "src/mastra/prompts/index.ts": 3,
+        "src/mastra/tools/github.ts": 1,
+        "src/mastra/tools/neatlogs.ts": 1,
+        "src/telemetry.ts": 1,
+        "web/src/hooks/useAgents.ts": 1
+      },
+      "user_removed_per_file": {
+        ".env.example": 12,
+        ".gitignore": 1,
+        "README.md": 22,
+        "package-lock.json": 40,
+        "package.json": 6,
+        "public/data-deletion.html": 21,
+        "public/privacy.html": 21,
+        "src/bot/whatsapp.ts": 61,
+        "src/mastra/agents/assistant.ts": 1,
+        "src/mastra/agents/github.ts": 1,
+        "src/mastra/agents/neatlogs.ts": 1,
+        "src/mastra/prompts/index.ts": 3,
+        "src/mastra/tools/github.ts": 1,
+        "src/mastra/tools/neatlogs.ts": 1,
+        "src/server.ts": 41,
+        "src/telemetry.ts": 7,
+        "web/src/hooks/useAgents.ts": 1
+      }
+    }
+  ]
+}
