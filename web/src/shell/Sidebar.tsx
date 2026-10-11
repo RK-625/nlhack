@@ -3,7 +3,7 @@
 import { animate, delay, type Transition, useMotionValue, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import { type KeyboardEvent, type PointerEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { DURATION, SPRING_SNAP, sidebarMobile, sidebarResize } from "@/lib/motion";
+import { DURATION, SIDEBAR_SLIDE, sidebarMobile } from "@/lib/motion";
 import { clampWidth, readSidebarCompact, readSidebarWidth, SIDEBAR, writeSidebarLayout } from "@/lib/sidebar";
 import { ExpandedPanel, RailPanel, SidebarMorphContext, type SidebarPanelProps } from "./SidebarPanels";
 
@@ -39,7 +39,7 @@ function OverlaySidebar(props: SidebarPanelProps) {
  * Desktop: always docked. Width is a motion value so dragging follows the pointer 1:1 with
  * no animation. Switching layouts is a three-phase morph (see SidebarMorphContext): labels
  * fade out, then the layouts flip while the shared avatars and the width travel together
- * (mirrored tween for button/double-click/Enter, a fast spring for drag snaps), then labels
+ * (one uniform ease-in-out tween, the same for opening, closing and drag snaps), then labels
  * fade in. Collapse plays the same sequence backwards.
  */
 function DockedSidebar(props: SidebarPanelProps) {
@@ -103,7 +103,7 @@ function DockedSidebar(props: SidebarPanelProps) {
       return;
     }
 
-    const transition = how === "snap" ? SPRING_SNAP : sidebarResize(!nextCompact);
+    const transition = SIDEBAR_SLIDE;
     // Phase 2: flip the layouts; shared avatars travel with the width. The width animation
     // itself starts in the flip's layout effect (below), i.e. after React commits the new
     // layout — the same frame the avatars' layout animations start — so both land together.
