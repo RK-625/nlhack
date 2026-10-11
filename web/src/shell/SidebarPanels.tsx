@@ -204,7 +204,7 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
       <nav aria-label="Agents" className="rk-scroll relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-2.5 pb-3 pt-1">
         <AnimatePresence initial={stagger}>
           {shownPrimary.length > 0 ? (
-            <m.div key="featured" layout="position" className="flex flex-wrap gap-2 px-0.5 pb-3 pt-1">
+            <m.div key="featured" layout="position" className="flex flex-wrap justify-center gap-2 px-0.5 pb-3 pt-1">
               {shownPrimary.map((agent, index) => {
                 const selected = agent.key === activeKey;
                 return (
