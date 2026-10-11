@@ -1,0 +1,85 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4P4EZFFWQ34FMA9VEKXRWXM",
+  "session_id": "e59c2249-0b87-4a1c-ba98-59e4bbeb45ac",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T18:44:06.544492Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "save_step_count": 1,
+  "files_touched": [
+    "README.md",
+    "src/chat-api.ts",
+    "src/chat-approvals.ts",
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/prompts/index.ts",
+    "src/mastra/tools/github.ts",
+    "src/mastra/tools/neatlogs.ts",
+    "web/src/hooks/useAgents.ts",
+    "web/src/lib/message-parts.ts",
+    "web/src/shell/MessageBubble.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "726d37824a59",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 144,
+    "cache_creation_tokens": 222110,
+    "cache_read_tokens": 8394251,
+    "output_tokens": 46017,
+    "api_call_count": 72
+  },
+  "session_metrics": {
+    "turn_count": 19
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T18:44:06.484723Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 262,
+    "human_removed": 44,
+    "total_committed": 0,
+    "total_lines_changed": 306,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 131,
+      "user_lines_removed": 153,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "README.md": 4,
+        "src/chat-api.ts": 2,
+        "src/chat-approvals.ts": 10,
+        "src/mastra/agents/assistant.ts": 8,
+        "src/mastra/agents/github.ts": 5,
+        "src/mastra/agents/neatlogs.ts": 5,
+        "src/mastra/prompts/index.ts": 22,
+        "web/src/hooks/useAgents.ts": 1,
+        "web/src/lib/message-parts.ts": 64,
+        "web/src/shell/MessageBubble.tsx": 10
+      },
+      "user_removed_per_file": {
+        "README.md": 4,
+        "src/chat-api.ts": 1,
+        "src/chat-approvals.ts": 2,
+        "src/mastra/agents/assistant.ts": 6,
+        "src/mastra/agents/github.ts": 21,
+        "src/mastra/agents/neatlogs.ts": 21,
+        "src/mastra/prompts/index.ts": 48,
+        "src/mastra/tools/github.ts": 18,
+        "src/mastra/tools/neatlogs.ts": 14,
+        "web/src/hooks/useAgents.ts": 1,
+        "web/src/lib/message-parts.ts": 14,
+        "web/src/shell/MessageBubble.tsx": 3
+      }
+    }
+  ]
+}
