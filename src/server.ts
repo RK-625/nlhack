@@ -1,5 +1,8 @@
 import http from "node:http";
 import { readFile } from "node:fs/promises";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./auth";
+import { getSessionUser } from "./auth/session";
 import { bot } from "./bot/whatsapp";
 import { handleChat, listAgents, sendJson } from "./chat-api";
 import { createWebHandler } from "./web";
@@ -8,6 +11,8 @@ const policyPages: Record<string, URL> = {
   "/privacy": new URL("../public/privacy.html", import.meta.url),
   "/data-deletion": new URL("../public/data-deletion.html", import.meta.url),
 };
+
+const authHandler = toNodeHandler(auth);
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
@@ -48,6 +53,35 @@ const server = http.createServer(async (req, res) => {
       console.error("WhatsApp webhook failed", error);
       if (!res.headersSent) res.writeHead(500);
       res.end("Webhook failed");
+    }
+    return;
+  }
+
+  // Better Auth endpoints (sign-in, sign-out, session)
+  if (url.pathname === "/api/auth" || url.pathname.startsWith("/api/auth/")) {
+    try {
+      await authHandler(req, res);
+    } catch (error: unknown) {
+      console.error("Auth request failed", error);
+      if (!res.headersSent) sendJson(res, 500, { error: "Auth failed" });
+      else res.end();
+    }
+    return;
+  }
+
+  // Current user
+  if (url.pathname === "/api/me") {
+    if (req.method !== "GET") {
+      res.writeHead(405, { allow: "GET" }).end();
+      return;
+    }
+    try {
+      const user = await getSessionUser(req);
+      if (!user) sendJson(res, 401, { error: "Unauthorized" });
+      else sendJson(res, 200, { user });
+    } catch (error: unknown) {
+      console.error("Session lookup failed", error);
+      sendJson(res, 500, { error: "Session lookup failed" });
     }
     return;
   }
