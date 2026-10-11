@@ -85,14 +85,13 @@ export const collapse: Variants = {
 export const SPRING_SNAP: Transition = { type: "spring", stiffness: 900, damping: 60, mass: 0.7 };
 
 /**
- * Docked sidebar expand/collapse (button, double-click, Enter): one width tween, mirrored —
- * expanding uses the enter curve, collapsing its time-reverse, same duration.
+ * Docked sidebar expand/collapse (button, double-click, Enter): drives the rail ↔ expanded
+ * morph's travel phase — the width and the shared avatars/highlight move on this one
+ * transition, mirrored: expanding uses the enter curve, collapsing its time-reverse.
+ * (Labels fade for DURATION.fast before and after it.)
  */
 export const sidebarResize = (expanding: boolean): Transition =>
   expanding ? enterTransition(DURATION.slow) : exitTransition(DURATION.slow);
-
-/** Rail and expanded panel layers cross-fade while the width changes (fast, to match a snap). */
-export const panelSwap = symmetric({}, DURATION.fast);
 /** Mobile sidebar: slides in from the start edge. */
 export const sidebarMobile: Variants = {
   hidden: { x: "-100%", transition: exitTransition(DURATION.slow) },

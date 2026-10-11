@@ -4,9 +4,9 @@
 // Apache-2.0, github.com/elie222/rakazo@912c977.
 import type { UIMessage } from "ai";
 import { Moon, PanelLeftClose, PanelLeftOpen, Plus, Search, Sun, X } from "lucide-react";
-import { AnimatePresence, type Variants } from "motion/react";
+import { AnimatePresence, type Transition, type Variants } from "motion/react";
 import * as m from "motion/react-m";
-import { useEffect, useState } from "react";
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
 import { BotAvatar } from "@/components/avatar/bot-avatar";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -36,6 +36,39 @@ export type SidebarPanelProps = {
   /** Switch between expanded and rail (absent on the mobile overlay). */
   onToggleCompact?: () => void;
 };
+
+/**
+ * Rail ↔ expanded morph state, provided by the docked sidebar (the mobile overlay uses the
+ * default: always idle). `chrome` = labels visible; `travel` = the transition shared avatars
+ * use while they fly between layouts.
+ *   phase 1: chrome off (labels fade out) → phase 2: layouts flip, avatars + width travel
+ *   → phase 3: chrome on (labels fade in). Collapse is the same sequence in reverse.
+ */
+export type SidebarMorph = {
+  chrome: boolean;
+  travel: Transition | undefined;
+  /** Called when a shared avatar's layout animation starts, to start the width in sync. */
+  onTravelStart?: () => void;
+};
+export const SidebarMorphContext = createContext<SidebarMorph>({ chrome: true, travel: undefined });
+const useMorph = () => useContext(SidebarMorphContext);
+
+/**
+ * Anything that isn't a shared avatar: fades out before the layouts flip and back in after
+ * the avatars land. Driven by state (initial={false}), so a layout that mounts mid-morph
+ * starts hidden and waits for phase 3.
+ */
+function Label({ children, className, inline = false }: { children: ReactNode; className?: string; inline?: boolean }) {
+  const { chrome } = useMorph();
+  const props = {
+    "data-morph-label": "",
+    variants: fade,
+    initial: false as const,
+    animate: chrome ? "visible" : "hidden",
+    className,
+  };
+  return inline ? <m.span {...props}>{children}</m.span> : <m.div {...props}>{children}</m.div>;
+}
 
 /** Items rise in one after another; a filtered-out row leaves the way it came. */
 const itemVariants: Variants = {
@@ -77,10 +110,19 @@ function AgentAvatar({
   row?: AgentRowState;
   activityOnly?: boolean;
 }) {
+  const { chrome, travel, onTravelStart } = useMorph();
   const status = badgeFor(row);
   const badge = activityOnly && status === "unread" ? null : status;
   return (
-    <span className="relative inline-flex shrink-0">
+    // Shared across layouts: the same agent's avatar flies (and scales 40↔56/36) between the
+    // rail and the expanded panel instead of disappearing in one and appearing in the other.
+    <m.span
+      layoutId={`sidebar-avatar-${agent.key}`}
+      transition={chrome ? undefined : travel}
+      onLayoutAnimationStart={chrome ? undefined : onTravelStart}
+      data-morph-avatar={agent.key}
+      className="relative inline-flex shrink-0"
+    >
       <BotAvatar
         color={agentAvatarValue(agent.id)}
         identity={agent.id}
@@ -108,7 +150,7 @@ function AgentAvatar({
           </m.span>
         ) : null}
       </AnimatePresence>
-    </span>
+    </m.span>
   );
 }
 
@@ -129,7 +171,7 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex h-[52px] shrink-0 items-center gap-1 px-3 pt-2">
+      <Label className="flex h-[52px] shrink-0 items-center gap-1 px-3 pt-2">
         <AnimatePresence mode="wait" initial={false}>
           {search.open ? (
             <m.div key="search" variants={fade} initial="hidden" animate="visible" exit="hidden" className="min-w-0 flex-1">
@@ -197,7 +239,7 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
             <PanelLeftClose size={16} strokeWidth={1.8} aria-hidden="true" />
           </button>
         ) : null}
-      </div>
+      </Label>
 
       <nav aria-label="Agents" className="rk-scroll relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-2.5 pb-3 pt-1">
         <AnimatePresence initial={stagger}>
@@ -222,9 +264,9 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
                     }`}
                   >
                     <AgentAvatar agent={agent} size={56} row={rows[agent.key]} />
-                    <span className="w-full truncate text-center text-[13px] font-medium text-foreground">
+                    <Label inline className="w-full truncate text-center text-[13px] font-medium text-foreground">
                       {agent.name}
-                    </span>
+                    </Label>
                   </m.button>
                 );
               })}
@@ -240,7 +282,7 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
               exit="hidden"
               className="px-2.5 pb-1.5 pt-1 text-[12px] font-medium text-muted-foreground/70"
             >
-              Specialists
+              <Label inline>Specialists</Label>
             </m.p>
           ) : null}
           {shownSpecialists.map((agent, index) => (
@@ -262,13 +304,15 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
               exit="hidden"
               className="px-2.5 py-6 text-center text-[13px] text-muted-foreground"
             >
-              No agents match “{search.query}”.
+              <Label inline>No agents match “{search.query}”.</Label>
             </m.p>
           ) : null}
         </AnimatePresence>
       </nav>
 
-      <ThemeToggle />
+      <Label className="flex shrink-0 flex-col">
+        <ThemeToggle />
+      </Label>
     </div>
   );
 }
@@ -318,7 +362,7 @@ function SpecialistRow({
       <span className="relative z-[1]">
         <AgentAvatar agent={agent} size={36} row={row} activityOnly />
       </span>
-      <span className="relative z-[1] flex min-w-0 flex-1 flex-col">
+      <Label inline className="relative z-[1] flex min-w-0 flex-1 flex-col">
         <span className="flex items-center justify-between gap-1.5">
           <span
             dir="auto"
@@ -365,16 +409,28 @@ function SpecialistRow({
             </m.span>
           ) : null}
         </AnimatePresence>
-      </span>
+      </Label>
     </m.button>
   );
 }
 
 /** Compact rail: avatars only, featured agent first, then a divider and the specialists. */
-export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onToggleCompact }: SidebarPanelProps) {
+export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search, onToggleCompact }: SidebarPanelProps) {
   const stagger = useFirstLoadStagger();
   const { primary, specialists } = groupAgents(agents);
   const item = (agent: AgentSummary, index: number) => {
+    const node = railItem(agent, index);
+    // The rail lists every agent; ones hidden by the expanded panel's search have no
+    // counterpart to fly to, so they fade like labels instead.
+    return agentMatches(agent, search.query) ? (
+      node
+    ) : (
+      <Label key={agent.key} className="flex">
+        {node}
+      </Label>
+    );
+  };
+  const railItem = (agent: AgentSummary, index: number) => {
     const selected = agent.key === activeKey;
     return (
       <Tooltip key={agent.key}>
@@ -419,7 +475,7 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onTogg
   // aside is still wider (collapsing) nothing in the rail clips an avatar travelling in.
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex h-[52px] w-[76px] shrink-0 items-center justify-center pt-2">
+      <Label className="flex h-[52px] w-[76px] shrink-0 items-center justify-center pt-2">
         {onToggleCompact ? (
           <button
             type="button"
@@ -431,17 +487,19 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onTogg
             <PanelLeftOpen size={16} strokeWidth={1.8} aria-hidden="true" />
           </button>
         ) : null}
-      </div>
+      </Label>
       <nav aria-label="Agents" className="rk-scroll min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden py-1">
         <div className="flex w-[76px] flex-col items-center gap-1.5">
           {primary.map((agent, index) => item(agent, index))}
           {primary.length > 0 && specialists.length > 0 ? (
-            <span aria-hidden="true" className="my-1 h-px w-8 shrink-0 bg-sidebar-border" />
+            <Label inline className="my-1 h-px w-8 shrink-0 bg-sidebar-border">
+              {null}
+            </Label>
           ) : null}
           {specialists.map((agent, index) => item(agent, index + primary.length))}
         </div>
       </nav>
-      <div className="flex w-[76px] shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
+      <Label className="flex w-[76px] shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
         <button
           type="button"
           aria-label="New chat"
@@ -452,7 +510,7 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onTogg
           <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
         </button>
         <ThemeToggle compact />
-      </div>
+      </Label>
     </div>
   );
 }
