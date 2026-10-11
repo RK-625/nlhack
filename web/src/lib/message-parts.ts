@@ -5,7 +5,9 @@ import type { ToolStep } from "@/components/chat/ToolActivityDisclosure";
 export type Segment =
   | { kind: "text"; text: string; key: string }
   | { kind: "reasoning"; text: string; key: string }
-  | { kind: "tools"; steps: ToolStep[]; callIds: string[]; key: string };
+  | { kind: "tools"; steps: ToolStep[]; callIds: string[]; key: string }
+  /** A tool call paused until the user approves or denies it. */
+  | { kind: "approval"; approvalId: string; toolName: string; label: string; input: unknown; key: string };
 
 /** Agent display names by registry key and id, for "agent-<key>" delegation tools. */
 export type AgentNames = Record<string, string>;
@@ -25,14 +27,28 @@ export function messageSegments(message: UIMessage, agentNames: AgentNames): Seg
       if (part.text.trim()) segments.push({ kind: "reasoning", text: part.text, key });
       return;
     }
+    if (isToolUIPart(part) && part.state === "approval-requested") {
+      const toolName = getToolName(part);
+      segments.push({
+        kind: "approval",
+        approvalId: part.approval.id,
+        toolName,
+        label: toolLabel(toolName, agentNames),
+        input: part.input,
+        key,
+      });
+      return;
+    }
     let step: { step: ToolStep; callId: string } | null = null;
     if (isToolUIPart(part)) {
       const status =
-        part.state === "output-error" || part.state === "output-denied"
-          ? "error"
-          : part.state === "output-available"
-            ? "done"
-            : "running";
+        part.state === "output-denied"
+          ? "denied"
+          : part.state === "output-error"
+            ? "error"
+            : part.state === "output-available"
+              ? "done"
+              : "running";
       step = { step: { label: toolLabel(getToolName(part), agentNames), count: 1, status }, callId: part.toolCallId };
       track(part.toolCallId, status !== "running");
     } else if (isDataUIPart(part) && part.type.startsWith("data-tool-agent")) {

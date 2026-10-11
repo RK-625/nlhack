@@ -3,6 +3,7 @@ import { handleChatStream } from "@mastra/ai-sdk";
 import { toAISdkMessages } from "@mastra/ai-sdk/ui";
 import { createUIMessageStreamResponse, type UIMessage } from "ai";
 import { canUseAgent } from "./auth/access";
+import { approvalResumeMessage, pendingApprovalIds } from "./chat-approvals";
 import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
 
@@ -53,20 +54,38 @@ export async function handleChat(
     return;
   }
 
-  // Memory already holds the history, so only the newest (user) message is taken from the body.
-  let message: UIMessage;
+  // Memory already holds the history, so only the newest message is taken from the body: either a
+  // new user message, or the assistant message carrying the user's tool-approval decisions.
+  let last: UIMessage;
   try {
     const body = JSON.parse(await readBody(req)) as { messages?: unknown; message?: unknown };
-    const last = (Array.isArray(body?.messages) ? body.messages.at(-1) : body?.message) as UIMessage | undefined;
-    if (!last || last.role !== "user" || typeof last.id !== "string") throw new Error("user message required");
-    // Namespace the id by user: storage upserts by message id, so a client-chosen id must not hit another user's rows.
-    message = { ...last, id: `${user.id}:${last.id}` };
+    const candidate = (Array.isArray(body?.messages) ? body.messages.at(-1) : body?.message) as UIMessage | undefined;
+    if (!candidate || typeof candidate.id !== "string" || !Array.isArray(candidate.parts)) throw new Error("message required");
+    if (candidate.role !== "user" && candidate.role !== "assistant") throw new Error("unsupported role");
+    last = candidate;
   } catch (error) {
     const tooLarge = error instanceof BodyTooLargeError;
     sendJson(res, tooLarge ? 413 : 400, {
-      error: tooLarge ? "Request body too large" : "Expected JSON body whose last message has role \"user\"",
+      error: tooLarge ? "Request body too large" : "Expected JSON body whose last message is a user message or a tool approval",
     });
     return;
+  }
+
+  let message: UIMessage;
+  if (last.role === "user") {
+    // Namespace the id by user: storage upserts by message id, so a client-chosen id must not hit another user's rows.
+    message = { ...last, id: `${user.id}:${last.id}` };
+  } else {
+    // Approval response: only decisions for approvals pending in the caller's own thread are kept.
+    // It resumes the suspended run; the message itself is not stored.
+    const thread = await ownThread(agentId, user);
+    const stored = thread ? (await thread.memory.recall({ ...thread.ids, perPage: false })).messages : [];
+    const resume = approvalResumeMessage(last, pendingApprovalIds(stored));
+    if (!resume) {
+      sendJson(res, 409, { error: "That approval is no longer pending." });
+      return;
+    }
+    message = resume;
   }
 
   // Stop generation when the browser disconnects.
@@ -75,9 +94,10 @@ export async function handleChat(
     if (!res.writableFinished) abort.abort();
   });
 
-  // Only the user message is taken from the client: other AgentExecutionOptions (instructions,
-  // maxSteps, tools...) must not be client-controlled. Memory thread and resource always come
-  // from the session, never from the client.
+  // Only the message is taken from the client: other AgentExecutionOptions (instructions,
+  // maxSteps, tools, runId...) must not be client-controlled. Memory thread and resource always
+  // come from the session, never from the client. With an approval message (last role
+  // "assistant"), handleChatStream resumes each approved/denied tool call by its run id instead.
   const stream = await handleChatStream({
     mastra,
     agentId,
@@ -131,24 +151,31 @@ export async function handleChatHistory(
     return;
   }
 
-  // The thread id embeds the user id and the resource id is checked, so only the caller's own chat is reachable.
+  const thread = await ownThread(agentId, user);
+  if (req.method === "DELETE") {
+    if (thread) await thread.memory.deleteThread(thread.ids.threadId);
+    res.writeHead(204).end();
+    return;
+  }
+  if (!thread) {
+    sendJson(res, 200, { messages: [] });
+    return;
+  }
+  const { messages } = await thread.memory.recall({ ...thread.ids, perPage: false });
+  sendJson(res, 200, { messages: toAISdkMessages(messages, { version: "v7" }) });
+}
+
+/**
+ * The caller's own saved chat with an agent, or undefined when there is none. The thread id embeds
+ * the user id and the resource id is checked, so only the caller's own chat is reachable.
+ */
+async function ownThread(agentId: string, user: SessionUser) {
   const agent = Object.values(mastra.listAgents()).find((a) => a.id === agentId);
   const memory = await agent?.getMemory();
   const threadId = chatThreadId(user.id, agentId);
   const thread = memory ? await memory.getThreadById({ threadId }) : null;
-  const owned = thread?.resourceId === user.id;
-
-  if (req.method === "DELETE") {
-    if (memory && owned) await memory.deleteThread(threadId);
-    res.writeHead(204).end();
-    return;
-  }
-  if (!memory || !owned) {
-    sendJson(res, 200, { messages: [] });
-    return;
-  }
-  const { messages } = await memory.recall({ threadId, resourceId: user.id, perPage: false });
-  sendJson(res, 200, { messages: toAISdkMessages(messages, { version: "v7" }) });
+  if (!memory || thread?.resourceId !== user.id) return undefined;
+  return { memory, ids: { threadId, resourceId: user.id } };
 }
 
 export function sendJson(res: http.ServerResponse, status: number, body: unknown): void {

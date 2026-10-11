@@ -51,6 +51,7 @@ export function MessageList({
   agentNames,
   onRetry,
   onDismissError,
+  onApproval,
   empty,
 }: {
   messages: UIMessage[];
@@ -59,6 +60,8 @@ export function MessageList({
   agentNames: AgentNames;
   onRetry: () => void;
   onDismissError: () => void;
+  /** Approve or deny a tool call that is awaiting approval in the latest reply. */
+  onApproval: (approvalId: string, approved: boolean) => void;
   /** Rendered instead of the transcript when there are no messages. */
   empty: ReactNode;
 }) {
@@ -75,6 +78,7 @@ export function MessageList({
     status === "submitted" ||
     (status === "streaming" && (!last || last.role !== "assistant" || messageSegments(last, agentNames).length === 0));
   const isEmpty = messages.length === 0 && status === "ready";
+  const running = status === "submitted" || status === "streaming";
 
   const followTail = () => {
     const element = scrollRef.current;
@@ -163,7 +167,13 @@ export function MessageList({
                     className="flex flex-col gap-2"
                   >
                     {startsNewDay(messages[index - 1], message) ? <TimeSeparator at={messageTime(message.id)} /> : null}
-                    <MessageBubble message={message} streaming={message.id === streamingId} agentNames={agentNames} />
+                    <MessageBubble
+                      message={message}
+                      streaming={message.id === streamingId}
+                      agentNames={agentNames}
+                      // Only the latest reply can be answered (the AI SDK resumes from the last message), and not mid-request.
+                      onApproval={index === messages.length - 1 && !running ? onApproval : undefined}
+                    />
                   </m.div>
                 ))}
                 {waiting ? (

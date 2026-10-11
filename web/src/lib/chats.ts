@@ -1,5 +1,5 @@
 import { Chat } from "@ai-sdk/react";
-import { DefaultChatTransport, type UIMessage } from "ai";
+import { DefaultChatTransport, lastAssistantMessageIsCompleteWithApprovalResponses, type UIMessage } from "ai";
 import { handleUnauthorized, onSessionReset } from "@/lib/auth";
 
 /**
@@ -46,7 +46,8 @@ export function getChat(agentKey: string): Chat<UIMessage> {
     transport: new DefaultChatTransport({
       api: `/api/chat/${encodeURIComponent(agentKey)}`,
       // Same response goes back to useChat (its error flow is unchanged); a 401 also ends the session.
-      // History lives server-side (Mastra Memory), so only the newest message is sent.
+      // History lives server-side (Mastra Memory), so only the newest message is sent: the user's
+      // message, or after an Approve/Deny the assistant message holding that decision.
       prepareSendMessagesRequest: ({ messages, body }) => ({ body: { ...body, message: messages.at(-1) } }),
       fetch: async (input, init) => {
         const res = await fetch(input, init);
@@ -54,6 +55,8 @@ export function getChat(agentKey: string): Chat<UIMessage> {
         return res;
       },
     }),
+    // Once every tool approval in the last reply is answered, send the decisions to resume the run.
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
     onFinish: ({ isAbort, isError }) => {
       if (!isAbort && !isError && activeKey !== agentKey) {
         unread.add(agentKey);

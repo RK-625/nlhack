@@ -11,7 +11,7 @@ import { formatToolActivityDuration, toolStepCount } from "@/lib/tool-activity-v
 const stepRow = symmetric({ y: DISTANCE.sm }, DURATION.fast);
 
 /** `status` overrides the currentIndex-based icon (nlhack: per-step state from AI SDK tool parts). */
-export type ToolStep = { label: string; count: number; status?: "running" | "done" | "error" };
+export type ToolStep = { label: string; count: number; status?: "running" | "done" | "error" | "denied" };
 
 /** A run's tool steps (rakazo's `steps` message block shape). */
 export type ToolStepsBlock = { kind: "steps"; steps: ToolStep[]; durationMs?: number };
@@ -59,11 +59,17 @@ export function ToolSteps({
           >
             <span
               className={`text-[12px] ${
-                isCurrent ? "text-warning" : status === "error" ? "text-destructive" : "text-success"
+                isCurrent
+                  ? "text-warning"
+                  : status === "error"
+                    ? "text-destructive"
+                    : status === "denied"
+                      ? "text-muted-foreground"
+                      : "text-success"
               }`}
               style={{ animation: isCurrent ? "rkPulse 1.2s ease-in-out infinite" : undefined }}
             >
-              {isCurrent ? "◷" : status === "error" ? "✕" : "✓"}
+              {isCurrent ? "◷" : status === "error" ? "✕" : status === "denied" ? "⊘" : "✓"}
             </span>
             <span
               className={`min-w-0 flex-1 truncate text-[13px] ${
@@ -73,6 +79,7 @@ export function ToolSteps({
             >
               {step.label}
               {step.count > 1 ? ` ×${step.count}` : ""}
+              {status === "denied" ? " · declined" : ""}
             </span>
           </m.div>
         );

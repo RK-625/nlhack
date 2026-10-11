@@ -1,10 +1,11 @@
 // Bubble markup ported from rakazo's Transcript/MessageView (apps/web/src/pages/Shell.tsx
 // ~5092-5112 and ~6847-6880), Apache-2.0, github.com/elie222/rakazo@912c977.
 import type { UIMessage } from "ai";
-import { ChevronRight, RotateCcw, X } from "lucide-react";
+import { Check, ChevronRight, RotateCcw, ShieldAlert, X } from "lucide-react";
 import * as m from "motion/react-m";
 import { type ReactNode, useState } from "react";
 import { StandaloneToolActivity } from "@/components/chat/ToolActivityDisclosure";
+import { Button } from "@/components/ui/button";
 import { Collapse } from "@/components/motion/Collapse";
 import { DURATION, enterTransition, exitTransition } from "@/lib/motion";
 import { ChatMarkdown, LinkifiedText } from "@/components/markdown/markdown.web";
@@ -26,11 +27,14 @@ export function MessageBubble({
   message,
   streaming,
   agentNames,
+  onApproval,
 }: {
   message: UIMessage;
   /** This is the assistant message currently being streamed. */
   streaming: boolean;
   agentNames: AgentNames;
+  /** Answers a tool call awaiting approval; omitted when this message can't be answered now. */
+  onApproval?: (approvalId: string, approved: boolean) => void;
 }) {
   if (message.role === "user") {
     const text = messageText(message);
@@ -62,6 +66,17 @@ export function MessageBubble({
               steps={segment.steps}
               stepCount={toolStepCount(segment.steps)}
               durationMs={live ? undefined : toolsDurationMs(segment.callIds)}
+            />
+          );
+        }
+        if (segment.kind === "approval") {
+          return (
+            <ApprovalCard
+              key={segment.key}
+              label={segment.label}
+              toolName={segment.toolName}
+              input={segment.input}
+              onRespond={onApproval ? (approved) => onApproval(segment.approvalId, approved) : undefined}
             />
           );
         }
@@ -111,6 +126,64 @@ function ReasoningNote({ text }: { text: string }) {
       </Collapse>
     </div>
   );
+}
+
+/** A tool call paused for the user's decision: what will run, with its exact arguments. */
+function ApprovalCard({
+  label,
+  toolName,
+  input,
+  onRespond,
+}: {
+  label: string;
+  toolName: string;
+  input: unknown;
+  onRespond?: (approved: boolean) => void;
+}) {
+  return (
+    <Row user={false}>
+      <div
+        role="group"
+        aria-label={`Approve ${label}?`}
+        data-testid="tool-approval"
+        className="flex max-w-full flex-col gap-2 rounded-[20px] border border-border bg-muted/60 px-[18px] py-3 text-[14.5px] leading-[1.45] text-foreground/90"
+      >
+        <div className="flex items-center gap-2 font-medium">
+          <ShieldAlert size={15} strokeWidth={1.8} className="shrink-0 text-muted-foreground" />
+          <span className="min-w-0 break-words">Approve {label}?</span>
+        </div>
+        <code className="w-fit max-w-full break-all rounded-md bg-background px-1.5 py-0.5 font-mono text-[12.5px] text-muted-foreground">
+          {toolName}
+        </code>
+        <pre className="rk-scroll max-h-64 max-w-full overflow-auto whitespace-pre-wrap break-words rounded-lg border border-border bg-background px-3 py-2 font-mono text-[12.5px] leading-[1.5]">
+          {formatArgs(input)}
+        </pre>
+        {onRespond ? (
+          <div className="flex gap-2">
+            <Button size="sm" onClick={() => onRespond(true)}>
+              <Check strokeWidth={1.8} />
+              Approve
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => onRespond(false)}>
+              <X strokeWidth={1.8} />
+              Deny
+            </Button>
+          </div>
+        ) : (
+          <div className="text-[13px] text-muted-foreground">Not run: no decision was made.</div>
+        )}
+      </div>
+    </Row>
+  );
+}
+
+function formatArgs(input: unknown): string {
+  if (input === undefined) return "(no arguments)";
+  try {
+    return JSON.stringify(input, null, 2) ?? String(input);
+  } catch {
+    return String(input);
+  }
 }
 
 /** Live placeholder until the agent's first visible output arrives. */

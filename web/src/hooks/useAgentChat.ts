@@ -21,6 +21,8 @@ export type AgentChat = {
   loading: boolean;
   error: Error | undefined;
   send: (text: string) => void;
+  /** Approve or deny a tool call awaiting approval; the decision is sent and the reply continues. */
+  respondToApproval: (approvalId: string, approved: boolean) => void;
   stop: () => void;
   clear: () => void;
   retry: () => void;
@@ -48,6 +50,10 @@ export function useAgentChat(agentKey: string): AgentChat {
       const trimmed = text.trim();
       if (!trimmed || isRunning(chat.status) || isHistoryLoading(agentKey)) return;
       void helpers.sendMessage({ text: trimmed });
+    },
+    respondToApproval: (approvalId, approved) => {
+      if (isRunning(chat.status)) return;
+      void helpers.addToolApprovalResponse({ id: approvalId, approved });
     },
     stop: () => void helpers.stop(),
     clear: () => {

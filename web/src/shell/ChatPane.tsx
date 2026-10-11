@@ -78,6 +78,7 @@ function AgentConversation({
         agentNames={agentNames}
         onRetry={chat.retry}
         onDismissError={chat.dismissError}
+        onApproval={chat.respondToApproval}
         empty={chat.loading ? <HistorySkeleton /> : <EmptyState agent={agent} onPick={chat.send} />}
       />
       <Composer agentName={agent.name} running={chat.running} disabled={chat.loading} onSend={chat.send} onStop={chat.stop} />
