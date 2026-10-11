@@ -35,7 +35,7 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
   {
     key: "customerSuccessAgent",
     id: "customer-success",
-    name: "Success Bot",
+    name: "Customer Success Bot",
     description:
       "Helps with customer onboarding, adoption, churn risk, renewals, health scores, support escalations, and customer communication drafts.",
   },
