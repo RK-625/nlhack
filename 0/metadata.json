@@ -1,0 +1,83 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4MV9B971D5YXETQRTG3MJE8",
+  "session_id": "70abb4be-95a9-49c1-b7cf-2f1fab827e45",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-11T06:44:31.940349Z",
+  "branch": "claude/trusting-hertz-b6479e",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "package.json",
+    "seed-users.example.json",
+    "src/auth/seed.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "f481184c98f7",
+  "checkpoint_transcript_start": 250,
+  "transcript_lines_at_start": 250,
+  "compact_transcript_start": 35,
+  "token_usage": {
+    "input_tokens": 8,
+    "cache_creation_tokens": 3092,
+    "cache_read_tokens": 392154,
+    "output_tokens": 1525,
+    "api_call_count": 3,
+    "subagent_tokens": {
+      "input_tokens": 14,
+      "cache_creation_tokens": 10109,
+      "cache_read_tokens": 471337,
+      "output_tokens": 97,
+      "api_call_count": 6
+    }
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-incremental-implementation-2026-10-11T06:31:35.013162Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "incremental-implementation"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "290d37a51a37",
+      "timestamp": "2026-10-11T06:31:35.013162Z",
+      "native": {
+        "command": "/incremental-implementation"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/incremental-implementation",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-11T06:44:31.913862Z",
+    "agent_lines": 53,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 53,
+    "total_lines_changed": 54,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
