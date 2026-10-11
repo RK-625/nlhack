@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4PJGB4DT4RE7RS87DS3R6C8",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "web/src/hooks/useAgentCaps.ts",
+    "web/src/lib/message-parts.ts",
+    "web/src/lib/turn-usage.ts",
+    "web/src/shell/ChatHeader.tsx",
+    "web/src/shell/ChatPane.tsx",
+    "web/src/shell/MessageBubble.tsx",
+    "web/src/shell/UsagePanel.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 4,
+    "cache_creation_tokens": 4561,
+    "cache_read_tokens": 597858,
+    "output_tokens": 1872,
+    "api_call_count": 2,
+    "subagent_tokens": {
+      "input_tokens": 52,
+      "cache_creation_tokens": 78040,
+      "cache_read_tokens": 2384650,
+      "output_tokens": 7538,
+      "api_call_count": 26
+    }
+  }
+}

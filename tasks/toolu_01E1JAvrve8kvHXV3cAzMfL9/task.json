@@ -1,0 +1,24 @@
+{
+  "tool_use_id": "toolu_01E1JAvrve8kvHXV3cAzMfL9",
+  "agent_id": "a0cda916d4242686b",
+  "subagent_type": "general-purpose",
+  "task_description": "Sprint B: caps pill UI and capped notice",
+  "files": [
+    "web/src/hooks/useAgentCaps.ts",
+    "web/src/lib/message-parts.ts",
+    "web/src/lib/turn-usage.ts",
+    "web/src/shell/ChatHeader.tsx",
+    "web/src/shell/ChatPane.tsx",
+    "web/src/shell/MessageBubble.tsx",
+    "web/src/shell/UsagePanel.tsx"
+  ],
+  "token_usage": {
+    "input_tokens": 52,
+    "cache_creation_tokens": 78040,
+    "cache_read_tokens": 2384650,
+    "output_tokens": 7538,
+    "api_call_count": 26
+  },
+  "started_at": "2026-10-12T04:19:23.061918+05:30",
+  "completed_at": "2026-10-12T04:19:23.062364+05:30"
+}
