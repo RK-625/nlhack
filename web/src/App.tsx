@@ -3,9 +3,12 @@
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useState } from "react";
+import { LoginPage } from "@/auth/LoginPage";
+import { Spinner } from "@/components/ui/spinner";
 import { useAgentChatSummaries } from "@/hooks/useAgentChat";
 import { useAgents } from "@/hooks/useAgents";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
+import { useSession } from "@/lib/auth";
 import { getChat, setActiveChat } from "@/lib/chats";
 import { backdrop } from "@/lib/motion";
 import { ChatPane } from "@/shell/ChatPane";
@@ -30,7 +33,20 @@ function writePref(key: string, value: string) {
   }
 }
 
+/** Gate: the shell (and its /api/agents fetch) mounts only once there is a session. */
 export function App() {
+  const { data: session, isPending } = useSession();
+  if (isPending) {
+    return (
+      <div className="grid h-full place-items-center bg-background text-muted-foreground">
+        <Spinner />
+      </div>
+    );
+  }
+  return session ? <Shell /> : <LoginPage />;
+}
+
+function Shell() {
   const agents = useAgents();
   // ?agent=<key|id> deep-links to an agent; otherwise reopen the last one.
   const [activeKey, setActiveKey] = useState<string | null>(
