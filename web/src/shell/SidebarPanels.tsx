@@ -17,7 +17,7 @@ import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
 import { messageTime } from "@/lib/chats";
 import { messageText } from "@/lib/message-parts";
 import { DURATION, enterTransition, exitTransition, fade, pop, SPRING, STAGGER, STAGGER_CAP } from "@/lib/motion";
-import { groupAgents } from "@/lib/sidebar";
+import { agentMatches, groupAgents } from "@/lib/sidebar";
 
 export type SidebarSearch = {
   query: string;
@@ -118,9 +118,7 @@ const iconButton =
 /** Expanded layout: wordmark + search/new chat, featured tile, specialists, theme toggle. */
 export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, search, onToggleCompact }: SidebarPanelProps) {
   const stagger = useFirstLoadStagger();
-  const needle = search.query.trim().toLowerCase();
-  const matches = (agent: AgentSummary) =>
-    !needle || `${agent.name} ${agent.description}`.toLowerCase().includes(needle);
+  const matches = (agent: AgentSummary) => agentMatches(agent, search.query);
   const { primary, specialists } = groupAgents(agents);
   const shownPrimary = primary.filter(matches);
   const shownSpecialists = specialists.filter(matches);
@@ -417,9 +415,11 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onTogg
     );
   };
 
+  // The rail layer spans the whole aside (inset-0) with a fixed 76px column, so while the
+  // aside is still wider (collapsing) nothing in the rail clips an avatar travelling in.
   return (
-    <div className="flex h-full min-h-0 flex-col items-center">
-      <div className="flex h-[52px] shrink-0 items-center pt-2">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex h-[52px] w-[76px] shrink-0 items-center justify-center pt-2">
         {onToggleCompact ? (
           <button
             type="button"
@@ -432,17 +432,16 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onTogg
           </button>
         ) : null}
       </div>
-      <nav
-        aria-label="Agents"
-        className="rk-scroll flex min-h-0 w-full flex-1 flex-col items-center gap-1.5 overflow-y-auto overflow-x-hidden py-1"
-      >
-        {primary.map((agent, index) => item(agent, index))}
-        {primary.length > 0 && specialists.length > 0 ? (
-          <span aria-hidden="true" className="my-1 h-px w-8 shrink-0 bg-sidebar-border" />
-        ) : null}
-        {specialists.map((agent, index) => item(agent, index + primary.length))}
+      <nav aria-label="Agents" className="rk-scroll min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden py-1">
+        <div className="flex w-[76px] flex-col items-center gap-1.5">
+          {primary.map((agent, index) => item(agent, index))}
+          {primary.length > 0 && specialists.length > 0 ? (
+            <span aria-hidden="true" className="my-1 h-px w-8 shrink-0 bg-sidebar-border" />
+          ) : null}
+          {specialists.map((agent, index) => item(agent, index + primary.length))}
+        </div>
       </nav>
-      <div className="flex shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
+      <div className="flex w-[76px] shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
         <button
           type="button"
           aria-label="New chat"

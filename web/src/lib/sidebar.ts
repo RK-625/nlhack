@@ -22,6 +22,12 @@ export const SIDEBAR = {
 
 export const clampWidth = (width: number) => Math.min(SIDEBAR.MAX, Math.max(SIDEBAR.MIN, Math.round(width)));
 
+/** Sidebar search: name or description contains the query (case-insensitive); empty matches all. */
+export function agentMatches(agent: AgentSummary, query: string): boolean {
+  const needle = query.trim().toLowerCase();
+  return !needle || `${agent.name} ${agent.description}`.toLowerCase().includes(needle);
+}
+
 export function groupAgents(agents: AgentSummary[]): { primary: AgentSummary[]; specialists: AgentSummary[] } {
   return {
     primary: agents.filter((agent) => agent.key === PRIMARY_AGENT_KEY),

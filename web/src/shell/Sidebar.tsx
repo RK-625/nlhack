@@ -1,6 +1,6 @@
 // Grok Bot–style sidebar: docked on desktop as either the expanded panel or a compact avatar
 // rail, resizable by its edge; a slide-in overlay (always expanded) on mobile.
-import { AnimatePresence, animate, type Transition, useMotionValue, useReducedMotion, useTransform } from "motion/react";
+import { AnimatePresence, animate, type Transition, useMotionValue, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import { type KeyboardEvent, type PointerEvent, useEffect, useRef, useState } from "react";
 import { panelSwap, SPRING_SNAP, sidebarMobile, sidebarResize } from "@/lib/motion";
@@ -46,8 +46,9 @@ function DockedSidebar(props: SidebarPanelProps) {
   const compactRef = useRef(compact);
   const widthRef = useRef(width);
   const size = useMotionValue(compact ? SIDEBAR.RAIL : width);
-  // The expanded panel never lays out narrower than MIN, so it doesn't reflow while shrinking.
-  const panelWidth = useTransform(size, (value) => Math.max(value, SIDEBAR.MIN));
+  // The expanded panel's own width, pinned to its target (not derived from `size`), so its
+  // layout — the centered tile, row widths — doesn't drift while the aside animates.
+  const panelWidth = useMotionValue(width);
   // origin: the expanded width when the drag began — what a snap back to expanded restores.
   const drag = useRef<{ startX: number; base: number; origin: number } | null>(null);
   const settleUntil = useRef(0);
@@ -71,6 +72,7 @@ function DockedSidebar(props: SidebarPanelProps) {
 
   const setMode = (nextCompact: boolean, how: "toggle" | "snap") => {
     if (nextCompact === compactRef.current) return;
+    if (!nextCompact) panelWidth.jump(widthRef.current);
     commit(widthRef.current, nextCompact);
     animateSize(nextCompact ? SIDEBAR.RAIL : widthRef.current, how === "snap" ? SPRING_SNAP : sidebarResize(!nextCompact));
   };
@@ -122,6 +124,7 @@ function DockedSidebar(props: SidebarPanelProps) {
     // Between MIN and the snap threshold the edge holds at MIN (a little resistance).
     const next = clampWidth(candidate);
     size.jump(next);
+    panelWidth.jump(next);
     widthRef.current = next;
   };
 
@@ -152,6 +155,7 @@ function DockedSidebar(props: SidebarPanelProps) {
     }
     const next = clampWidth(widthRef.current + (grow ? step : -step));
     size.jump(next);
+    panelWidth.jump(next);
     commit(next, false);
   };
 
@@ -174,8 +178,7 @@ function DockedSidebar(props: SidebarPanelProps) {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="absolute inset-y-0 start-0"
-              style={{ width: SIDEBAR.RAIL }}
+              className="absolute inset-0"
             >
               <RailPanel {...panelProps} />
             </m.div>
