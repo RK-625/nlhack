@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4NN5MQR00E9B87K4HZM4WNZ",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 12,
+  "files_touched": [
+    "web/src/App.tsx",
+    "web/src/auth/UserMenu.tsx",
+    "web/src/lib/motion.ts",
+    "web/src/lib/sidebar.ts",
+    "web/src/shell/ChatHeader.tsx",
+    "web/src/shell/ChatPane.tsx",
+    "web/src/shell/MessageList.tsx",
+    "web/src/shell/Sidebar.tsx",
+    "web/src/shell/SidebarPanels.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 74,
+    "cache_creation_tokens": 33168,
+    "cache_read_tokens": 9032895,
+    "output_tokens": 21862,
+    "api_call_count": 35,
+    "subagent_tokens": {
+      "input_tokens": 50,
+      "cache_creation_tokens": 217610,
+      "cache_read_tokens": 4508156,
+      "output_tokens": 490,
+      "api_call_count": 23
+    }
+  }
+}
