@@ -144,7 +144,7 @@ export function MessageList({
               setAtEnd(nearEnd);
               if (nearEnd && scrolledDown) following.current = true;
             }}
-            className="rk-scroll flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-5 md:px-7 md:py-6"
+            className="rk-scroll flex min-h-0 flex-1 flex-col overflow-y-auto px-4 pb-5 pt-16 md:px-7 md:pb-6"
           >
             <div ref={contentRef} className="flex flex-col gap-2">
               {/* Bubbles already there when the transcript mounts (switching agents) don't

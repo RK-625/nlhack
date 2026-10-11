@@ -1,0 +1,512 @@
+// Sidebar contents in the two layouts the shell uses (Grok Bot style): the expanded panel
+// (featured orchestrator tile + "Specialists" rows) and the compact avatar rail.
+// Row markup started from rakazo's bots sidebar (apps/web/src/pages/Shell.tsx ~2811-3263),
+// Apache-2.0, github.com/elie222/rakazo@912c977.
+import type { UIMessage } from "ai";
+import { Moon, PanelLeftClose, PanelLeftOpen, Plus, Search, Sun, X } from "lucide-react";
+import { AnimatePresence, type Variants } from "motion/react";
+import * as m from "motion/react-m";
+import { useEffect, useState } from "react";
+import { BotAvatar } from "@/components/avatar/bot-avatar";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import type { AgentRowState } from "@/hooks/useAgentChat";
+import type { AgentSummary } from "@/hooks/useAgents";
+import { agentAvatarValue } from "@/lib/agent-avatar";
+import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
+import { messageTime } from "@/lib/chats";
+import { messageText } from "@/lib/message-parts";
+import { DURATION, enterTransition, exitTransition, fade, pop, SPRING, STAGGER, STAGGER_CAP } from "@/lib/motion";
+import { groupAgents } from "@/lib/sidebar";
+
+export type SidebarSearch = {
+  query: string;
+  setQuery: (query: string) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
+
+export type SidebarPanelProps = {
+  agents: AgentSummary[];
+  rows: Record<string, AgentRowState>;
+  activeKey: string | null;
+  onSelect: (key: string) => void;
+  onNewChat: () => void;
+  search: SidebarSearch;
+  /** Switch between expanded and rail (absent on the mobile overlay). */
+  onToggleCompact?: () => void;
+};
+
+/** Items rise in one after another; a filtered-out row leaves the way it came. */
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 6, transition: exitTransition(DURATION.base) },
+  visible: (index: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: enterTransition(DURATION.base, Math.min(index, STAGGER_CAP) * STAGGER),
+  }),
+};
+
+// The roster staggers in once per page load, not every time a panel remounts
+// (expand/collapse, reopening the mobile overlay).
+let rosterStaggered = false;
+function useFirstLoadStagger(): boolean {
+  const [stagger] = useState(() => !rosterStaggered);
+  useEffect(() => {
+    rosterStaggered = true;
+  }, []);
+  return stagger;
+}
+
+type Badge = "working" | "error" | "unread" | null;
+const badgeFor = (row: AgentRowState | undefined): Badge =>
+  row?.running ? "working" : row?.error ? "error" : row?.unread ? "unread" : null;
+
+/**
+ * Avatar with a corner badge: pulsing while working, red on failure, a dot when unread.
+ * Specialist rows pass `activityOnly` because they show unread as an inline dot instead.
+ */
+function AgentAvatar({
+  agent,
+  size,
+  row,
+  activityOnly = false,
+}: {
+  agent: AgentSummary;
+  size: number;
+  row?: AgentRowState;
+  activityOnly?: boolean;
+}) {
+  const status = badgeFor(row);
+  const badge = activityOnly && status === "unread" ? null : status;
+  return (
+    <span className="relative inline-flex shrink-0">
+      <BotAvatar
+        color={agentAvatarValue(agent.id)}
+        identity={agent.id}
+        size={size}
+        status={row?.running ? "running" : undefined}
+      />
+      <AnimatePresence initial={false}>
+        {badge ? (
+          <m.span
+            key={badge}
+            data-testid={`badge-${badge}`}
+            aria-hidden="true"
+            variants={pop}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="absolute -end-0.5 -top-0.5 grid h-3 w-3 place-items-center rounded-full bg-sidebar"
+          >
+            <span
+              className={`h-2 w-2 rounded-full ${
+                badge === "working" ? "bg-warning" : badge === "error" ? "bg-destructive" : "bg-foreground"
+              }`}
+              style={badge === "working" ? { animation: "rkPulse 1.2s ease-in-out infinite" } : undefined}
+            />
+          </m.span>
+        ) : null}
+      </AnimatePresence>
+    </span>
+  );
+}
+
+const iconButton =
+  "grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted-foreground/80 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent hover:text-foreground";
+
+/** Expanded layout: wordmark + search/new chat, featured tile, specialists, theme toggle. */
+export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, search, onToggleCompact }: SidebarPanelProps) {
+  const stagger = useFirstLoadStagger();
+  const needle = search.query.trim().toLowerCase();
+  const matches = (agent: AgentSummary) =>
+    !needle || `${agent.name} ${agent.description}`.toLowerCase().includes(needle);
+  const { primary, specialists } = groupAgents(agents);
+  const shownPrimary = primary.filter(matches);
+  const shownSpecialists = specialists.filter(matches);
+  const closeSearch = () => {
+    search.setQuery("");
+    search.setOpen(false);
+  };
+
+  return (
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex h-[52px] shrink-0 items-center gap-1 px-3 pt-2">
+        <AnimatePresence mode="wait" initial={false}>
+          {search.open ? (
+            <m.div key="search" variants={fade} initial="hidden" animate="visible" exit="hidden" className="min-w-0 flex-1">
+              <InputGroup className="h-8 rounded-lg border border-border bg-card text-muted-foreground focus-within:border-ring dark:bg-input">
+                <InputGroupAddon>
+                  <Search size={14} strokeWidth={1.8} aria-hidden="true" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  autoFocus
+                  value={search.query}
+                  onChange={(event) => search.setQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") closeSearch();
+                  }}
+                  onBlur={() => {
+                    if (!search.query.trim()) closeSearch();
+                  }}
+                  placeholder="Search agents"
+                  aria-label="Search agents"
+                  autoComplete="off"
+                  name="sidebar-search"
+                />
+                <InputGroupAddon align="inline-end">
+                  <button
+                    type="button"
+                    aria-label="Close search"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={closeSearch}
+                    className="grid h-5 w-5 place-items-center rounded text-muted-foreground hover:text-foreground"
+                  >
+                    <X size={13} strokeWidth={1.8} />
+                  </button>
+                </InputGroupAddon>
+              </InputGroup>
+            </m.div>
+          ) : (
+            <m.span
+              key="wordmark"
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="min-w-0 flex-1 truncate ps-1.5 text-[15px] font-semibold tracking-tight text-foreground"
+            >
+              nlhack
+            </m.span>
+          )}
+        </AnimatePresence>
+        {search.open ? null : (
+          <button type="button" aria-label="Search agents" title="Search" onClick={() => search.setOpen(true)} className={iconButton}>
+            <Search size={16} strokeWidth={1.8} aria-hidden="true" />
+          </button>
+        )}
+        <button type="button" aria-label="New chat" title="New chat" onClick={onNewChat} className={iconButton}>
+          <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
+        </button>
+        {onToggleCompact ? (
+          <button
+            type="button"
+            aria-label="Collapse sidebar"
+            title="Collapse sidebar"
+            onClick={onToggleCompact}
+            className={iconButton}
+          >
+            <PanelLeftClose size={16} strokeWidth={1.8} aria-hidden="true" />
+          </button>
+        ) : null}
+      </div>
+
+      <nav aria-label="Agents" className="rk-scroll relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-2.5 pb-3 pt-1">
+        <AnimatePresence initial={stagger}>
+          {shownPrimary.length > 0 ? (
+            <m.div key="featured" layout="position" className="flex flex-wrap gap-2 px-0.5 pb-3 pt-1">
+              {shownPrimary.map((agent, index) => {
+                const selected = agent.key === activeKey;
+                return (
+                  <m.button
+                    key={agent.key}
+                    type="button"
+                    data-testid="featured-agent"
+                    custom={index}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    aria-current={selected ? "page" : undefined}
+                    onClick={() => onSelect(agent.key)}
+                    className={`flex w-24 flex-col items-center gap-2 rounded-2xl px-2 pb-2.5 pt-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) ${
+                      selected ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/60"
+                    }`}
+                  >
+                    <AgentAvatar agent={agent} size={56} row={rows[agent.key]} />
+                    <span className="w-full truncate text-center text-[13px] font-medium text-foreground">
+                      {agent.name}
+                    </span>
+                  </m.button>
+                );
+              })}
+            </m.div>
+          ) : null}
+          {shownSpecialists.length > 0 ? (
+            <m.p
+              key="specialists-label"
+              layout="position"
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="px-2.5 pb-1.5 pt-1 text-[12px] font-medium text-muted-foreground/70"
+            >
+              Specialists
+            </m.p>
+          ) : null}
+          {shownSpecialists.map((agent, index) => (
+            <SpecialistRow
+              key={agent.key}
+              agent={agent}
+              index={index + shownPrimary.length}
+              row={rows[agent.key]}
+              selected={agent.key === activeKey}
+              onSelect={onSelect}
+            />
+          ))}
+          {shownPrimary.length + shownSpecialists.length === 0 ? (
+            <m.p
+              key="no-match"
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="px-2.5 py-6 text-center text-[13px] text-muted-foreground"
+            >
+              No agents match “{search.query}”.
+            </m.p>
+          ) : null}
+        </AnimatePresence>
+      </nav>
+
+      <ThemeToggle />
+    </div>
+  );
+}
+
+function SpecialistRow({
+  agent,
+  index,
+  row,
+  selected,
+  onSelect,
+}: {
+  agent: AgentSummary;
+  index: number;
+  row?: AgentRowState;
+  selected: boolean;
+  onSelect: (key: string) => void;
+}) {
+  const last = row?.messages.at(-1);
+  const lastTime = last ? messageTime(last.id) : undefined;
+  const status = row?.running ? "working" : row?.error ? "error" : "idle";
+  // One line: the latest message, or the run state. Nothing before the first message.
+  const preview = status === "working" ? "Working…" : status === "error" ? "Reply failed" : last ? previewText(last) : "";
+  return (
+    <m.button
+      type="button"
+      data-testid="specialist-row"
+      layout="position"
+      custom={index}
+      variants={itemVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      aria-current={selected ? "page" : undefined}
+      onClick={() => onSelect(agent.key)}
+      className="relative flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-start transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent/60"
+    >
+      {selected ? (
+        // One highlight shared across rows: it slides to the newly selected agent,
+        // under the other rows' content (z-0 vs z-[1]).
+        <m.span
+          layoutId="agent-selected"
+          transition={SPRING}
+          aria-hidden="true"
+          className="absolute inset-0 z-0 rounded-xl bg-sidebar-accent"
+        />
+      ) : null}
+      <span className="relative z-[1]">
+        <AgentAvatar agent={agent} size={36} row={row} activityOnly />
+      </span>
+      <span className="relative z-[1] flex min-w-0 flex-1 flex-col">
+        <span className="flex items-center justify-between gap-1.5">
+          <span
+            dir="auto"
+            className={`min-w-0 truncate text-[14px] text-foreground ${row?.unread ? "font-semibold" : "font-medium"}`}
+          >
+            {agent.name}
+            {row?.unread ? <span className="sr-only"> (unread)</span> : null}
+          </span>
+          <span className="flex shrink-0 items-center gap-1.5">
+            {lastTime !== undefined ? (
+              <span className="text-[11.5px] tabular-nums text-muted-foreground/60">{formatRosterTime(lastTime)}</span>
+            ) : null}
+            <AnimatePresence initial={false}>
+              {row?.unread ? (
+                <m.span
+                  key="unread"
+                  data-testid="unread-dot"
+                  aria-hidden="true"
+                  variants={pop}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="inline-block h-2 w-2 rounded-full bg-foreground"
+                />
+              ) : null}
+            </AnimatePresence>
+          </span>
+        </span>
+        {/* Status changes (Working… / failed / latest message) cross-fade. */}
+        <AnimatePresence mode="wait" initial={false}>
+          {preview ? (
+            <m.span
+              key={status}
+              variants={fade}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              dir="auto"
+              className={`truncate text-[12.5px] ${
+                status !== "idle" || row?.unread ? "font-medium text-foreground/75" : "text-muted-foreground/70"
+              }`}
+            >
+              {preview}
+            </m.span>
+          ) : null}
+        </AnimatePresence>
+      </span>
+    </m.button>
+  );
+}
+
+/** Compact rail: avatars only, featured agent first, then a divider and the specialists. */
+export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, onToggleCompact }: SidebarPanelProps) {
+  const stagger = useFirstLoadStagger();
+  const { primary, specialists } = groupAgents(agents);
+  const item = (agent: AgentSummary, index: number) => {
+    const selected = agent.key === activeKey;
+    return (
+      <Tooltip key={agent.key}>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              data-testid="rail-agent"
+              aria-label={agent.name}
+              aria-current={selected ? "page" : undefined}
+              onClick={() => onSelect(agent.key)}
+              className="relative grid h-12 w-12 shrink-0 place-items-center rounded-[14px] transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent/60"
+            />
+          }
+        >
+          {selected ? (
+            <m.span
+              layoutId="rail-selected"
+              transition={SPRING}
+              aria-hidden="true"
+              className="absolute inset-0 z-0 rounded-[14px] bg-sidebar-accent"
+            />
+          ) : null}
+          <m.span
+            className="relative z-[1] inline-flex"
+            custom={index}
+            variants={itemVariants}
+            initial={stagger ? "hidden" : false}
+            animate="visible"
+          >
+            <AgentAvatar agent={agent} size={40} row={rows[agent.key]} />
+          </m.span>
+        </TooltipTrigger>
+        <TooltipContent side="right" sideOffset={8}>
+          {agent.name}
+        </TooltipContent>
+      </Tooltip>
+    );
+  };
+
+  return (
+    <div className="flex h-full min-h-0 flex-col items-center">
+      <div className="flex h-[52px] shrink-0 items-center pt-2">
+        {onToggleCompact ? (
+          <button
+            type="button"
+            aria-label="Expand sidebar"
+            title="Expand sidebar"
+            onClick={onToggleCompact}
+            className={iconButton}
+          >
+            <PanelLeftOpen size={16} strokeWidth={1.8} aria-hidden="true" />
+          </button>
+        ) : null}
+      </div>
+      <nav
+        aria-label="Agents"
+        className="rk-scroll flex min-h-0 w-full flex-1 flex-col items-center gap-1.5 overflow-y-auto overflow-x-hidden py-1"
+      >
+        {primary.map((agent, index) => item(agent, index))}
+        {primary.length > 0 && specialists.length > 0 ? (
+          <span aria-hidden="true" className="my-1 h-px w-8 shrink-0 bg-sidebar-border" />
+        ) : null}
+        {specialists.map((agent, index) => item(agent, index + primary.length))}
+      </nav>
+      <div className="flex shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
+        <button
+          type="button"
+          aria-label="New chat"
+          title="New chat"
+          onClick={onNewChat}
+          className="grid h-10 w-10 place-items-center rounded-xl border border-dashed border-border text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:border-ring hover:text-foreground"
+        >
+          <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
+        </button>
+        <ThemeToggle compact />
+      </div>
+    </div>
+  );
+}
+
+function ThemeToggle({ compact = false }: { compact?: boolean }) {
+  const [theme, setTheme] = useState<ResolvedAppearance>(() =>
+    document.documentElement.dataset.theme === "light" ? "light" : "dark",
+  );
+  const next = theme === "dark" ? "light" : "dark";
+  const label = theme === "dark" ? "Light mode" : "Dark mode";
+  const icon = theme === "dark" ? <Sun size={15} strokeWidth={1.8} /> : <Moon size={15} strokeWidth={1.8} />;
+  if (compact) {
+    return (
+      <button
+        type="button"
+        aria-label={label}
+        title={label}
+        onClick={() => setTheme(setUiAppearance(next))}
+        className="grid h-10 w-10 place-items-center rounded-xl text-foreground/80 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent"
+      >
+        {icon}
+      </button>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(setUiAppearance(next))}
+      className="mx-3 mb-3 flex shrink-0 items-center gap-3 rounded-xl px-2.5 py-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent"
+    >
+      <span className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-accent text-foreground/80">{icon}</span>
+      <span className="text-[14px] font-medium text-foreground/90">{label}</span>
+    </button>
+  );
+}
+
+function previewText(message: UIMessage): string {
+  const plain = messageText(message)
+    .replace(/[#>*_`|]/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+  return plain && message.role === "user" ? `You: ${plain}` : plain;
+}
+
+/** Time for today, weekday within a week, else a short date (as in rakazo's roster). */
+function formatRosterTime(timestamp: number): string {
+  const date = new Date(timestamp);
+  const now = new Date();
+  if (date.toDateString() === now.toDateString()) {
+    return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  }
+  const days = (now.getTime() - timestamp) / 86_400_000;
+  if (days < 7) return date.toLocaleDateString(undefined, { weekday: "short" });
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}

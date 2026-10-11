@@ -81,16 +81,18 @@ export const collapse: Variants = {
   visible: { height: "auto", opacity: 1, transition: enterTransition(DURATION.base) },
 };
 
-/** Desktop sidebar: width opens/closes, content fades. */
-export const SIDEBAR_WIDTH = 284;
-export const sidebarDesktop: Variants = {
-  hidden: { width: 0, transition: exitTransition(DURATION.slow) },
-  visible: { width: SIDEBAR_WIDTH, transition: enterTransition(DURATION.slow) },
-};
-export const sidebarContent: Variants = {
-  hidden: { opacity: 0, transition: exitTransition(DURATION.slow) },
-  visible: { opacity: 1, transition: enterTransition(DURATION.slow) },
-};
+/** Fast, critically damped spring for the sidebar snapping between rail and expanded mid-drag. */
+export const SPRING_SNAP: Transition = { type: "spring", stiffness: 900, damping: 60, mass: 0.7 };
+
+/**
+ * Docked sidebar expand/collapse (button, double-click, Enter): one width tween, mirrored —
+ * expanding uses the enter curve, collapsing its time-reverse, same duration.
+ */
+export const sidebarResize = (expanding: boolean): Transition =>
+  expanding ? enterTransition(DURATION.slow) : exitTransition(DURATION.slow);
+
+/** Rail and expanded panel layers cross-fade while the width changes (fast, to match a snap). */
+export const panelSwap = symmetric({}, DURATION.fast);
 /** Mobile sidebar: slides in from the start edge. */
 export const sidebarMobile: Variants = {
   hidden: { x: "-100%", transition: exitTransition(DURATION.slow) },
