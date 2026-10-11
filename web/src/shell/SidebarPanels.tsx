@@ -16,7 +16,18 @@ import { agentAvatarValue } from "@/lib/agent-avatar";
 import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
 import { messageTime } from "@/lib/chats";
 import { messageText } from "@/lib/message-parts";
-import { DURATION, enterTransition, exitTransition, fade, pop, SPRING, STAGGER, STAGGER_CAP } from "@/lib/motion";
+import {
+  DURATION,
+  enterTransition,
+  exitTransition,
+  fade,
+  INSTANT,
+  labelFade,
+  pop,
+  SPRING,
+  STAGGER,
+  STAGGER_CAP,
+} from "@/lib/motion";
 import { agentMatches, groupAgents, PRIMARY_AGENT_KEY } from "@/lib/sidebar";
 
 export type SidebarSearch = {
@@ -39,19 +50,47 @@ export type SidebarPanelProps = {
 
 /**
  * Rail ↔ expanded morph state, provided by the docked sidebar (the mobile overlay uses the
- * default: always idle). `chrome` = labels visible; `travel` = the transition shared avatars
- * use while they fly between layouts.
- *   phase 1: chrome off (labels fade out) → phase 2: layouts flip, avatars + width travel
- *   → phase 3: chrome on (labels fade in). Collapse is the same sequence in reverse.
+ * default: always idle). `chrome` = labels visible; `travel` = the transition shared elements
+ * (avatars, the selection highlight, the toggle / new chat / theme controls) use while they
+ * fly between layouts.
+ *   phase 1: chrome off (labels fade out) → phase 2: layouts flip, shared elements + width
+ *   travel → phase 3: chrome on (labels fade in). Collapse is the same sequence in reverse.
  */
 export type SidebarMorph = {
   chrome: boolean;
   travel: Transition | undefined;
-  /** Called when a shared avatar's layout animation starts, to start the width in sync. */
+  /** Called when a shared element's layout animation starts, to start the width in sync. */
   onTravelStart?: () => void;
 };
 export const SidebarMorphContext = createContext<SidebarMorph>({ chrome: true, travel: undefined });
 const useMorph = () => useContext(SidebarMorphContext);
+
+/** Layout-animation props for a shared (layoutId) element: the travel clock mid-morph. */
+function useTravel() {
+  const { chrome, travel, onTravelStart } = useMorph();
+  return chrome ? {} : { transition: travel, onLayoutAnimationStart: onTravelStart };
+}
+
+/**
+ * A part of a shared control that only one layout shows (the toggle's open/close icon, the
+ * rail's dashed outline, the theme chip's fill). A copy mounted by the flip starts from the
+ * other layout's value and cross-fades on the travel clock, so the control morphs as it
+ * travels instead of switching style on the flip frame.
+ */
+function SwapLayer({ show, className, children }: { show: boolean; className?: string; children?: ReactNode }) {
+  const { chrome, travel } = useMorph();
+  return (
+    <m.span
+      aria-hidden="true"
+      initial={chrome ? false : { opacity: show ? 0 : 1 }}
+      animate={{ opacity: show ? 1 : 0 }}
+      transition={travel ?? INSTANT}
+      className={className}
+    >
+      {children}
+    </m.span>
+  );
+}
 
 /**
  * Anything that isn't a shared avatar: fades out before the layouts flip and back in after
@@ -62,7 +101,7 @@ function Label({ children, className, inline = false }: { children: ReactNode; c
   const { chrome } = useMorph();
   const props = {
     "data-morph-label": "",
-    variants: fade,
+    variants: labelFade,
     initial: false as const,
     animate: chrome ? "visible" : "hidden",
     className,
@@ -110,7 +149,7 @@ function AgentAvatar({
   row?: AgentRowState;
   activityOnly?: boolean;
 }) {
-  const { chrome, travel, onTravelStart } = useMorph();
+  const travel = useTravel();
   const status = badgeFor(row);
   const badge = activityOnly && status === "unread" ? null : status;
   return (
@@ -118,8 +157,7 @@ function AgentAvatar({
     // rail and the expanded panel instead of disappearing in one and appearing in the other.
     <m.span
       layoutId={`sidebar-avatar-${agent.key}`}
-      transition={chrome ? undefined : travel}
-      onLayoutAnimationStart={chrome ? undefined : onTravelStart}
+      {...travel}
       data-morph-avatar={agent.key}
       className="relative inline-flex shrink-0"
     >
@@ -190,75 +228,65 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <Label className="flex h-[52px] shrink-0 items-center gap-1 px-3 pt-2">
-        <AnimatePresence mode="wait" initial={false}>
-          {search.open ? (
-            <m.div key="search" variants={fade} initial="hidden" animate="visible" exit="hidden" className="min-w-0 flex-1">
-              <InputGroup className="h-8 rounded-lg border border-border bg-card text-muted-foreground focus-within:border-ring dark:bg-input">
-                <InputGroupAddon>
-                  <Search size={14} strokeWidth={1.8} aria-hidden="true" />
-                </InputGroupAddon>
-                <InputGroupInput
-                  autoFocus
-                  value={search.query}
-                  onChange={(event) => search.setQuery(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Escape") closeSearch();
-                  }}
-                  onBlur={() => {
-                    if (!search.query.trim()) closeSearch();
-                  }}
-                  placeholder="Search agents"
-                  aria-label="Search agents"
-                  autoComplete="off"
-                  name="sidebar-search"
-                />
-                <InputGroupAddon align="inline-end">
-                  <button
-                    type="button"
-                    aria-label="Close search"
-                    onMouseDown={(event) => event.preventDefault()}
-                    onClick={closeSearch}
-                    className="grid h-5 w-5 place-items-center rounded text-muted-foreground hover:text-foreground"
-                  >
-                    <X size={13} strokeWidth={1.8} />
-                  </button>
-                </InputGroupAddon>
-              </InputGroup>
-            </m.div>
-          ) : (
-            <m.span
-              key="wordmark"
-              variants={fade}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className="min-w-0 flex-1 truncate ps-1.5 text-[15px] font-semibold tracking-tight text-foreground"
-            >
-              nlhack
-            </m.span>
+      <div className="flex h-[52px] shrink-0 items-center gap-1 px-3 pt-2">
+        <Label className="flex min-w-0 flex-1 items-center gap-1">
+          <AnimatePresence mode="wait" initial={false}>
+            {search.open ? (
+              <m.div key="search" variants={fade} initial="hidden" animate="visible" exit="hidden" className="min-w-0 flex-1">
+                <InputGroup className="h-8 rounded-lg border border-border bg-card text-muted-foreground focus-within:border-ring dark:bg-input">
+                  <InputGroupAddon>
+                    <Search size={14} strokeWidth={1.8} aria-hidden="true" />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    autoFocus
+                    value={search.query}
+                    onChange={(event) => search.setQuery(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") closeSearch();
+                    }}
+                    onBlur={() => {
+                      if (!search.query.trim()) closeSearch();
+                    }}
+                    placeholder="Search agents"
+                    aria-label="Search agents"
+                    autoComplete="off"
+                    name="sidebar-search"
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <button
+                      type="button"
+                      aria-label="Close search"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={closeSearch}
+                      className="grid h-5 w-5 place-items-center rounded text-muted-foreground hover:text-foreground"
+                    >
+                      <X size={13} strokeWidth={1.8} />
+                    </button>
+                  </InputGroupAddon>
+                </InputGroup>
+              </m.div>
+            ) : (
+              <m.span
+                key="wordmark"
+                variants={fade}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="min-w-0 flex-1 truncate ps-1.5 text-[15px] font-semibold tracking-tight text-foreground"
+              >
+                nlhack
+              </m.span>
+            )}
+          </AnimatePresence>
+          {search.open ? null : (
+            <button type="button" aria-label="Search agents" title="Search" onClick={() => search.setOpen(true)} className={iconButton}>
+              <Search size={16} strokeWidth={1.8} aria-hidden="true" />
+            </button>
           )}
-        </AnimatePresence>
-        {search.open ? null : (
-          <button type="button" aria-label="Search agents" title="Search" onClick={() => search.setOpen(true)} className={iconButton}>
-            <Search size={16} strokeWidth={1.8} aria-hidden="true" />
-          </button>
-        )}
-        <button type="button" aria-label="New chat" title="New chat" onClick={onNewChat} className={iconButton}>
-          <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
-        </button>
-        {onToggleCompact ? (
-          <button
-            type="button"
-            aria-label="Collapse sidebar"
-            title="Collapse sidebar"
-            onClick={onToggleCompact}
-            className={iconButton}
-          >
-            <PanelLeftClose size={16} strokeWidth={1.8} aria-hidden="true" />
-          </button>
-        ) : null}
-      </Label>
+        </Label>
+        <NewChatButton onNewChat={onNewChat} />
+        {onToggleCompact ? <ToggleButton onToggle={onToggleCompact} /> : null}
+      </div>
 
       <nav aria-label="Agents" className="rk-scroll relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-2.5 pb-3 pt-1">
         <AnimatePresence initial={stagger}>
@@ -330,9 +358,7 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
         </AnimatePresence>
       </nav>
 
-      <Label className="flex shrink-0 flex-col">
-        <ThemeToggle />
-      </Label>
+      <ThemeToggle />
     </div>
   );
 }
@@ -485,19 +511,9 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search
   // aside is still wider (collapsing) nothing in the rail clips an avatar travelling in.
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <Label className="flex h-[52px] w-[76px] shrink-0 items-center justify-center pt-2">
-        {onToggleCompact ? (
-          <button
-            type="button"
-            aria-label="Expand sidebar"
-            title="Expand sidebar"
-            onClick={onToggleCompact}
-            className={iconButton}
-          >
-            <PanelLeftOpen size={16} strokeWidth={1.8} aria-hidden="true" />
-          </button>
-        ) : null}
-      </Label>
+      <div className="flex h-[52px] w-[76px] shrink-0 items-center justify-center pt-2">
+        {onToggleCompact ? <ToggleButton compact onToggle={onToggleCompact} /> : null}
+      </div>
       <nav aria-label="Agents" className="rk-scroll min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden py-1">
         <div className="flex w-[76px] flex-col items-center gap-1.5">
           {primary.map((agent, index) => item(agent, index))}
@@ -509,29 +525,98 @@ export function RailPanel({ agents, rows, activeKey, onSelect, onNewChat, search
           {specialists.map((agent, index) => item(agent, index + primary.length))}
         </div>
       </nav>
-      <Label className="flex w-[76px] shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
-        <button
-          type="button"
-          aria-label="New chat"
-          title="New chat"
-          onClick={onNewChat}
-          className="grid h-10 w-10 place-items-center rounded-xl border border-dashed border-border text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:border-ring hover:text-foreground"
-        >
-          <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
-        </button>
+      <div className="flex w-[76px] shrink-0 flex-col items-center gap-1.5 pb-3 pt-2">
+        <NewChatButton compact onNewChat={onNewChat} />
         <ThemeToggle compact />
-      </Label>
+      </div>
     </div>
   );
 }
 
+// Shared controls: one element per control (layoutId) that travels between the expanded
+// header/footer and the rail during the morph, like the avatars, instead of fading.
+
+/** Collapse/expand: travels between the header's end and the rail's top; its icon cross-fades. */
+function ToggleButton({ compact = false, onToggle }: { compact?: boolean; onToggle: () => void }) {
+  const travel = useTravel();
+  const label = compact ? "Expand sidebar" : "Collapse sidebar";
+  return (
+    <m.button
+      type="button"
+      layoutId="sidebar-toggle"
+      {...travel}
+      data-morph-control="toggle"
+      aria-label={label}
+      title={label}
+      onClick={onToggle}
+      className={iconButton}
+    >
+      <SwapLayer show={!compact} className="[grid-area:1/1]">
+        <PanelLeftClose size={16} strokeWidth={1.8} />
+      </SwapLayer>
+      <SwapLayer show={compact} className="[grid-area:1/1]">
+        <PanelLeftOpen size={16} strokeWidth={1.8} />
+      </SwapLayer>
+    </m.button>
+  );
+}
+
+/**
+ * New chat: a header icon button (32px) when expanded, a dashed 40px tile below the rail's
+ * list. The icon is layout-corrected so it keeps its size while the button scales.
+ */
+function NewChatButton({ compact = false, onNewChat }: { compact?: boolean; onNewChat: () => void }) {
+  const travel = useTravel();
+  return (
+    <m.button
+      type="button"
+      layoutId="sidebar-new-chat"
+      {...travel}
+      data-morph-control="new-chat"
+      aria-label="New chat"
+      title="New chat"
+      onClick={onNewChat}
+      style={{ borderRadius: compact ? 12 : 8 }}
+      className={`group relative grid shrink-0 place-items-center text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground ${
+        compact ? "h-10 w-10" : "h-8 w-8 text-muted-foreground/80 hover:bg-sidebar-accent"
+      }`}
+    >
+      <SwapLayer
+        show={compact}
+        className="absolute inset-0 rounded-[inherit] border border-dashed border-border transition-colors duration-(--motion-fast) ease-(--ease-standard) group-hover:border-ring"
+      />
+      <m.span layout {...travel} className="relative grid place-items-center">
+        <Plus size={17} strokeWidth={1.8} aria-hidden="true" />
+      </m.span>
+    </m.button>
+  );
+}
+
+/**
+ * Theme: the icon chip travels between the expanded footer row (where "Light mode"/"Dark mode"
+ * is a label beside it) and the rail's last slot; its fill shows only when expanded.
+ */
 function ThemeToggle({ compact = false }: { compact?: boolean }) {
+  const travel = useTravel();
   const [theme, setTheme] = useState<ResolvedAppearance>(() =>
     document.documentElement.dataset.theme === "light" ? "light" : "dark",
   );
   const next = theme === "dark" ? "light" : "dark";
   const label = theme === "dark" ? "Light mode" : "Dark mode";
-  const icon = theme === "dark" ? <Sun size={15} strokeWidth={1.8} /> : <Moon size={15} strokeWidth={1.8} />;
+  const chip = (
+    <m.span
+      layoutId="sidebar-theme"
+      {...travel}
+      data-morph-control="theme"
+      style={{ borderRadius: 8 }}
+      className="relative grid h-[30px] w-[30px] shrink-0 place-items-center text-foreground/80"
+    >
+      <SwapLayer show={!compact} className="absolute inset-0 rounded-[inherit] bg-accent" />
+      <span className="relative grid place-items-center">
+        {theme === "dark" ? <Sun size={15} strokeWidth={1.8} /> : <Moon size={15} strokeWidth={1.8} />}
+      </span>
+    </m.span>
+  );
   if (compact) {
     return (
       <button
@@ -539,9 +624,9 @@ function ThemeToggle({ compact = false }: { compact?: boolean }) {
         aria-label={label}
         title={label}
         onClick={() => setTheme(setUiAppearance(next))}
-        className="grid h-10 w-10 place-items-center rounded-xl text-foreground/80 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent"
+        className="grid h-10 w-10 place-items-center rounded-xl transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent"
       >
-        {icon}
+        {chip}
       </button>
     );
   }
@@ -551,8 +636,10 @@ function ThemeToggle({ compact = false }: { compact?: boolean }) {
       onClick={() => setTheme(setUiAppearance(next))}
       className="mx-3 mb-3 flex shrink-0 items-center gap-3 rounded-xl px-2.5 py-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-sidebar-accent"
     >
-      <span className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-accent text-foreground/80">{icon}</span>
-      <span className="text-[14px] font-medium text-foreground/90">{label}</span>
+      {chip}
+      <Label inline className="text-[14px] font-medium text-foreground/90">
+        {label}
+      </Label>
     </button>
   );
 }

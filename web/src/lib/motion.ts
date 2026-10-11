@@ -68,6 +68,8 @@ export function staggerGroup(stagger = STAGGER): Variants {
 }
 
 export const fade = symmetric({}, DURATION.fast);
+/** Sidebar morph labels: slow enough to read as a fade, not a blink (phases 1 and 3). */
+export const labelFade = symmetric({}, DURATION.base);
 export const rise = symmetric({ y: DISTANCE.md });
 export const pop = symmetric({ scale: 0.6 }, DURATION.fast);
 /** User bubbles arrive from the send side (right, slightly below). */
@@ -86,9 +88,9 @@ export const SPRING_SNAP: Transition = { type: "spring", stiffness: 900, damping
 
 /**
  * Docked sidebar expand/collapse (button, double-click, Enter): drives the rail ↔ expanded
- * morph's travel phase — the width and the shared avatars/highlight move on this one
- * transition, mirrored: expanding uses the enter curve, collapsing its time-reverse.
- * (Labels fade for DURATION.fast before and after it.)
+ * morph's travel phase — the width and the shared avatars, highlight and controls move on
+ * this one transition, mirrored: expanding uses the enter curve, collapsing its time-reverse.
+ * (Labels fade for DURATION.base — `labelFade` — before and after it.)
  */
 export const sidebarResize = (expanding: boolean): Transition =>
   expanding ? enterTransition(DURATION.slow) : exitTransition(DURATION.slow);

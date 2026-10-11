@@ -110,6 +110,9 @@ function DockedSidebar(props: SidebarPanelProps) {
     const flip = () => {
       if (run !== runRef.current) return;
       cancelFlip.current = null;
+      // A reversal mid-travel: hold the width where it is until the new travel starts with
+      // the shared elements, instead of letting the old tween run on for a frame.
+      size.stop();
       settleUntil.current = performance.now() + SNAP_SETTLE_MS;
       if (!nextCompact) panelWidth.jump(widthRef.current);
       pendingTravel.current = { run, target, transition };
@@ -121,7 +124,7 @@ function DockedSidebar(props: SidebarPanelProps) {
     // Phase 1: labels fade out first (skipped if they're already hidden mid-morph).
     if (chromeRef.current) {
       setChrome(false);
-      cancelFlip.current = delay(flip, DURATION.fast * 1000);
+      cancelFlip.current = delay(flip, DURATION.base * 1000);
     } else {
       flip();
     }
