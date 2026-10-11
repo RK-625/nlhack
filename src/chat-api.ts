@@ -1,19 +1,24 @@
 import type http from "node:http";
 import { handleChatStream } from "@mastra/ai-sdk";
 import { createUIMessageStreamResponse, type UIMessage } from "ai";
+import { canUseAgent } from "./auth/access";
+import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
 
 const MAX_BODY_BYTES = 1024 * 1024;
 
 export type AgentSummary = { key: string; id: string; name: string; description: string };
 
-export function listAgents(): AgentSummary[] {
-  return Object.entries(mastra.listAgents()).map(([key, agent]) => ({
-    key,
-    id: agent.id,
-    name: agent.name,
-    description: agent.getDescription(),
-  }));
+/** Without a user, returns every agent; with one, only the agents that user may use. */
+export function listAgents(user?: SessionUser): AgentSummary[] {
+  return Object.entries(mastra.listAgents())
+    .map(([key, agent]) => ({
+      key,
+      id: agent.id,
+      name: agent.name,
+      description: agent.getDescription(),
+    }))
+    .filter((agent) => !user || canUseAgent(user, agent.id));
 }
 
 /** Accepts either the Mastra registry key ("cfoAgent") or the agent id ("cfo"). */
@@ -26,6 +31,7 @@ export async function handleChat(
   agentKeyOrId: string,
   req: http.IncomingMessage,
   res: http.ServerResponse,
+  user: SessionUser,
 ): Promise<void> {
   if (req.method !== "POST") {
     res.writeHead(405, { allow: "POST" }).end();
@@ -34,6 +40,10 @@ export async function handleChat(
   const agentId = resolveAgentId(agentKeyOrId);
   if (!agentId) {
     sendJson(res, 404, { error: `Unknown agent: ${agentKeyOrId}` });
+    return;
+  }
+  if (!canUseAgent(user, agentId)) {
+    sendJson(res, 403, { error: "Forbidden" });
     return;
   }
 

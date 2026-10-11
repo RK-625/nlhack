@@ -87,17 +87,18 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(405, { allow: "GET" }).end();
       return;
     }
-    if (!(await requireUser(req, res))) return;
-    sendJson(res, 200, listAgents());
+    const user = await requireUser(req, res);
+    if (!user) return;
+    sendJson(res, 200, listAgents(user));
     return;
   }
 
   const chatMatch = url.pathname.match(/^\/api\/chat\/([^/]+)$/);
   if (chatMatch) {
     try {
-      // Later: pass this user into handleChat (e.g. as a resource/thread owner).
-      if (!(await requireUser(req, res))) return;
-      await handleChat(decodeURIComponent(chatMatch[1]), req, res);
+      const user = await requireUser(req, res);
+      if (!user) return;
+      await handleChat(decodeURIComponent(chatMatch[1]), req, res, user);
     } catch (error: unknown) {
       console.error("Web chat failed", error);
       if (!res.headersSent) sendJson(res, 500, { error: "Chat failed" });
