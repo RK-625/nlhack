@@ -8,17 +8,19 @@ This project is being developed for the **NeatLogs Hackathon**.
 
 ## Overview
 
-WhatsApp messages go to the **Assistant**, the primary orchestrator. It handles general conversation directly and delegates company and market research to the **Market Researcher**, which owns the Crustdata company search, enrichment, and web search tools. Business financial analysis goes to the **CFO Agent**, which analyzes figures supplied in the conversation, including cash flow, runway, budgets, pricing, and hiring scenarios. For combined requests, the Assistant passes market research findings to the CFO Agent and synthesizes the final reply.
+WhatsApp messages go to the **Assistant**, the primary orchestrator. It handles general conversation directly and delegates company and market research to the **Market Researcher**, which owns the Crustdata company search, enrichment, and web search tools. Business financial analysis goes to the **CFO Agent**, which analyzes figures supplied in the conversation, including cash flow, runway, budgets, pricing, and hiring scenarios. For combined requests, the Assistant passes market research findings to the CFO Agent and synthesizes the final reply. GitHub questions (repositories, issues, pull requests, Actions runs) go to a read-only copy of the **GitHub Agent**.
 
 The CFO Agent currently has no financial tools, document extraction, accounting access, or cfo.ai MCP connection. Its calculations include formulas and assumptions but are not verified by a calculation tool.
 
-The Assistant has a six-step execution limit, and each delegated specialist run has a twelve-step limit. All three agents remain registered in Mastra for direct development and inspection.
+The **GitHub Agent** connects to GitHub's official remote MCP server (repos, issues, pull requests, Actions, account context) using `GITHUB_PAT`. In the web chat it can also make changes, but every tool the server does not mark read-only (`readOnlyHint: true`) pauses for an inline Approve/Deny card; a denied call never runs, and sending a new message drops any approval left unanswered. The Assistant (and therefore WhatsApp) only ever gets its read-only tools, so it cannot write to GitHub. Without `GITHUB_PAT` the agent starts with no tools.
+
+The Assistant has a six-step execution limit, and each delegated specialist run has a twelve-step limit. All four agents remain registered in Mastra for direct development and inspection.
 
 WhatsApp follow-ups receive all available conversation messages from Chat SDK's per-conversation cache, including bot replies, with no message-count cap on the cache or model history. The handler reads the thread history, converts it using Chat SDK's `toAiMessages`, and passes it directly to the Assistant. Short message bursts are collected for one second and answered together; messages arriving during a run are queued. Typing indicators replace progress replies. History uses in-memory state, so it clears on restart and is not shared between server instances; the SDK's default cache expiry still applies. Messages from before the bot observed the conversation cannot be retrieved from WhatsApp.
 
 ## Run locally
 
-Copy `.env.example` to `.env` and fill in the provider and integration credentials.
+Copy `.env.example` to `.env` and fill in the provider and integration credentials. For the GitHub Agent, set `GITHUB_PAT` to a fine-grained personal access token scoped to the repositories it may use (read/write on Contents, Issues, Pull requests and Actions for changes; read-only permissions are enough for inspection).
 
 - `npm start -- "Research Retool and its competitors"` — run the primary Assistant.
 - `AGENT=market-researcher npm start -- "Research Retool"` — run the specialist directly.
@@ -41,7 +43,8 @@ If Meta rejects the access token as expired (OAuth error 190, subcode 463), repl
 
 ## Key Integrations
 
-- **NeatLogs**: All three Mastra agents are wrapped with `neatlogs/mastra`, recording agent runs, model steps, tool calls, inputs/outputs, timing, token usage when returned, and errors. CLI and WhatsApp runs have request traces; WhatsApp also records history message count/bytes and reply delivery. Tracing does not trim model context.
+- **NeatLogs**: All Mastra agents are wrapped with `neatlogs/mastra`, recording agent runs, model steps, tool calls, inputs/outputs, timing, token usage when returned, and errors. CLI and WhatsApp runs have request traces; WhatsApp also records history message count/bytes and reply delivery. Tracing does not trim model context.
+- **GitHub MCP**: The GitHub Agent uses GitHub's hosted MCP server (`https://api.githubcopilot.com/mcp/`) through `@mastra/mcp`, limited to the context, repos, issues, pull_requests and actions toolsets.
 - **Entire**: Coding-context hooks and checkpoint settings are configured.
 
 ## View Neatlogs traces
