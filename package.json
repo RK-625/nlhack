@@ -11,7 +11,8 @@
     "start:prod": "NODE_ENV=production tsx --env-file=.env src/server.ts",
     "tunnel": "node --env-file=.env -e \"const r = require('node:child_process').spawnSync('ngrok', ['http', process.env.PORT || '3000', '--url', 'https://' + process.env.NGROK_DOMAIN], { stdio: 'inherit' }); if (r.error) throw r.error; process.exit(r.status ?? 1)\"",
     "tunnel:local": "npx --yes localtunnel --port 3000 --local-host 127.0.0.1 --subdomain nlhack-rithesh-bot",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "seed": "tsx --env-file-if-exists=.env src/auth/seed.ts"
   },
   "dependencies": {
     "@chat-adapter/state-memory": "^4.41.1",
