@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01KzFQFv51vUcPfu83jzZiqr",
+  "agent_id": "a3bb56341d5a71ec8",
+  "subagent_type": "Plan",
+  "task_description": "Validate sidebar morph design",
+  "token_usage": {
+    "input_tokens": 52,
+    "cache_creation_tokens": 136699,
+    "cache_read_tokens": 2693987,
+    "output_tokens": 18169,
+    "api_call_count": 26
+  },
+  "started_at": "2026-10-11T11:50:12.813375+05:30",
+  "completed_at": "2026-10-11T12:04:58.650498+05:30"
+}

@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01By6E3Bq7Yqmwk3rNYUSeJ6",
+  "agent_id": "ac04acdfcf910b260",
+  "subagent_type": "Explore",
+  "task_description": "Map sidebar rail/expanded code",
+  "token_usage": {
+    "input_tokens": 14,
+    "cache_creation_tokens": 68147,
+    "cache_read_tokens": 338747,
+    "output_tokens": 78,
+    "api_call_count": 7
+  },
+  "started_at": "2026-10-11T11:48:18.746049+05:30",
+  "completed_at": "2026-10-11T11:49:28.714131+05:30"
+}
