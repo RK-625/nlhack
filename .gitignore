@@ -1,7 +1,7 @@
 # Dependencies
 node_modules/
 
-# Secrets (WhatsApp tokens, LLM keys, NEATLOGS_API_KEY)
+# Secrets (LLM keys, NEATLOGS_API_KEY)
 .env
 .env.*
 !.env.example

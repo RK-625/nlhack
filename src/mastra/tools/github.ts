@@ -62,7 +62,7 @@ const TOOL_KEY_PREFIX = "github_"; // listTools() namespaces tools as `<server>_
 
 /**
  * Only the tools that never need approval, for callers that cannot show an approval prompt
- * (delegation from the assistant, and therefore the WhatsApp bot). Same predicate as the
+ * (delegation from the assistant). Same predicate as the
  * approval gate, so a tool is either listed here or would have suspended for approval.
  */
 export async function getGithubReadTools(): Promise<GithubTools> {

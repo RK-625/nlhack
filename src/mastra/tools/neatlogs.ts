@@ -87,7 +87,7 @@ export async function getNeatlogsTools(): Promise<NeatlogsTools> {
 
 /**
  * Only the read allowlist, for callers that cannot show an approval prompt (delegation from the
- * assistant, and therefore the WhatsApp bot). Same predicate as the approval gate.
+ * assistant). Same predicate as the approval gate.
  */
 export async function getNeatlogsReadTools(): Promise<NeatlogsTools> {
   const tools = await getNeatlogsTools();

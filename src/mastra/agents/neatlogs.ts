@@ -23,7 +23,7 @@ export const neatlogsAgent = wrapMastra(new Agent({
 }));
 
 /**
- * Read-only twin used only for the assistant's delegation (and so the WhatsApp bot), which has
+ * Read-only twin used only for the assistant's delegation, which has
  * no approval UI. Not registered on Mastra: it is not a chat target.
  */
 export const neatlogsReaderAgent = wrapMastra(new Agent({

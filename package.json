@@ -6,17 +6,13 @@
     "dev": "mastra dev",
     "build": "mastra build",
     "start": "tsx --env-file=.env src/index.ts",
-    "bot": "tsx --env-file=.env src/server.ts",
+    "serve": "tsx --env-file=.env src/server.ts",
     "web:build": "npm --prefix web run build",
     "start:prod": "NODE_ENV=production tsx --env-file=.env src/server.ts",
-    "tunnel": "node --env-file=.env -e \"const r = require('node:child_process').spawnSync('ngrok', ['http', process.env.PORT || '3000', '--url', 'https://' + process.env.NGROK_DOMAIN], { stdio: 'inherit' }); if (r.error) throw r.error; process.exit(r.status ?? 1)\"",
-    "tunnel:local": "npx --yes localtunnel --port 3000 --local-host 127.0.0.1 --subdomain nlhack-rithesh-bot",
     "typecheck": "tsc",
     "seed": "tsx --env-file-if-exists=.env src/auth/seed.ts"
   },
   "dependencies": {
-    "@chat-adapter/state-memory": "^4.41.1",
-    "@chat-adapter/whatsapp": "^4.41.1",
     "@mastra/ai-sdk": "^1.10.7",
     "@mastra/core": "^1.75.0",
     "@mastra/libsql": "^1.25.1",
@@ -25,7 +21,6 @@
     "ai": "^7.0.137",
     "better-auth": "^1.7.7",
     "better-sqlite3": "^13.0.3",
-    "chat": "^4.41.1",
     "neatlogs": "^1.1.28",
     "zod": "^4.6.5"
   },

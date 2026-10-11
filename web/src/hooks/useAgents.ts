@@ -37,7 +37,7 @@ export const FALLBACK_AGENTS: AgentSummary[] = [
     id: "github",
     name: "GitHub Agent",
     description:
-      "Read-only inspection of GitHub repositories, issues, pull requests, and Actions runs.",
+      "Inspects GitHub repositories, issues, pull requests, and Actions runs, and makes changes when asked, each after you approve it.",
   },
   {
     key: "neatlogsAgent",

@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { init, log, trace } from "neatlogs";
 
 export const telemetryReady = init({
@@ -13,13 +12,8 @@ if (!process.env.NEATLOGS_API_KEY) {
   console.warn("NEATLOGS_API_KEY is missing: traces will not be exported to the dashboard.");
 }
 
-// Group WhatsApp turns without putting phone numbers in session identifiers.
-export function conversationSessionId(threadId: string): string {
-  return createHash("sha256").update(threadId).digest("hex");
-}
-
 export async function traceRequest<T>(
-  channel: "whatsapp" | "cli",
+  channel: "cli",
   sessionId: string,
   run: () => Promise<T>,
   input?: unknown,

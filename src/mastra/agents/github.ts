@@ -22,7 +22,7 @@ export const githubAgent = wrapMastra(new Agent({
 }));
 
 /**
- * Read-only twin used only for the assistant's delegation (and so the WhatsApp bot). Those
+ * Read-only twin used only for the assistant's delegation. Those
  * paths have no approval UI, so it never receives a tool that could suspend for approval.
  * Not registered on Mastra: it is not a chat target and does not appear in the agent list.
  */
