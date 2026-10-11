@@ -2,7 +2,7 @@ import http from "node:http";
 import { readFile } from "node:fs/promises";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
-import { getSessionUser } from "./auth/session";
+import { requireUser } from "./auth/session";
 import { bot } from "./bot/whatsapp";
 import { handleChat, listAgents, sendJson } from "./chat-api";
 import { createWebHandler } from "./web";
@@ -75,14 +75,9 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(405, { allow: "GET" }).end();
       return;
     }
-    try {
-      const user = await getSessionUser(req);
-      if (!user) sendJson(res, 401, { error: "Unauthorized" });
-      else sendJson(res, 200, { user });
-    } catch (error: unknown) {
-      console.error("Session lookup failed", error);
-      sendJson(res, 500, { error: "Session lookup failed" });
-    }
+    const user = await requireUser(req, res);
+    if (!user) return;
+    sendJson(res, 200, { user });
     return;
   }
 
@@ -92,6 +87,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(405, { allow: "GET" }).end();
       return;
     }
+    if (!(await requireUser(req, res))) return;
     sendJson(res, 200, listAgents());
     return;
   }
@@ -99,6 +95,8 @@ const server = http.createServer(async (req, res) => {
   const chatMatch = url.pathname.match(/^\/api\/chat\/([^/]+)$/);
   if (chatMatch) {
     try {
+      // Later: pass this user into handleChat (e.g. as a resource/thread owner).
+      if (!(await requireUser(req, res))) return;
       await handleChat(decodeURIComponent(chatMatch[1]), req, res);
     } catch (error: unknown) {
       console.error("Web chat failed", error);
