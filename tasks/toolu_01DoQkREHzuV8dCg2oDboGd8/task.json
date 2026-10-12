@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01DoQkREHzuV8dCg2oDboGd8",
+  "agent_id": "a71abcfa242f76623",
+  "subagent_type": "general-purpose",
+  "task_description": "Sprint 3b: live-test bots on company data",
+  "token_usage": {
+    "input_tokens": 14,
+    "cache_creation_tokens": 48957,
+    "cache_read_tokens": 437805,
+    "output_tokens": 104,
+    "api_call_count": 7
+  },
+  "started_at": "2026-10-12T12:52:15.60877+05:30",
+  "completed_at": "2026-10-12T12:57:30.249061+05:30"
+}
