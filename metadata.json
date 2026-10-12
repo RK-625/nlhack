@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4QWWJ1C2YNM44SG20FFTMT1",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 6,
   "files_touched": [
     "site/public/evidence/2026-10-12/SHA256SUMS.txt",
     "site/public/evidence/2026-10-12/repo-checkpoints.txt",
@@ -23,20 +23,27 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 68,
-    "cache_creation_tokens": 101105,
-    "cache_read_tokens": 3196442,
-    "output_tokens": 28196,
-    "api_call_count": 29,
+    "input_tokens": 82,
+    "cache_creation_tokens": 291043,
+    "cache_read_tokens": 4565975,
+    "output_tokens": 32463,
+    "api_call_count": 36,
     "subagent_tokens": {
-      "input_tokens": 0,
-      "cache_creation_tokens": 0,
-      "cache_read_tokens": 0,
-      "output_tokens": 0,
-      "api_call_count": 0
+      "input_tokens": 6,
+      "cache_creation_tokens": 76992,
+      "cache_read_tokens": 117016,
+      "output_tokens": 158,
+      "api_call_count": 3
     }
   }
 }

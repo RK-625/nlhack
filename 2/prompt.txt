@@ -1,0 +1,5 @@
+done proceed
+
+---
+
+add the the places of the Take a look at the current evidences. I think we have gathered most of it. Can you replace and update the website based on this and commit it independently? Don't care of other diffs. And update the bot company on render website.
