@@ -1,0 +1,83 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QZHVYYPR8PFYH6TCBS1VV2",
+  "session_id": "01a12f3f-fde6-75e2-b63f-23c8f91f7b07",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T11:57:00.026699Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 4,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "c2a3d1749ca5",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 721724,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 16043904,
+    "output_tokens": 36778,
+    "api_call_count": 134,
+    "subagent_tokens_complete": true
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 231,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3035,
+      "agent_lines_removed": 62,
+      "user_added_per_file": {
+        "video/src/data/agents.ts": 67,
+        "video/src/data/evidence.ts": 62,
+        "video/src/scenes/Scene05Guardrails.tsx": 102
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3266,
+      "agent_lines_removed": 62
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 108,
+      "user_lines_removed": 24,
+      "agent_lines_added": 3266,
+      "agent_lines_removed": 62,
+      "user_added_per_file": {
+        "site/README.md": 2,
+        "site/public/evidence/2026-10-12/README.md": 3,
+        "site/public/evidence/2026-10-12/SHA256SUMS.txt": 1,
+        "site/src/components/chrome.tsx": 5,
+        "site/src/components/github.tsx": 20,
+        "site/src/content.ts": 16,
+        "site/src/pages/Judges.tsx": 7,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/STORYBOARD.md": 1,
+        "video/src/components/BlurInText.tsx": 1
+      },
+      "user_removed_per_file": {
+        "site/README.md": 2,
+        "site/public/evidence/2026-10-12/README.md": 3,
+        "site/public/evidence/2026-10-12/SHA256SUMS.txt": 1,
+        "site/src/components/chrome.tsx": 3,
+        "site/src/content.ts": 10,
+        "site/src/pages/Judges.tsx": 3,
+        "video/STORYBOARD.md": 1,
+        "video/src/components/BlurInText.tsx": 1
+      }
+    }
+  ]
+}
