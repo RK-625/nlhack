@@ -1,0 +1,91 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QDB5P4TKW7TJ279WYXNE60",
+  "session_id": "9ef57287-da2b-49a5-9594-772ac4cb2676",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T06:38:34.394502Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "save_step_count": 1,
+  "files_touched": [
+    "site/src/components/cards.tsx",
+    "site/src/components/chrome.tsx",
+    "site/src/components/media.tsx",
+    "site/src/components/ui.tsx",
+    "site/src/content.ts",
+    "site/src/pages/Home.tsx",
+    "site/src/pages/Judges.tsx",
+    "site/src/styles.css"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "43da4c39e0d0",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 162,
+    "cache_creation_tokens": 367824,
+    "cache_read_tokens": 11037945,
+    "output_tokens": 57857,
+    "api_call_count": 76,
+    "subagent_tokens": {
+      "input_tokens": 128,
+      "cache_creation_tokens": 612166,
+      "cache_read_tokens": 4557499,
+      "output_tokens": 29143,
+      "api_call_count": 64
+    }
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T06:38:34.277389Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 3577,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "site/.gitignore": 2,
+        "site/README.md": 5,
+        "site/index.html": 26,
+        "site/judges/index.html": 26,
+        "site/package-lock.json": 1643,
+        "site/package.json": 28,
+        "site/public/favicon.svg": 1,
+        "site/public/og.svg": 1,
+        "site/src/components/cards.tsx": 131,
+        "site/src/components/chrome.tsx": 83,
+        "site/src/components/media.tsx": 178,
+        "site/src/components/ui.tsx": 157,
+        "site/src/content.ts": 373,
+        "site/src/main-home.tsx": 10,
+        "site/src/main-judges.tsx": 10,
+        "site/src/pages/Home.tsx": 364,
+        "site/src/pages/Judges.tsx": 345,
+        "site/src/styles.css": 154,
+        "site/tsconfig.json": 18,
+        "site/vite.config.ts": 22
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3577,
+      "agent_lines_removed": 0
+    }
+  ]
+}

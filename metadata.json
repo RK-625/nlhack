@@ -3,14 +3,21 @@
   "checkpoint_id": "01M4QDB5P4TKW7TJ279WYXNE60",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 5,
   "files_touched": [
     "site/index.html",
     "site/judges/index.html",
     "site/public/og.svg",
+    "site/src/components/cards.tsx",
+    "site/src/components/chrome.tsx",
+    "site/src/components/media.tsx",
+    "site/src/components/ui.tsx",
+    "site/src/content.ts",
     "site/src/main-home.tsx",
     "site/src/main-judges.tsx",
-    "site/src/pages/Judges.tsx"
+    "site/src/pages/Home.tsx",
+    "site/src/pages/Judges.tsx",
+    "site/src/styles.css"
   ],
   "sessions": [
     {
@@ -19,13 +26,27 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 10,
-    "cache_creation_tokens": 31257,
-    "cache_read_tokens": 335926,
-    "output_tokens": 3543,
-    "api_call_count": 5
+    "input_tokens": 172,
+    "cache_creation_tokens": 399081,
+    "cache_read_tokens": 11373871,
+    "output_tokens": 61400,
+    "api_call_count": 81,
+    "subagent_tokens": {
+      "input_tokens": 128,
+      "cache_creation_tokens": 612166,
+      "cache_read_tokens": 4557499,
+      "output_tokens": 29143,
+      "api_call_count": 64
+    }
   }
 }

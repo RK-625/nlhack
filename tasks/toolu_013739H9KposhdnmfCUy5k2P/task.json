@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_013739H9KposhdnmfCUy5k2P",
+  "agent_id": "af699a2ed3ff07762",
+  "subagent_type": "general-purpose",
+  "task_description": "Analyze FirstRun reference site",
+  "token_usage": {
+    "input_tokens": 12,
+    "cache_creation_tokens": 87044,
+    "cache_read_tokens": 327097,
+    "output_tokens": 350,
+    "api_call_count": 6
+  },
+  "started_at": "2026-10-12T11:58:29.549772+05:30",
+  "completed_at": "2026-10-12T11:59:23.71117+05:30"
+}
