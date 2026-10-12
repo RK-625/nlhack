@@ -1,0 +1,23 @@
+$ git log -1 --format="%h %s" <sha>; trailer: Entire-Checkpoint (one per key commit)
+030a0a75 feat(usage): mark capped turns as errors in neatlogs traces
+    Entire-Checkpoint: 01M4QHHF20ZKNXDC7W1S1K58S6
+729df669 feat(usage): offer a one-time budget extension when a turn is capped
+    Entire-Checkpoint: 01M4QJDNMAYES40487HGRGPDMZ
+f3f783d7 feat(web): show an Approve/Deny escalation card on capped replies
+    Entire-Checkpoint: 01M4QJDQ5AX3B2A2GM7R0CR8CK
+8887e9ba fix(agents): reuse company facts in delegated briefs
+    Entire-Checkpoint: 01M4QMYG0STA2ZQR90286XF297
+6a90ff93 fix(usage): preserve empty capped replies and show continuation budgets
+    Entire-Checkpoint: 01M4QMZVXWXKFYB8569FRC5FH4
+f162e518 fix(web): stop single tilde rendering as strikethrough
+    Entire-Checkpoint: 01M4QR94CNVKS23A630X1FAPD3
+
+$ git ls-remote origin refs/entire/checkpoints/<last-2-chars>/<id>   (repo RK-625/nlhack is private)
+218b54561e refs/entire/checkpoints/S6/01M4QHHF20ZKNXDC7W1S1K58S6
+c193a668ad refs/entire/checkpoints/MZ/01M4QJDNMAYES40487HGRGPDMZ
+cd76474158 refs/entire/checkpoints/CK/01M4QJDQ5AX3B2A2GM7R0CR8CK
+3defdd1fc4 refs/entire/checkpoints/97/01M4QMYG0STA2ZQR90286XF297
+a731c589a7 refs/entire/checkpoints/H4/01M4QMZVXWXKFYB8569FRC5FH4
+e16ac24475 refs/entire/checkpoints/D3/01M4QR94CNVKS23A630X1FAPD3
+
+total refs/entire/* on origin:       79

@@ -1,0 +1,51 @@
+$ entire checkpoint explain --short <id>   (redacted: email)
+● Checkpoint 01M4QHHF20ZKNXDC7W1S1K58S6
+  session  b91df2cd-090e-405e-b518-70639290d90c
+  created  2026-10-12 07:51:54
+  author   Rithesh Kumar <email redacted>
+  tokens   0
+  commits  030a0a7 feat(usage): mark capped turns as errors in neatlogs traces
+────────────────────────────────────────────────────────────
+
+● Checkpoint 01M4QJDNMAYES40487HGRGPDMZ
+  session  b91df2cd-090e-405e-b518-70639290d90c
+  created  2026-10-12 08:07:18
+  author   Rithesh Kumar <email redacted>
+  tokens   0
+  commits  729df66 feat(usage): offer a one-time budget extension when a turn is capped
+────────────────────────────────────────────────────────────
+
+● Checkpoint 01M4QJDQ5AX3B2A2GM7R0CR8CK
+  session  b91df2cd-090e-405e-b518-70639290d90c
+  created  2026-10-12 08:07:19
+  author   Rithesh Kumar <email redacted>
+  tokens   0
+  commits  f3f783d feat(web): show an Approve/Deny escalation card on capped replies
+────────────────────────────────────────────────────────────
+
+● Checkpoint 01M4QMYG0STA2ZQR90286XF297
+  session  01a12f3f-fde6-75e2-b63f-23c8f91f7b07
+  created  2026-10-12 08:51:30
+  author   Rithesh Kumar <email redacted>
+  tokens   6041.7k
+  commits  8887e9b fix(agents): reuse company facts in delegated briefs
+────────────────────────────────────────────────────────────
+
+● Checkpoint 01M4QMZVXWXKFYB8569FRC5FH4
+  session  140a07e0-4884-42bb-85bb-6ec2e3da3acd
+  created  2026-10-12 08:52:16
+  author   Rithesh Kumar <email redacted>
+  tokens   878k
+  commits  6a90ff9 fix(usage): preserve empty capped replies and show continuation budgets
+────────────────────────────────────────────────────────────
+
+● Checkpoint 01M4QR94CNVKS23A630X1FAPD3
+  session  b91df2cd-090e-405e-b518-70639290d90c
+  created  2026-10-12 09:49:41
+  author   Rithesh Kumar <email redacted>
+  tokens   0
+  commits  f162e51 fix(web): stop single tilde rendering as strikethrough
+────────────────────────────────────────────────────────────
+
+$ entire checkpoint tokens <id>   (agent/model/tokens lines only)
+

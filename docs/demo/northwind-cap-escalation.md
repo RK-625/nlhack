@@ -36,7 +36,8 @@ which specialists to consult; the exact delegation order and cost vary by run.
    it is actually visible in the dashboard.
 6. Show the prompt diff: the Primary Bot passes already-read figures and paths;
    delegated specialists read only missing evidence and return a compact brief.
-   Show the Entire checkpoints on the implementation commits.
+   Show the Entire checkpoints on the implementation commits; commands, ids and
+   limits are in [entire-checkpoints.md](entire-checkpoints.md).
 7. Reset the Primary Bot's limits to the defaults after recording.
 
 Neat Bot order: diagnose with the before trace only, show the fix diff, then

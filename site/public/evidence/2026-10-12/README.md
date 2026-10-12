@@ -140,3 +140,13 @@ back through MCP.
 ## Published copy
 
 PNGs 01-07 and the three JSON exports are byte-identical to the supplied evidence; PNGs 08-14 are Neat Bot screenshots added afterwards. Relative links in this index, the demo guide, and HTML report were adapted for this public folder; the HTML also adds a mobile viewport and scrollable tables. SHA256SUMS.txt verifies this published copy. The private repository remains private.
+
+## Entire checkpoint evidence
+
+Text captures of `entire` / `git` output for the six Northwind commits (email and
+local home path redacted). The source repository is private, so these excerpts
+are the public record.
+
+- `24-entire-checkpoint-8887e9ba.txt`: `entire checkpoint explain 8887e9ba` (assistant turns only) and token usage.
+- `25-entire-checkpoints-key-commits.txt`: short explain and tokens for all six checkpoints.
+- `26-entire-checkpoint-trailers-and-refs.txt`: commit trailers and matching `refs/entire/checkpoints/*` refs on `origin`.
