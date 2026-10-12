@@ -30,7 +30,7 @@ export const proofThumb = (name: string) => `${proofBase}/thumbs/${name.replace(
 export const site = {
   name: "Bot Company",
   hackathon: "neatHack 2026",
-  tagline: "Managed bots. 🔍 Every run traced. 💸 Every turn capped.",
+  tagline: "Bot Company is a workspace with managed AI agents. 🔍 Every run traced. 💸 Every turn capped.",
   description:
     "Bot Company is a multi-agent company copilot built on Mastra. A Primary Bot delegates to specialists for research, finance, GitHub and observability. Every write waits for your approval, every turn has a cost cap, and every run is traced with neatlogs.",
   /** Public URL of this site, used for OG tags. */
