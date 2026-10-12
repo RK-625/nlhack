@@ -1,0 +1,106 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QEJB28HTP0SXDQZQTD8831",
+  "session_id": "6fe2bc03-1809-421a-9da8-9306add3233b",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T06:59:56.984868Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "save_step_count": 1,
+  "files_touched": [
+    "company/lumen-labs/INDEX.md",
+    "company/lumen-labs/company/overview.md",
+    "company/lumen-labs/customer-success/churn-log.md",
+    "company/lumen-labs/hr/onboarding-checklist.md",
+    "company/lumen-labs/hr/policies/employee-handbook.md",
+    "company/lumen-labs/hr/policies/leave-policy.md",
+    "company/lumen-labs/hr/policies/remote-work-policy.md",
+    "company/lumen-labs/legal/compliance-status.md",
+    "company/lumen-labs/legal/msa-template.md",
+    "company/lumen-labs/legal/nda-template.md",
+    "company/lumen-labs/marketing/brand-and-positioning.md",
+    "company/lumen-labs/marketing/content-calendar-q4.md",
+    "company/lumen-labs/sales/sales-playbook.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "80c411f827c2",
+  "checkpoint_transcript_start": 64,
+  "transcript_lines_at_start": 64,
+  "compact_transcript_start": 7,
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 13507,
+    "cache_read_tokens": 695339,
+    "output_tokens": 6835,
+    "api_call_count": 8,
+    "subagent_tokens": {
+      "input_tokens": 24,
+      "cache_creation_tokens": 155997,
+      "cache_read_tokens": 1360982,
+      "output_tokens": 16241,
+      "api_call_count": 12
+    }
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T06:59:56.955243Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 906,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "company/lumen-labs/INDEX.md": 60,
+        "company/lumen-labs/company/overview.md": 51,
+        "company/lumen-labs/customer-success/account-health.csv": 32,
+        "company/lumen-labs/customer-success/churn-log.md": 25,
+        "company/lumen-labs/customer-success/zendesk-export/tickets.csv": 37,
+        "company/lumen-labs/finance/stripe-export/customers.csv": 38,
+        "company/lumen-labs/finance/stripe-export/failed-payments.csv": 12,
+        "company/lumen-labs/finance/stripe-export/mrr-by-month.csv": 25,
+        "company/lumen-labs/finance/summary.md": 57,
+        "company/lumen-labs/hr/bamboohr-export/employees.csv": 41,
+        "company/lumen-labs/hr/greenhouse-export/candidates.csv": 20,
+        "company/lumen-labs/hr/onboarding-checklist.md": 32,
+        "company/lumen-labs/hr/open-roles.md": 34,
+        "company/lumen-labs/hr/policies/employee-handbook.md": 37,
+        "company/lumen-labs/hr/policies/leave-policy.md": 29,
+        "company/lumen-labs/hr/policies/remote-work-policy.md": 28,
+        "company/lumen-labs/hr/salary-bands.md": 20,
+        "company/lumen-labs/legal/compliance-status.md": 36,
+        "company/lumen-labs/legal/contracts-register.csv": 27,
+        "company/lumen-labs/legal/msa-template.md": 24,
+        "company/lumen-labs/legal/nda-template.md": 18,
+        "company/lumen-labs/marketing/brand-and-positioning.md": 34,
+        "company/lumen-labs/marketing/campaigns.csv": 22,
+        "company/lumen-labs/marketing/content-calendar-q4.md": 30,
+        "company/lumen-labs/marketing/signups-by-channel.csv": 13,
+        "company/lumen-labs/sales/hubspot-export/deals.csv": 29,
+        "company/lumen-labs/sales/q4-forecast.md": 50,
+        "company/lumen-labs/sales/sales-playbook.md": 45
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 906,
+      "agent_lines_removed": 0
+    }
+  ]
+}
