@@ -1,0 +1,63 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QDB5P4TKW7TJ279WYXNE60",
+  "session_id": "b91df2cd-090e-405e-b518-70639290d90c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T06:38:34.853387Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    "site/.gitignore",
+    "site/package-lock.json",
+    "site/package.json",
+    "site/public/favicon.svg",
+    "site/public/img/.gitkeep",
+    "site/tsconfig.json",
+    "site/vite.config.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "cd7e38bf43e3",
+  "checkpoint_transcript_start": 542,
+  "transcript_lines_at_start": 542,
+  "compact_transcript_start": 104,
+  "token_usage": {
+    "input_tokens": 2,
+    "cache_creation_tokens": 2002,
+    "cache_read_tokens": 191714,
+    "output_tokens": 1370,
+    "api_call_count": 1,
+    "subagent_tokens": {
+      "input_tokens": 0,
+      "cache_creation_tokens": 0,
+      "cache_read_tokens": 0,
+      "output_tokens": 0,
+      "api_call_count": 0
+    }
+  },
+  "session_metrics": {
+    "turn_count": 30
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T06:38:34.753815Z",
+    "agent_lines": 1714,
+    "agent_removed": 0,
+    "human_added": 1706,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 3420,
+    "total_lines_changed": 3420,
+    "agent_percentage": 50.11695906432748,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

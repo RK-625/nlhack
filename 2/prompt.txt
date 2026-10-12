@@ -1,0 +1,32 @@
+<pasted_content id="9b71">
+Post in #pink-chetan
+
+hey @thecjstream 👋 update from RK625
+
+I’m building a multi-agent company copilot. One Primary Bot takes your request and hands pieces to specialists:
+• Research Bot: company and market research (Crustdata + web)
+• CFO Bot: runway, burn, budgets and pricing, plus live data from my cfo.ai workspace
+• GitHub Bot: repos, issues, PRs, Actions
+• Neat Bot: reads our own neatlogs traces to find failed runs, latency and token use
+
+What I’m focusing on is trusting it without watching:
+• every change (GitHub, cfo.ai, deleting files) stops for an inline Approve/Deny card, even when a specialist is the one asking
+• per-turn cost and token caps per user and per agent, with our estimate shown next to neatlogs’ own numbers under each reply
+• all agents traced in neatlogs, with Entire checkpoints in the repo
+
+You can try it live: https://expansive-contents-five.ngrok-free.dev
+• the first load shows an ngrok “Visit Site” page, so click through it
+• I’ll DM you a guest login (employee role, so the Neat Bot only shows your own traces)
+• in the guest copy GitHub, Crustdata and the cfo.ai connection are switched off, so the CFO Bot works from figures you type in; cfo.ai is covered in my demo
+• it runs from my laptop, so if it’s down, ping me
+
+Try: “Research Retool and its competitors, then have the CFO Bot model what a $49 vs $79 plan would do to runway”.
+
+Two questions: (1) is that research → CFO flow the right single task to lead the demo with? (2) for the neatlogs incidents part, is it enough to show the Neat Bot finding a failed or capped run, then the fix in a later trace?
+
+DM to Chetan (send it after the channel post, with the real values):
+
+Guest login for the link above: username mentor, password <copy from seed-users.json>. Please don’t share it. I’ll delete the account after your review.
+</pasted_content id="9b71">
+
+about this first tell me what to sent according to update changes here btw
