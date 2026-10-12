@@ -1,0 +1,30 @@
+What did we demonstrate in that particular screenshots? Is there anything we have to fix in those evidence? I agree some evidence is still missing uh, from the list. But is this current, is this okay for one of the requirements in the in the list the the chetan asked what does tick it off here btw How does it prove to work and what does it optimize here, tell me?
+
+---
+
+So it is basically a cost, uh, you know, a cost uh, control measure. So whenever the run, uh, whenever the run uh, passes the cost limit barrier, it stops, and it is logged in the neat, neat write, and those traces are present. It's basically you you limit it. That's it, right?
+
+---
+
+<!-- attach -->
+> Learn from it: we used those traces to find why it hit the limit: the CFO Bot was rereading files the Primary Bot had already read. We fixed that, and the before-and-after numbers show it:
+> CFO file reads: 29 → 10;
+> runs finishing within the normal limit: 2/3 → 3/3.
+
+I was just ha happening here. How did uh, the CFO bot uh, reduce? The number of runs here. How did it get 'tell me? How did it find it out?
+
+---
+
+clean. This is one of the evidences. can we ask the neat bot itself and get get the response from it? That how did the cost did a real demo of this? Tell me. but for that should change the code or the repo here tell me
+
+---
+
+is this enough here tell me
+
+---
+
+Instead, can it look at the trace and tell me what could the fix be or guess like what changes it suggests from the trace? I can start a new thread and ask even this, and we can insert this as evidence. And after that, we can insert this before and insert the one I sent in the previous turn later. What do you say?
+
+---
+
+i have sent the evidences here btw
