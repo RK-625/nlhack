@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4RMNX9BMBJMWA8QNXY2ZM5M",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 7,
+  "checkpoints_count": 8,
   "files_touched": [
     "site/public/evidence/2026-10-12/57-neatbot-cost-prompt.png",
     "site/public/evidence/2026-10-12/58-neatbot-cost-analysis.png",
@@ -22,6 +22,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 120,
+    "cache_creation_tokens": 281254,
+    "cache_read_tokens": 6803205,
+    "output_tokens": 45284,
+    "api_call_count": 54
+  }
 }
