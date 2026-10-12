@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Render output (stills, mp4s) and Remotion caches
+out/
+.remotion/
+*.tsbuildinfo
+
+# OS / editor noise
+.DS_Store
+*.log
