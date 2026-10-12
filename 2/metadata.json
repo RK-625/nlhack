@@ -1,0 +1,65 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RC4H853558V7WNZ99SXBXP",
+  "session_id": "01a12fe9-d9cb-72a2-b7fc-64309f043e97",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T15:37:46.606139Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "9472a6b7f068",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 718279,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 15475072,
+    "output_tokens": 70688,
+    "api_call_count": 137
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 728,
+      "user_lines_removed": 84,
+      "agent_lines_added": 3642,
+      "agent_lines_removed": 78,
+      "user_added_per_file": {
+        "site/README.md": 1,
+        "site/src/content.ts": 2,
+        "src/cfo/mcp-fetch.test.ts": 28,
+        "src/cfo/mcp-fetch.ts": 18,
+        "video/FINAL-REVIEW.md": 24,
+        "video/REVISION-PITCH.md": 11,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/STORYBOARD.md": 30,
+        "video/src/Main.tsx": 1,
+        "video/src/audio/Soundtrack.tsx": 13,
+        "video/src/data/agents.ts": 67,
+        "video/src/demo/AppDemo.tsx": 100,
+        "video/src/scenes/Scene00Chaos.tsx": 71,
+        "video/src/scenes/Scene03Team.tsx": 6,
+        "video/src/scenes/Scene04RealWork.tsx": 1,
+        "video/src/scenes/Scene06NeatBot.tsx": 51,
+        "video/src/scenes/Scene07Roles.tsx": 45,
+        "video/src/scenes/Scene10bCfoPlan.tsx": 78,
+        "video/src/scenes/SceneCfoDemo.tsx": 15,
+        "video/src/scenes/SceneGithubDemo.tsx": 41,
+        "video/src/scenes/SceneResearchDemo.tsx": 51,
+        "video/src/timeline.ts": 22
+      },
+      "user_removed_per_file": {
+        "site/README.md": 1,
+        "site/src/content.ts": 2,
+        "video/STORYBOARD.md": 36,
+        "video/src/Main.tsx": 1,
+        "video/src/audio/Soundtrack.tsx": 11,
+        "video/src/scenes/Scene03Team.tsx": 4,
+        "video/src/scenes/Scene04RealWork.tsx": 1,
+        "video/src/timeline.ts": 28
+      }
+    }
+  ]
+}
