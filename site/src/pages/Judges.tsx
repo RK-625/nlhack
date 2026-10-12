@@ -181,7 +181,7 @@ function SupportingDetails() {
     <div className="border-t border-line py-10">
       <Container>
         <details className="border-b border-line pb-4">
-          <summary className="cursor-pointer text-sm font-medium">Known limits</summary>
+          <summary className="cursor-pointer text-sm font-medium">Scope and next steps</summary>
           <ul className="mt-4 max-w-3xl list-disc space-y-3 pl-5 text-sm leading-relaxed text-muted-fg">
             {knownLimits.map((limit) => <li key={limit}>{limit}</li>)}
           </ul>

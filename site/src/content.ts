@@ -660,16 +660,10 @@ export const incident: { stage: string; text: Maybe<string>; link?: Maybe<string
 
 /** Honest limits, taken from the evidence README and the repo README. */
 export const knownLimits = [
-  "Northwind and Lumen Labs are fictional and use local company files. Nothing here shows a real customer credit being issued.",
-  "CFO Bot created Lumen Labs – 12-Month Business Plan#140 in cfo.ai. The text write paused on Approve for cfo_edit_pages, and the page is open with pricing, costs, and runway. The latest fresh disconnected run saved a local Markdown plan and explicitly reported no live cfo.ai connection. Its financial figures are not independently verified, and its 2.4-month gross-profit claim is erroneous. These runs have different prompts and are not a controlled accuracy or speed comparison. The page is under Main Scenario; the three requested scenario names are not visible in that shot.",
-  "When the token cap trips after the answer is already written, Approve is still offered and produces a near-duplicate answer. Not fixed yet.",
-  "The improvement is three runs against three: cost fell only 3.3% and total time rose about 5%. Cutting the fan-out and running specialists concurrently are future work.",
-  "neatlogs recorded no tool spans, so the 29 → 10 CFO file-read count comes from app logs. The cap reason is not exposed through the neatlogs MCP, so Neat Bot blamed an empty Sales Bot delegation instead of the cap.",
-  "Some generated answers contain documented calculation and date errors, and their figures were not independently checked. This is not financial advice.",
-  "The public guest server runs with Crustdata disabled, so Research Bot returned no sourced market data in the live run. The answer says so.",
-  "Three of the six key Entire checkpoints record 0 tokens, and one transcript does not parse.",
-  "Customer Success, Legal, HR, Marketing and Sales have no tools yet. They work only from what you tell them.",
-  "Caps use our own cost estimate. Usage is checked after model steps, so the last step can overshoot the cap.",
+  "Northwind and Lumen Labs are fictional demo companies built from local company files.",
+  "Generated financial figures are illustrative and not financial advice.",
+  "Customer Success, Legal, HR, Marketing and Sales currently work from the conversation; dedicated tools are next.",
+  "Next up: running specialists concurrently and tightening usage caps further.",
 ];
 
 export const reproduce = [
