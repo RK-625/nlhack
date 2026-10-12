@@ -1,0 +1,75 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QDB5P4TKW7TJ279WYXNE60",
+  "session_id": "6fe2bc03-1809-421a-9da8-9306add3233b",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T06:38:32.855991Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    "site/index.html",
+    "site/judges/index.html",
+    "site/public/og.svg",
+    "site/src/main-home.tsx",
+    "site/src/main-judges.tsx",
+    "site/src/pages/Judges.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "8caaa03660f9",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 31257,
+    "cache_read_tokens": 335926,
+    "output_tokens": 3543,
+    "api_call_count": 5
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T06:38:32.839311Z",
+    "agent_lines": 418,
+    "agent_removed": 0,
+    "human_added": 5,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 423,
+    "total_lines_changed": 423,
+    "agent_percentage": 98.81796690307328,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 3154,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "site/.gitignore": 2,
+        "site/package-lock.json": 1643,
+        "site/package.json": 28,
+        "site/public/favicon.svg": 1,
+        "site/src/components/cards.tsx": 131,
+        "site/src/components/chrome.tsx": 83,
+        "site/src/components/media.tsx": 178,
+        "site/src/components/ui.tsx": 157,
+        "site/src/content.ts": 373,
+        "site/src/pages/Home.tsx": 364,
+        "site/src/styles.css": 154,
+        "site/tsconfig.json": 18,
+        "site/vite.config.ts": 22
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3577,
+      "agent_lines_removed": 0
+    }
+  ]
+}
