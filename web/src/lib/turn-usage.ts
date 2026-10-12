@@ -20,7 +20,45 @@ export type TurnUsage = {
   final: boolean;
   /** The turn's Neatlogs trace id. */
   traceId?: string;
+  /** Id of the agent whose step went over the cap. */
+  trippedBy?: string | null;
+  /** On a capped reply: the one-time budget extension offered for finishing it. */
+  escalation?: EscalationOffer;
+  /** On a reply that continues a capped one: which one, and the user's decision. */
+  continuation?: { from: string; decision: "approved" | "denied" };
 };
+
+/** Mirrors EscalationOffer in src/chat-escalation.ts. `status` is as last saved by the server. */
+export type EscalationOffer = {
+  id: string;
+  extraCostUsd: number;
+  extraTokens: number;
+  status: "pending" | "approved" | "denied" | "dropped";
+};
+
+export type EscalationDecision = { id: string; approved: boolean };
+
+/**
+ * The Approve/Deny decision a user message carries (`metadata.capEscalation`). Such a message is
+ * sent by the escalation card, not typed: the server replaces its text with its own prompt, and
+ * the transcript hides it.
+ */
+export function messageEscalationDecision(message: UIMessage): EscalationDecision | null {
+  if (message.role !== "user") return null;
+  const value = (message.metadata as { capEscalation?: unknown } | undefined)?.capEscalation;
+  if (!value || typeof value !== "object") return null;
+  const { id, approved } = value as Partial<EscalationDecision>;
+  return typeof id === "string" && typeof approved === "boolean" ? { id, approved } : null;
+}
+
+/** "This reply hit its $0.02 limit after $0.025. Finishing needs about $0.04 more." */
+export function escalationText(usage: TurnUsage, offer: EscalationOffer): string {
+  const hit =
+    usage.reason === "tokens"
+      ? `This reply hit its ${formatTokens(usage.capTokens)} token limit after ${formatTokens(usage.tokens)}.`
+      : `This reply hit its ${formatUsd(usage.capCostUsd)} limit after ${formatUsd(usage.costUsd)}.`;
+  return `${hit} Finishing needs about ${formatUsd(offer.extraCostUsd)} more.`;
+}
 
 /**
  * Neatlogs' own cost and tokens for a turn's trace, fetched by the server after the turn and saved

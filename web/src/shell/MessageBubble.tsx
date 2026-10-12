@@ -11,7 +11,14 @@ import { DURATION, enterTransition, exitTransition } from "@/lib/motion";
 import { ChatMarkdown, LinkifiedText } from "@/components/markdown/markdown.web";
 import { type AgentNames, messageSegments, messageText, toolsDurationMs } from "@/lib/message-parts";
 import { toolStepCount } from "@/lib/tool-activity-view";
-import { capNoticeText, messageTurnUsage } from "@/lib/turn-usage";
+import {
+  capNoticeText,
+  type EscalationOffer,
+  escalationText,
+  messageEscalationDecision,
+  messageTurnUsage,
+  type TurnUsage,
+} from "@/lib/turn-usage";
 
 const USER_WIDTH = "max-w-[min(84%,calc(100%_-_8rem))] max-md:max-w-[84%] [@media(hover:none)]:max-w-[84%]";
 const BOT_WIDTH = "max-w-[min(88%,calc(100%_-_8rem))] max-md:max-w-[92%] [@media(hover:none)]:max-w-[88%]";
@@ -30,6 +37,8 @@ export function MessageBubble({
   earlier,
   agentNames,
   onApproval,
+  next,
+  onEscalation,
 }: {
   message: UIMessage;
   /** This is the assistant message currently being streamed. */
@@ -39,8 +48,14 @@ export function MessageBubble({
   agentNames: AgentNames;
   /** Answers a tool call awaiting approval; omitted when this message can't be answered now. */
   onApproval?: (approvalId: string, approved: boolean) => void;
+  /** The message after this one, if any (it tells whether a capped reply's escalation was decided). */
+  next?: UIMessage;
+  /** Approves or denies this reply's budget extension; omitted when it can't be decided now. */
+  onEscalation?: (escalationId: string, approved: boolean) => void;
 }) {
   if (message.role === "user") {
+    // An Approve/Deny on an escalation card is sent as a user message; the card already shows it.
+    if (messageEscalationDecision(message)) return null;
     const text = messageText(message);
     if (!text) return null;
     return (
@@ -106,8 +121,95 @@ export function MessageBubble({
           </Row>
         );
       })}
-      {usage?.capped ? <CapNotice text={capNoticeText(usage)} /> : null}
+      {usage?.capped ? (
+        usage.escalation ? (
+          <EscalationCard
+            usage={usage}
+            offer={usage.escalation}
+            outcome={escalationOutcome(usage.escalation, next)}
+            onRespond={onEscalation ? (approved) => onEscalation(usage.escalation!.id, approved) : undefined}
+          />
+        ) : (
+          <CapNotice text={capNoticeText(usage)} />
+        )
+      ) : null}
+      {usage?.continuation?.decision === "denied" ? (
+        <CapNotice text="Incomplete: answered from what was gathered before the limit, since more budget was declined." />
+      ) : null}
     </div>
+  );
+}
+
+type EscalationOutcome = "approved" | "denied" | "dropped";
+
+/** Decided when the next message is the decision (live), or as the server last saved it (reload). */
+function escalationOutcome(offer: EscalationOffer, next: UIMessage | undefined): EscalationOutcome | undefined {
+  if (next) {
+    const decision = messageEscalationDecision(next);
+    return decision && decision.id === offer.id ? (decision.approved ? "approved" : "denied") : "dropped";
+  }
+  return offer.status === "pending" ? undefined : offer.status;
+}
+
+const ESCALATION_OUTCOME_TEXT: Record<EscalationOutcome, string> = {
+  approved: "Approved: finished below with a one-time extension.",
+  denied: "Denied: answered below from what was gathered.",
+  dropped: "Not continued: no decision was made.",
+};
+
+/**
+ * End of a capped reply: what it spent and an offer to finish it with a one-time extension (the
+ * user's limit stays as it is). Same look as a tool approval card.
+ */
+function EscalationCard({
+  usage,
+  offer,
+  outcome,
+  onRespond,
+}: {
+  usage: TurnUsage;
+  offer: EscalationOffer;
+  outcome?: EscalationOutcome;
+  onRespond?: (approved: boolean) => void;
+}) {
+  const title = escalationText(usage, offer);
+  const pending = !outcome && onRespond;
+  return (
+    <Row user={false}>
+      <div
+        role="group"
+        aria-label={title}
+        data-testid="turn-cap-escalation"
+        className="flex max-w-full flex-col gap-2 rounded-[20px] border border-border bg-muted/60 px-[18px] py-3 text-[14.5px] leading-[1.45] text-foreground/90"
+      >
+        <div className="flex items-start gap-2 font-medium">
+          <OctagonAlert size={15} strokeWidth={1.8} className="mt-[3px] shrink-0 text-destructive" />
+          <span className="min-w-0 break-words">{title}</span>
+        </div>
+        {pending ? (
+          <>
+            <div className="text-[13px] text-muted-foreground">
+              Approve to finish this reply with a one-time extension; your limit stays as it is. Deny to get the best
+              answer from what was gathered. Or raise the limit from the bot name ▾.
+            </div>
+            <div className="flex gap-2">
+              <Button size="sm" onClick={() => onRespond(true)}>
+                <Check strokeWidth={1.8} />
+                Approve
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => onRespond(false)}>
+                <X strokeWidth={1.8} />
+                Deny
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="text-[13px] text-muted-foreground">
+            {outcome ? ESCALATION_OUTCOME_TEXT[outcome] : "Raise the limit from the bot name ▾."}
+          </div>
+        )}
+      </div>
+    </Row>
   );
 }
 

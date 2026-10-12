@@ -23,6 +23,8 @@ export type AgentChat = {
   send: (text: string) => void;
   /** Approve or deny a tool call awaiting approval; the decision is sent and the reply continues. */
   respondToApproval: (approvalId: string, approved: boolean) => void;
+  /** Approve or deny a capped reply's one-time budget extension; the continuation streams as a new reply. */
+  respondToEscalation: (escalationId: string, approved: boolean) => void;
   stop: () => void;
   clear: () => void;
   retry: () => void;
@@ -54,6 +56,12 @@ export function useAgentChat(agentKey: string): AgentChat {
     respondToApproval: (approvalId, approved) => {
       if (isRunning(chat.status)) return;
       void helpers.addToolApprovalResponse({ id: approvalId, approved });
+    },
+    respondToEscalation: (escalationId, approved) => {
+      if (isRunning(chat.status) || isHistoryLoading(agentKey)) return;
+      // Sent as a user message carrying the decision; the server ignores the text and the
+      // transcript hides the message (the card shows the decision).
+      void helpers.sendMessage({ text: approved ? "Approve" : "Deny", metadata: { capEscalation: { id: escalationId, approved } } });
     },
     stop: () => void helpers.stop(),
     clear: () => {

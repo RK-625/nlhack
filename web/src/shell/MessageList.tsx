@@ -52,6 +52,7 @@ export function MessageList({
   onRetry,
   onDismissError,
   onApproval,
+  onEscalation,
   empty,
 }: {
   messages: UIMessage[];
@@ -62,6 +63,8 @@ export function MessageList({
   onDismissError: () => void;
   /** Approve or deny a tool call that is awaiting approval in the latest reply. */
   onApproval: (approvalId: string, approved: boolean) => void;
+  /** Approve or deny the budget extension offered on the latest reply when it hit its cap. */
+  onEscalation: (escalationId: string, approved: boolean) => void;
   /** Rendered instead of the transcript when there are no messages. */
   empty: ReactNode;
 }) {
@@ -174,6 +177,8 @@ export function MessageList({
                       agentNames={agentNames}
                       // Only the latest reply can be answered (the AI SDK resumes from the last message), and not mid-request.
                       onApproval={index === messages.length - 1 && !running ? onApproval : undefined}
+                      next={messages[index + 1]}
+                      onEscalation={index === messages.length - 1 && !running ? onEscalation : undefined}
                     />
                   </m.div>
                 ))}

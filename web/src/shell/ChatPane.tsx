@@ -86,6 +86,7 @@ function AgentConversation({
         onRetry={chat.retry}
         onDismissError={chat.dismissError}
         onApproval={chat.respondToApproval}
+        onEscalation={chat.respondToEscalation}
         empty={chat.loading ? <HistorySkeleton /> : <EmptyState agent={agent} onPick={chat.send} />}
       />
       {agent.id === "cfo" ? <CfoConnectBanner /> : null}

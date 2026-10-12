@@ -17,6 +17,7 @@ import { agentAvatarValue } from "@/lib/agent-avatar";
 import { type ResolvedAppearance, setUiAppearance } from "@/lib/appearance";
 import { messageTime } from "@/lib/chats";
 import { messageText } from "@/lib/message-parts";
+import { messageEscalationDecision } from "@/lib/turn-usage";
 import {
   DURATION,
   enterTransition,
@@ -642,6 +643,8 @@ function ThemeToggle({ compact = false }: { compact?: boolean }) {
 }
 
 function previewText(message: UIMessage): string {
+  const decision = messageEscalationDecision(message);
+  if (decision) return decision.approved ? "You: Approved more budget" : "You: Declined more budget";
   const plain = messageText(message)
     .replace(/[#>*_`|]/g, "")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
