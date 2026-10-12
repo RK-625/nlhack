@@ -9,3 +9,14 @@ out/
 # OS / editor noise
 .DS_Store
 *.log
+
+# Licensed music (Pixabay license forbids standalone redistribution)
+public/music/*.mp3
+
+# Source cast/evidence tables are not the app's runtime data directory.
+!src/data/
+!src/data/*.ts
+
+# Generated voice auditions for the retired 82-second narration draft.
+# Keep the optional generator in tts/; the current film uses music only.
+public/vo/

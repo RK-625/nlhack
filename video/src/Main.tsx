@@ -7,7 +7,7 @@ import { ScenePlaceholder } from "./components/ScenePlaceholder";
 import { ensureFonts } from "./theme/fonts";
 import { FONT_STACK, TRANSITION_FRAMES } from "./theme/tokens";
 import type { SceneDef } from "./timeline";
-import { INTRO_SCENES, SCENES, sequenceFrames } from "./timeline";
+import { INTRO_SCENES, SCENES, sequenceFrames, SPRINT3_SCENES } from "./timeline";
 import { blurDissolve } from "./transitions/blurDissolve";
 
 ensureFonts();
@@ -38,14 +38,17 @@ export const SceneSeries = ({ scenes }: { scenes: SceneDef[] }) => {
         })}
       </TransitionSeries>
       <BackdropFinish />
-      <Soundtrack scenes={scenes} />
+      <Soundtrack />
       {fromBlack > 0 ? <AbsoluteFill style={{ backgroundColor: "#000", opacity: fromBlack }} /> : null}
     </AbsoluteFill>
   );
 };
 
-/** Full ~82 s launch video (unbuilt scenes render as placeholder cards). */
+/** Full 160 s hackathon product demo. */
 export const Main = () => <SceneSeries scenes={SCENES} />;
 
 /** Scenes 1–2 only (0–11 s) — the Sprint 2 style test. */
 export const Intro = () => <SceneSeries scenes={INTRO_SCENES} />;
+
+/** Scenes 1–5, with music fading at this preview's end. */
+export const Sprint3 = () => <SceneSeries scenes={SPRINT3_SCENES} />;

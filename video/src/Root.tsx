@@ -1,9 +1,9 @@
 import { AbsoluteFill, Composition, Folder } from "remotion";
 import { BackdropBase, BackdropFinish } from "./components/Backdrop";
 import { CastSheet } from "./dev/CastSheet";
-import { Intro, Main } from "./Main";
+import { Intro, Main, Sprint3 } from "./Main";
 import { FONT_STACK, VIDEO } from "./theme/tokens";
-import { INTRO_SCENES, SCENES, sequenceFrames, totalFrames } from "./timeline";
+import { INTRO_SCENES, SCENES, sequenceFrames, SPRINT3_SCENES, totalFrames } from "./timeline";
 
 const base = { fps: VIDEO.fps, width: VIDEO.width, height: VIDEO.height } as const;
 
@@ -23,6 +23,7 @@ export const RemotionRoot = () => (
   <>
     <Composition id="Main" component={Main} durationInFrames={totalFrames(SCENES)} {...base} />
     <Composition id="Intro" component={Intro} durationInFrames={totalFrames(INTRO_SCENES)} {...base} />
+    <Composition id="Sprint3" component={Sprint3} durationInFrames={totalFrames(SPRINT3_SCENES)} {...base} />
     <Folder name="Scenes">
       {SCENES.map((scene, i) =>
         scene.component ? (

@@ -3,7 +3,7 @@ import { useId } from "react";
 import type { ShapeAgent } from "../data/agents";
 import { SHIPPED_BOT_AVATAR_CENTER, SHIPPED_BOT_AVATAR_VIEWBOX } from "../lib/avatar-shapes";
 import type { EyePair, EyeParams } from "../lib/expressions";
-import { EXPRESSIONS } from "../lib/expressions";
+import { EXPRESSIONS, EYE_SCALE } from "../lib/expressions";
 import type { BodyPose } from "../lib/motion";
 import { REST } from "../lib/motion";
 
@@ -79,7 +79,8 @@ const Eye = ({
  * The app's shape mascot (web/src/components/avatar/bot-avatar.tsx, `::shape_<n>` branch):
  * a linear-gradient (light → dark, top-left → bottom-right) shape path plus two eye ellipses
  * in `colorDef.eyeColor`. Everything else here — expressions, blink, squash, glow — is
- * animation layered on that exact geometry.
+ * animation layered on that exact geometry; the eyes are drawn EYE_SCALE× the app size
+ * (about their own centres) so faces read better on video.
  */
 export const Mascot = ({
   agent,
@@ -158,8 +159,14 @@ export const Mascot = ({
           strokeWidth={0}
           transform={`translate(${look.x} ${look.y})`}
         >
-          <Eye cx={EYE_L.x} cy={EYE_L.y} p={eyes.left} blink={blink} clipId={`${uid}-lidL`} />
-          <Eye cx={EYE_R.x} cy={EYE_R.y} p={eyes.right} blink={blink} clipId={`${uid}-lidR`} />
+          {[
+            { at: EYE_L, p: eyes.left, id: "L" },
+            { at: EYE_R, p: eyes.right, id: "R" },
+          ].map(({ at, p, id }) => (
+            <g key={id} transform={`translate(${at.x} ${at.y}) scale(${EYE_SCALE}) translate(${-at.x} ${-at.y})`}>
+              <Eye cx={at.x} cy={at.y} p={p} blink={blink} clipId={`${uid}-lid${id}`} />
+            </g>
+          ))}
         </g>
       </svg>
     </div>

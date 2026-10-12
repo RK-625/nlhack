@@ -2,7 +2,15 @@
  * Eye poses for the shape mascots. The app's resting face is two horizontal ellipses
  * (rx 10, ry 7) at CENTER±29, CENTER-8 in the 259-unit avatar viewBox — every expression
  * is a small, interpolatable deviation from that so the bots stay recognisably "ours".
+ * The params below stay in the app's units; <Mascot> renders them EYE_SCALE× larger.
  */
+
+/**
+ * Video-only enlargement of the eyes (approved in Sprint 3) so expressions read at a
+ * distance. Applied around each eye's centre, so every pose, blink and wink keeps its
+ * proportions; eye positions are unchanged.
+ */
+export const EYE_SCALE = 1.2;
 export type Expression =
   | "neutral"
   | "happy"

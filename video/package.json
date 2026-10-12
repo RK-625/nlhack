@@ -5,8 +5,9 @@
   "description": "Bot Company launch video (Remotion)",
   "scripts": {
     "studio": "remotion studio src/index.ts --port 3005",
-    "render": "remotion render src/index.ts Main out/launch.mp4",
+    "render": "remotion render src/index.ts Main out/launch.mp4 --port=3006 --concurrency=2",
     "render:intro": "remotion render src/index.ts Intro out/sprint2-intro.mp4",
+    "render:sprint3": "remotion render src/index.ts Sprint3 out/sprint3.mp4 --port=3006 --concurrency=2",
     "still": "remotion still src/index.ts Main out/still.png",
     "stills": "node scripts/render-stills.mjs",
     "dots": "node scripts/extract-nl-dots.mjs",

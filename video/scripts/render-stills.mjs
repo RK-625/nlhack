@@ -15,9 +15,9 @@ const outDir = join(root, "out/stills");
 mkdirSync(outDir, { recursive: true });
 
 const serveUrl = await bundle({ entryPoint: join(root, "src/index.ts"), publicDir: join(root, "public") });
-const composition = await selectComposition({ serveUrl, id: compositionId, chromiumOptions: { gl: "angle" } });
+const composition = await selectComposition({ serveUrl, id: compositionId, port: 3006, chromiumOptions: { gl: "angle" } });
 for (const frame of frames) {
   const output = join(outDir, `${compositionId}-f${String(frame).padStart(3, "0")}.png`);
-  await renderStill({ serveUrl, composition, frame, output, chromiumOptions: { gl: "angle" } });
+  await renderStill({ serveUrl, composition, frame, output, port: 3006, chromiumOptions: { gl: "angle" } });
   console.log(output);
 }

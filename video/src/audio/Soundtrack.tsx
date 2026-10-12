@@ -1,19 +1,15 @@
-import type { SceneDef } from "../timeline";
-import { sceneStarts } from "../timeline";
-
-/**
- * AUDIO SLOT — intentionally silent in Sprint 2.
- *
- * A later sprint drops files into public/audio/ and renders them here, e.g.
- *   public/audio/music.mp3            Pixabay bed (user picks 1 of 3), ducked under VO
- *   public/audio/vo/<scene-id>.wav    Kokoro VO line per scene (text = SceneDef.vo)
- *   public/audio/sfx/whoosh.wav       on every scene change (cue = scene start)
- * using <Audio src={staticFile(...)} /> from "remotion" inside <Sequence from={cue}>.
- * Cue points come from voCues() so audio always follows the storyboard timing.
- */
-export const voCues = (scenes: SceneDef[]) => {
-  const starts = sceneStarts(scenes);
-  return scenes.map((s, i) => ({ sceneId: s.id, from: starts[i]!, text: s.vo ?? "" }));
+import { Audio, interpolate, Sequence, staticFile, useVideoConfig } from "remotion";
+const TRACK = "music/raspberrymusic-the-last-point-beat-electronic-digital-394291.mp3";
+/** Existing track, music only. Longer films overlap a repeat with a four-second crossfade. */
+export const Soundtrack = () => {
+  const { durationInFrames: duration, fps } = useVideoConfig();
+  if (duration <= 120 * fps) return <Audio src={staticFile(TRACK)} volume={f => interpolate(f,
+    [0, fps * .65, duration - fps * 1.2, duration - 1], [0, .72, .72, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}/>;
+  const second = 116 * fps; const remaining = duration - second;
+  return <>
+    <Sequence durationInFrames={120 * fps} layout="none"><Audio src={staticFile(TRACK)} volume={f=>interpolate(f,
+      [0, fps * .65, second, 120 * fps - 1], [0, .72, .72, 0], { extrapolateLeft:"clamp", extrapolateRight:"clamp" })}/></Sequence>
+    <Sequence from={second} layout="none"><Audio src={staticFile(TRACK)} volume={f=>interpolate(f,
+      [0,4*fps,remaining-1.2*fps,remaining-1],[0,.72,.72,0],{extrapolateLeft:"clamp",extrapolateRight:"clamp"})}/></Sequence>
+  </>;
 };
-
-export const Soundtrack = (_props: { scenes: SceneDef[] }) => null;

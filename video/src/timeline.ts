@@ -1,43 +1,52 @@
+import { Scene00Chaos } from "./scenes/Scene00Chaos";
+import { SceneResearchDemo } from "./scenes/SceneResearchDemo";
+import { SceneGithubDemo } from "./scenes/SceneGithubDemo";
+import { SceneCfoDemo } from "./scenes/SceneCfoDemo";
+import { Scene11EndCard } from "./scenes/Scene11EndCard";
+import { Scene10Checkpoints } from "./scenes/Scene10Checkpoints";
+import { Scene09Measured } from "./scenes/Scene09Measured";
+import { Scene08Diagnosis } from "./scenes/Scene08Diagnosis";
+import { Scene07Roles } from "./scenes/Scene07Roles";
+import { Scene06NeatBot } from "./scenes/Scene06NeatBot";
 import type { ComponentType } from "react";
 import { Scene01Lineup } from "./scenes/Scene01Lineup";
 import { Scene02Title } from "./scenes/Scene02Title";
+import { Scene03Team } from "./scenes/Scene03Team";
+import { Scene04RealWork } from "./scenes/Scene04RealWork";
+import { Scene05Guardrails } from "./scenes/Scene05Guardrails";
 import { TRANSITION_FRAMES, VIDEO } from "./theme/tokens";
 
 /**
  * The storyboard (video/STORYBOARD.md) as data. `seconds` is each scene's slot on the
- * 82 s timeline; the blur-dissolve into the next scene overlaps the first
+ * 160 s timeline; the blur-dissolve into the next scene overlaps the first
  * TRANSITION_FRAMES of that next slot, so scene N always *starts* on its storyboard second
- * (which is what the voiceover cues will key off).
+ * (which also anchors any future sound-effect cues).
  */
 export type SceneDef = {
   id: string;
   title: string;
   seconds: number;
   onScreen?: string;
-  vo?: string;
   /** null = not built yet (renders a placeholder card). */
   component: ComponentType | null;
 };
 
 export const SCENES: SceneDef[] = [
-  { id: "01-lineup", title: "Mascot lineup", seconds: 6, vo: "Meet Bot Company.", component: Scene01Lineup },
-  {
-    id: "02-title",
-    title: "Title",
-    seconds: 5,
-    onScreen: "Bot Company / A company of AI agents that asks before it acts.",
-    vo: "A company of AI agents… that asks before it acts.",
-    component: Scene02Title,
-  },
-  { id: "03-team", title: "The team", seconds: 8, onScreen: "One assistant. Nine specialists.", vo: "Ask the Primary Bot anything. It hands the work to the right specialist.", component: null },
-  { id: "04-real-work", title: "Real work, real UI", seconds: 8, onScreen: "Real work. Live costs.", vo: "Every turn shows its cost and tokens, live.", component: null },
-  { id: "05-guardrails", title: "Guardrails", seconds: 8, onScreen: "Nothing happens without you.", vo: "Hit a limit, or about to change something? It stops — and asks.", component: null },
-  { id: "06-neat-bot", title: "Neat Bot returns", seconds: 5, onScreen: "Meet Neat Bot.", vo: "And watching every run… Neat Bot.", component: null },
-  { id: "07-roles", title: "Employee vs Admin", seconds: 10, onScreen: "Employees: own runs. Admins: everything.", vo: "Employees see only their own runs. Admins see everything — and even their changes need approval.", component: null },
-  { id: "08-debugs", title: "It debugs your agents", seconds: 12, onScreen: "It reads every trace.", vo: "When a run fails, Neat Bot reads the Neatlogs trace, finds the cause, and ranks the fixes.", component: null },
-  { id: "09-measured", title: "Fixed. Measured.", seconds: 8, onScreen: "One fix. Measured.", vo: "One fix later, the failure's gone — with a quarter fewer tokens.", component: null },
-  { id: "10-receipts", title: "Built with receipts", seconds: 5, onScreen: "Every change, checkpointed.", vo: "Every change, checkpointed with Entire.", component: null },
-  { id: "11-end-card", title: "End card", seconds: 7, onScreen: "Try Bot Company", vo: "Bot Company. AI that asks before it acts.", component: null },
+  { id: "00-chaos", title: "Enterprise chaos", seconds: 24, component: Scene00Chaos },
+  { id: "01-lineup", title: "Meet the cast", seconds: 6, component: Scene01Lineup },
+  { id: "02-title", title: "Bot Company", seconds: 5, component: Scene02Title },
+  { id: "04-real-work", title: "Primary Bot", seconds: 8, component: Scene04RealWork },
+  { id: "05-guardrails", title: "Cap and approve", seconds: 8, component: Scene05Guardrails },
+  { id: "research-demo", title: "Research Bot demonstration", seconds: 16, component: SceneResearchDemo },
+  { id: "github-demo", title: "GitHub Bot demonstration", seconds: 16, component: SceneGithubDemo },
+  { id: "cfo-demo", title: "CFO Bot demonstration", seconds: 16, component: SceneCfoDemo },
+  { id: "03-team", title: "Across departments", seconds: 8, component: Scene03Team },
+  { id: "06-neat-bot", title: "Meet Neat Bot", seconds: 5, component: Scene06NeatBot },
+  { id: "07-roles", title: "Role-aware investigation", seconds: 16, component: Scene07Roles },
+  { id: "08-debugs", title: "Diagnosis and fixes", seconds: 12, component: Scene08Diagnosis },
+  { id: "09-measured", title: "Measured results", seconds: 8, component: Scene09Measured },
+  { id: "10-receipts", title: "Entire checkpoint", seconds: 5, component: Scene10Checkpoints },
+  { id: "11-end-card", title: "Try Bot Company", seconds: 7, component: Scene11EndCard },
 ];
 
 export const slotFrames = (s: SceneDef) => Math.round(s.seconds * VIDEO.fps);
@@ -48,7 +57,7 @@ export const sequenceFrames = (scenes: SceneDef[], i: number) =>
 
 export const totalFrames = (scenes: SceneDef[]) => scenes.reduce((sum, s) => sum + slotFrames(s), 0);
 
-/** Absolute start frame of each scene (= storyboard second × fps) — VO / SFX cue points. */
+/** Absolute start frame of each scene (= storyboard second × fps) — scene / SFX cue points. */
 export const sceneStarts = (scenes: SceneDef[]) => {
   let at = 0;
   return scenes.map((s) => {
@@ -58,4 +67,6 @@ export const sceneStarts = (scenes: SceneDef[]) => {
   });
 };
 
-export const INTRO_SCENES = SCENES.slice(0, 2);
+export const INTRO_SCENES = SCENES.filter(s => ["01-lineup", "02-title"].includes(s.id));
+
+export const SPRINT3_SCENES = ["01-lineup", "02-title", "03-team", "04-real-work", "05-guardrails"].map(id => SCENES.find(s => s.id === id)!);

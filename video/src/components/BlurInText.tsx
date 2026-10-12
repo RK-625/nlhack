@@ -5,7 +5,7 @@ import { FONT_STACK, SPRINGS, TEXT_REVEAL } from "../theme/tokens";
 export type TextSegment = {
   text: string;
   style?: CSSProperties;
-  /** Extra frames before this segment starts (a beat for the voiceover). */
+  /** Extra frames before this segment starts (a visual/music beat). */
   pause?: number;
 };
 

@@ -18,9 +18,6 @@ export const ScenePlaceholder = ({ scene, index }: { scene: SceneDef; index: num
           style={{ fontSize: 84, fontWeight: 600, letterSpacing: "-0.035em", color: COLORS.foreground }}
         />
       ) : null}
-      {scene.vo ? (
-        <div style={{ fontSize: 30, color: COLORS.muted, fontStyle: "italic", lineHeight: 1.4 }}>VO: “{scene.vo}”</div>
-      ) : null}
     </div>
   </AbsoluteFill>
 );
