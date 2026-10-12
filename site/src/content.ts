@@ -411,7 +411,7 @@ export const evidence: Criterion[] = [
     short: "cfo.ai",
     criterion: "Used cfo.ai (business plan covering pricing, costs, revenue, runway)",
     badge: "Screenshots",
-    proof: "The per-user cfo.ai OAuth connection completes end to end. An earlier hiring-expense answer used local fictional Lumen Labs files (9 file tool calls, no cfo.ai tool calls): 4 open roles, about $447k loaded annual payroll, burn $295,061 → about $326k a month, runway 20.4 → about 18.5 months. A later turn wrote the 12-month plan into cfo.ai. The chat shows Cfo edit pages, two Cfo edit scenarios calls, Cfo inspect documentation, and another Cfo edit pages call (Done · 5 tools · 6m 26s), then page Lumen Labs – 12-Month Business Plan#140. Adding the plan text paused on Approve for cfo_edit_pages. The page is open in cfo.ai with pricing, costs, and runway sections. The three scenario names are not visible in the cfo.ai model menu in that shot.",
+    proof: "The user asked CFO Bot directly, and CFO Bot created Lumen Labs – 12-Month Business Plan#140 in cfo.ai. The chat shows Cfo edit pages, two Cfo edit scenarios calls, Cfo inspect documentation, and another Cfo edit pages call (Done · 5 tools · 6m 26s). Adding the plan text paused on Approve for cfo_edit_pages. The page is open in cfo.ai with pricing, costs, and runway sections, under Main Scenario. The three requested scenario names are not visible in that shot. An earlier hiring-expense answer used local fictional Lumen Labs files (9 file tool calls, no cfo.ai tool calls): 4 open roles, about $447k loaded annual payroll, burn $295,061 → about $326k a month, runway 20.4 → about 18.5 months. The per-user cfo.ai OAuth connection completes end to end.",
     shots: [
       shot("27-cfoai-connect-banner.png", "CFO Bot before connecting, with the \"Connect your cfo.ai account\" banner."),
       shot("28-cfoai-oauth-consent.png", "cfo.ai consent page: external MCP access, step 3 of 3, WorkOS handoff."),
@@ -530,7 +530,7 @@ export const incident: { stage: string; text: Maybe<string>; link?: Maybe<string
 /** Honest limits, taken from the evidence README and the repo README. */
 export const knownLimits = [
   "Northwind and Lumen Labs are fictional and use local company files. Nothing here shows a real customer credit being issued.",
-  "cfo.ai: the connection works, but the captured answer made 9 local file tool calls and no cfo.ai calls. The Bot Company business plan in cfo.ai is not done yet.",
+  "CFO Bot created Lumen Labs – 12-Month Business Plan#140 in cfo.ai. The text write paused on Approve for cfo_edit_pages, and the page is open with pricing, costs, and runway. The earlier hiring-expense answer used local Lumen Labs files only. The page is under Main Scenario; the three requested scenario names are not visible in that shot.",
   "When the token cap trips after the answer is already written, Approve is still offered and produces a near-duplicate answer. Not fixed yet.",
   "The improvement is three runs against three: cost fell only 3.3% and total time rose about 5%. Cutting the fan-out and running specialists concurrently are future work.",
   "neatlogs recorded no tool spans, so the 29 → 10 CFO file-read count comes from app logs. The cap reason is not exposed through the neatlogs MCP, so Neat Bot blamed an empty Sales Bot delegation instead of the cap.",
