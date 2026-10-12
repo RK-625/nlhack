@@ -110,3 +110,7 @@ It commits only `site/` and pushes, and Render redeploys on its own. I’ll chec
 ---
 
 </image>
+
+---
+
+I have made the repo public, so replace the places where you are mentioning source code and show a GitHub icon referencing this repo URL.
