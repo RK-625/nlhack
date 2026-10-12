@@ -30,6 +30,7 @@ const titles: Record<string, string> = {
   entire: "Recording the code changes with Entire",
   execution: "Execution evidence: answers, cost and tokens",
   cfo: "CFO Bot: without and with cfo.ai",
+  neatbot: "Neat Bot: tracking and monitoring",
   recovery: "Finishing a capped run with user approval",
   public: "Sharing the build in public",
   commits: "Verifying when the hackathon code was written",

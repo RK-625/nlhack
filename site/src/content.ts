@@ -513,6 +513,22 @@ export const evidence: Criterion[] = [
     links: [{ href: "/JUDGE.md", label: "Judge guide and comparison scope" }, { href: `${proofBase}/README.md`, label: "Original capture index" }, { href: `${proofBase}/SHA256SUMS.txt`, label: "Capture checksums" }],
   },
   {
+    id: "neatbot",
+    short: "Neat Bot monitoring",
+    criterion: "Neat Bot tracking and monitoring recent traces",
+    badge: "Screenshots",
+    proof: "Neat Bot, our neatlogs specialist, was asked in the Bot Company app to look at recent traces and make a cost analysis of each agent. It checked the neatlogs connection, pulled recent traces and returned a per-run table with findings on what drives cost.",
+    steps: [
+      { status: "recorded", title: "Ask for a cost analysis of recent traces", text: "The request reads \"take a look at recent traces make a cost analysis of each agent here btw\". Neat Bot replies that it will start by checking the connection and pulling recent traces, then runs **Neatlogs ping** and **Neatlogs whoami**." },
+      { status: "passed", title: "Per-run detail across the agents", text: "The answer's per-run table lists **9 traces** from the CFO, GitHub, Research, Primary and Neat bots, with trace ID, start time, tokens (input + output), cost and latency." },
+      { status: "recorded", title: "What it says is driving the cost", text: "Neat Bot reports that **97.1%** of tokens on the seven traces with a prompt/completion split were prompt tokens, and that two CFO runs account for **63% of tokens and 57% of spend**. It also notes that prompt size per call varies widely and that a GitHub question was asked twice. These are Neat Bot's figures as displayed, not independently re-checked." },
+    ],
+    shots: [
+      shot("57-neatbot-cost-prompt.png", "Neat Bot asked to take a look at recent traces and make a cost analysis of each agent; it runs Neatlogs ping and Neatlogs whoami."),
+      shot("58-neatbot-cost-analysis.png", "Neat Bot's per-run detail table of nine traces with tokens, cost and latency, and its \"What's driving the cost\" findings."),
+    ],
+  },
+  {
     id: "recovery",
     short: "Cap and recovery",
     criterion: "Agent recovers from failures (a run where an action failed, then what it did next)",

@@ -261,3 +261,12 @@ Both URLs opened the neatlogs sign-in screen in the review browser. Their indivi
 | [54-github-usage.png](54-github-usage.png) | GitHub usage popover |
 | [55-github-neatlogs-completed.png](55-github-neatlogs-completed.png) | GitHub completed dashboard trace |
 | [56-research-neatlogs-completed.png](56-research-neatlogs-completed.png) | Research completed dashboard trace |
+
+## Neat Bot: trace monitoring and cost analysis
+
+User-supplied captures 57-58 show Neat Bot asked, in the Bot Company app, to look at recent traces and make a cost analysis of each agent. The first capture shows its two neatlogs tool calls (Neatlogs ping, Neatlogs whoami) while it works; the second shows the resulting per-run table of nine traces and its "What's driving the cost" findings. The figures are Neat Bot's output as displayed; they were not independently re-checked. The browser window around the app is visible in both captures.
+
+| File | Evidence |
+|---|---|
+| [57-neatbot-cost-prompt.png](57-neatbot-cost-prompt.png) | Request and the Neatlogs ping / whoami tool calls |
+| [58-neatbot-cost-analysis.png](58-neatbot-cost-analysis.png) | Per-run detail table and cost findings |
