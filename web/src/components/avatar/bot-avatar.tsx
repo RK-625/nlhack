@@ -126,7 +126,7 @@ export const BotAvatar = memo(function BotAvatar({
     return (
       <div
         className={cn(
-          "rakazo-bot-avatar relative overflow-hidden rounded-full flex items-center justify-center select-none bg-secondary shrink-0 border border-border",
+          "rakazo-bot-avatar relative rounded-full flex items-center justify-center select-none shrink-0",
           className,
         )}
         data-working={isWorking}
@@ -161,7 +161,12 @@ export const BotAvatar = memo(function BotAvatar({
             />
           </svg>
         ) : null}
-        <img src={parsed.imageUrl} alt="" className="h-full w-full object-cover" />
+        {/* Clip + border live on the <img> so the spinning ring above can overflow the wrapper. */}
+        <img
+          src={parsed.imageUrl}
+          alt=""
+          className="h-full w-full rounded-full object-cover bg-secondary border border-border"
+        />
       </div>
     );
   }
