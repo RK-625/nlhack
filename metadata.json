@@ -3,10 +3,11 @@
   "checkpoint_id": "01M4QJDNMAYES40487HGRGPDMZ",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 5,
   "files_touched": [
     "src/chat-api.ts",
-    "src/chat-escalation.ts"
+    "src/chat-escalation.ts",
+    "src/usage/turn-budget.ts"
   ],
   "sessions": [
     {
@@ -14,6 +15,13 @@
       "transcript": "/0/full.jsonl",
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
       "prompt": ""
     }
   ],
