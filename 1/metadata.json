@@ -1,0 +1,34 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4R2738K9PKES3C6JHQ82EHZ",
+  "session_id": "01a12fe9-d9cb-72a2-b7fc-64309f043e97",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T12:44:13.440948Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "03f1f6a26431",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 452253,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 5451904,
+    "output_tokens": 30187,
+    "api_call_count": 56
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 52,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3268,
+      "agent_lines_removed": 64,
+      "user_added_per_file": {
+        "video/SPRINT3-REVIEW.md": 52
+      }
+    }
+  ]
+}
