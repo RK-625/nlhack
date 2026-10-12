@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RGPG5J84AMDYF65ZHVR0KT",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "JUDGE.md",
+    "README.md",
+    "docs/demo/evidence/2026-10-12/48-github-assignment-answer.png",
+    "docs/demo/evidence/2026-10-12/49-research-crustdata-start.png",
+    "docs/demo/evidence/2026-10-12/50-research-refined-search.png",
+    "docs/demo/evidence/2026-10-12/51-research-company-answer.png",
+    "docs/demo/evidence/2026-10-12/52-research-sources-limits.png",
+    "docs/demo/evidence/2026-10-12/53-research-usage.png",
+    "docs/demo/evidence/2026-10-12/54-github-usage.png",
+    "docs/demo/evidence/2026-10-12/55-github-neatlogs-completed.png",
+    "docs/demo/evidence/2026-10-12/56-research-neatlogs-completed.png",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/README.md",
+    "site/public/JUDGE.md",
+    "site/public/evidence/2026-10-12/48-github-assignment-answer.png",
+    "site/public/evidence/2026-10-12/49-research-crustdata-start.png",
+    "site/public/evidence/2026-10-12/50-research-refined-search.png",
+    "site/public/evidence/2026-10-12/51-research-company-answer.png",
+    "site/public/evidence/2026-10-12/52-research-sources-limits.png",
+    "site/public/evidence/2026-10-12/53-research-usage.png",
+    "site/public/evidence/2026-10-12/54-github-usage.png",
+    "site/public/evidence/2026-10-12/55-github-neatlogs-completed.png",
+    "site/public/evidence/2026-10-12/56-research-neatlogs-completed.png",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/src/capture-sizes.ts",
+    "site/src/components/execution-proof.tsx",
+    "site/src/content.ts",
+    "site/src/pages/Home.tsx",
+    "site/src/pages/Judges.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
