@@ -152,8 +152,8 @@ function escalationOutcome(offer: EscalationOffer, next: UIMessage | undefined):
 }
 
 const ESCALATION_OUTCOME_TEXT: Record<EscalationOutcome, string> = {
-  approved: "Approved: finished below with a one-time extension.",
-  denied: "Denied: answered below from what was gathered.",
+  approved: "Approved: one-time extension granted.",
+  denied: "Denied: no budget extension granted.",
   dropped: "Not continued: no decision was made.",
 };
 

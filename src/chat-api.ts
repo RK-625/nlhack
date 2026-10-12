@@ -434,13 +434,14 @@ async function saveTurnUsage(
         content: { format: 2, parts: [{ type: "text", text: uiMessageText(turn.userMessage) }], ...(metadata ? { metadata } : {}) },
       });
     }
-    const text = turn.findings.partialText.trim();
+    // Mastra drops empty messages, including their escalation metadata.
+    const text = turn.findings.partialText.trim() || "This reply stopped at its budget limit before an answer was ready.";
     const saved: MastraDBMessage = {
       id: replyId ?? crypto.randomUUID(),
       role: "assistant",
       createdAt: new Date(Math.max(Date.now(), turn.startedAt.getTime() + 1)),
       ...ids,
-      content: { format: 2, parts: text ? [{ type: "text", text }] : [], metadata: extra },
+      content: { format: 2, parts: [{ type: "text", text }], metadata: extra },
     };
     toSave.push(saved);
     await thread.memory.saveMessages({ messages: toSave });

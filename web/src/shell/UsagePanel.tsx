@@ -143,6 +143,7 @@ export function UsagePanel({
 }) {
   const [editing, setEditing] = useState(false);
   const current = caps.caps ?? (usage ? { costCapUsd: usage.capCostUsd, tokenCap: usage.capTokens } : caps.defaults);
+  const turnCaps = usage ? { costCapUsd: usage.capCostUsd, tokenCap: usage.capTokens } : current;
   const usedCost = usage?.costUsd ?? 0;
   const usedTokens = usage?.tokens ?? 0;
   return (
@@ -152,11 +153,11 @@ export function UsagePanel({
       className="pointer-events-auto mt-2 flex w-[min(380px,calc(100vw-2rem))] flex-col gap-2.5 rounded-2xl border border-border bg-card/95 px-3.5 py-3 shadow-sm backdrop-blur"
     >
       <div className="flex items-end gap-4">
-        <UsageBar label="Cost" used={usedCost} cap={current.costCapUsd} capped={usage?.reason === "cost"} format={formatUsd} />
+        <UsageBar label="Cost" used={usedCost} cap={turnCaps.costCapUsd} capped={usage?.reason === "cost"} format={formatUsd} />
         <UsageBar
           label="Tokens"
           used={usedTokens}
-          cap={current.tokenCap}
+          cap={turnCaps.tokenCap}
           capped={usage?.reason === "tokens"}
           format={formatTokens}
           hint={usage?.cachedInputTokens ? `${formatTokens(usage.cachedInputTokens)} cached` : undefined}
@@ -167,7 +168,11 @@ export function UsagePanel({
         <CapsEditor caps={caps} current={current} onDone={() => setEditing(false)} />
       ) : (
         <div className="flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
-          <span>Latest turn (estimated), per-message limits for this bot.</span>
+          <span>
+            {usage?.continuation
+              ? "Latest turn (estimated), one-time continuation budget."
+              : "Latest turn (estimated), per-message limits for this bot."}
+          </span>
           <Button size="xs" variant="ghost" onClick={() => setEditing(true)}>
             Edit
           </Button>
