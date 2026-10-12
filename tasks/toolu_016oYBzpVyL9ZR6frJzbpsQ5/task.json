@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_016oYBzpVyL9ZR6frJzbpsQ5",
+  "agent_id": "aef11d8942f4f6953",
+  "subagent_type": "general-purpose",
+  "task_description": "Sprint 2: shared read-only company folder",
+  "token_usage": {
+    "input_tokens": 28,
+    "cache_creation_tokens": 88017,
+    "cache_read_tokens": 993899,
+    "output_tokens": 191,
+    "api_call_count": 14
+  },
+  "started_at": "2026-10-12T12:30:21.446742+05:30",
+  "completed_at": "2026-10-12T12:32:20.594585+05:30"
+}
