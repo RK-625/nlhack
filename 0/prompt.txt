@@ -44,3 +44,16 @@ in 3000
 Pasted text contains the user's request.
 
 ## My request:
+
+---
+
+I think it is actually logged in. Can you use Ego and test it out for me? Wait for a minute. At least it should have responded within two minutes. Open Ego browser and test it out for me. I think the passwords are here in the dot user settings, user settings.json or something. Use, take from it. Use the admin, open it and see.
+
+---
+
+"username": "adminuser1",
+    "password": "REDACTED",
+
+---
+
+wrong use [https://expansive-contents-five.ngrok-free.dev](https://expansive-contents-five.ngrok-free.dev)
