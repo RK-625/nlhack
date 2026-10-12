@@ -1,0 +1,20 @@
+candidate_id,name,job_id,job_title,stage,source,applied_date,last_activity_date,recruiter,interviewers,expected_salary_usd,notes
+C-2001,Dev Ramanathan,R-101,Senior Site Reliability Engineer,Offer,Referral (Pranav Bhat),2026-08-30,2026-10-09,Jaya Thomas,Pranav Bhat; Priya Raman; Ishaan Gupta; Arjun Pillai,78000,"Strong onsite. Offer ($78k) drafted, awaiting finance approval from Ananya Rao; verbal interest high."
+C-2002,Gabriela Rossi,R-101,Senior Site Reliability Engineer,Onsite,LinkedIn,2026-09-06,2026-10-08,Jaya Thomas,Arjun Pillai; Tomas Herrera; Pranav Bhat,95000,"Onsite loop scheduled 2026-10-15. Lisbon based, ex-fintech SRE."
+C-2003,Anil Subramanian,R-101,Senior Site Reliability Engineer,Technical Interview,Job board,2026-09-18,2026-10-06,Jaya Thomas,Pranav Bhat; Ishaan Gupta,70000,
+C-2004,Chloe Dubois,R-101,Senior Site Reliability Engineer,Recruiter Screen,Inbound,2026-10-02,2026-10-07,Jaya Thomas,Jaya Thomas,85000,
+C-2005,Mateo Silva,R-101,Senior Site Reliability Engineer,Rejected,Job board,2026-08-28,2026-09-22,Jaya Thomas,Pranav Bhat; Arjun Pillai,120000,Compensation expectations above band.
+C-2006,Maya Iyengar,R-102,Customer Success Manager,Offer,Referral (Nandini Rao),2026-09-08,2026-10-10,Jaya Thomas,Rohan Kapoor; Nandini Rao; Chris Doyle,52000,"Verbal offer extended 2026-10-10, accepted in principle; paperwork pending. Target start 2026-11-16."
+C-2007,Tyler Brooks,R-102,Customer Success Manager,Onsite,LinkedIn,2026-09-15,2026-10-09,Jaya Thomas,Rohan Kapoor; Chris Doyle; Sofia Alvarez,68000,"US-based, enterprise CSM background."
+C-2008,Ritika Sen,R-102,Customer Success Manager,Technical Interview,Inbound,2026-09-20,2026-10-05,Jaya Thomas,Nandini Rao; Rohan Kapoor,48000,Case study (renewal-risk plan) due 2026-10-14.
+C-2009,Jordan Reyes,R-102,Customer Success Manager,Recruiter Screen,Job board,2026-10-01,2026-10-06,Jaya Thomas,Jaya Thomas,60000,
+C-2010,Kabir Anand,R-102,Customer Success Manager,Rejected,Inbound,2026-09-10,2026-09-26,Jaya Thomas,Nandini Rao,50000,Limited SaaS renewals experience.
+C-2011,Nikhil Chandra,R-103,"Senior Backend Engineer, Identity & SSO",Technical Interview,Referral (Kavya Reddy),2026-09-22,2026-10-08,Jaya Thomas,Divya Krishnan; Kavya Reddy; Tomas Herrera,85000,Has shipped SAML for a previous employer.
+C-2012,Eva Lindqvist,R-103,"Senior Backend Engineer, Identity & SSO",Onsite,LinkedIn,2026-09-25,2026-10-10,Jaya Thomas,Divya Krishnan; Priya Raman; Omar Haddad,98000,Stockholm based; identity/OIDC specialist.
+C-2013,Sanjana Pai,R-103,"Senior Backend Engineer, Identity & SSO",Applied,Job board,2026-10-08,2026-10-08,Jaya Thomas,,60000,
+C-2014,Rafael Costa,R-103,"Senior Backend Engineer, Identity & SSO",Recruiter Screen,Inbound,2026-10-03,2026-10-09,Jaya Thomas,Jaya Thomas,75000,
+C-2015,Ayesha Siddiqui,R-103,"Senior Backend Engineer, Identity & SSO",Rejected,Job board,2026-09-17,2026-10-01,Jaya Thomas,Divya Krishnan; Kavya Reddy,70000,No auth/security depth.
+C-2016,Colin Murphy,R-104,Enterprise Account Executive,Onsite,LinkedIn,2026-09-28,2026-10-09,Jaya Thomas,Sofia Alvarez; Jake Morrison; Marcus Chen,110000,"Ex-enterprise SaaS, strong security-led selling."
+C-2017,Patricia Nolan,R-104,Enterprise Account Executive,Hiring Manager Screen,Referral (Jake Morrison),2026-10-01,2026-10-07,Jaya Thomas,Sofia Alvarez,105000,
+C-2018,Vishal Arora,R-104,Enterprise Account Executive,Applied,Job board,2026-10-09,2026-10-09,Jaya Thomas,,95000,
+C-2019,Danielle Park,R-104,Enterprise Account Executive,Rejected,Job board,2026-09-24,2026-10-02,Jaya Thomas,Sofia Alvarez,140000,Above band.

@@ -1,0 +1,38 @@
+customer_id,stripe_customer_id,name,plan,segment,industry,seats,mrr_usd,start_date,status,churn_date,billing_country,billing_interval,payment_method
+CUST-1001,cus_kNa1Hedcm4pMbX,Basil & Co,Growth,SMB,Food delivery,31,1700,2023-11-18,active,,Canada,monthly,card
+CUST-1002,cus_DuCL1mHoOsFaQf,Kite Analytics,Growth,SMB,Analytics,29,1600,2024-01-28,active,,India,monthly,card
+CUST-1003,cus_DPrAJ71fTquWoG,Pinecrest Software,Business,Mid-Market,SaaS,85,4700,2024-02-15,active,,US,monthly,card
+CUST-1004,cus_sbeKXgzg2sye9b,Mosaic Pets,Starter,SMB,Pet care,7,400,2024-03-21,churned,2024-11-12,US,monthly,card
+CUST-1005,cus_2Rann76dEyTzAe,Drift Media,Starter,SMB,Media,9,500,2024-04-17,active,,Australia,monthly,card
+CUST-1006,cus_KOmXRrvftva9AW,Meridian Travel,Business,Mid-Market,Travel,78,4300,2024-05-28,active,,UK,monthly,card
+CUST-1007,cus_7hipTgadDZFlRJ,Cinder Labs,Starter,SMB,Developer tools,13,700,2024-06-02,churned,2025-04-18,India,monthly,card
+CUST-1008,cus_mCGmUXiAPyhzAn,Ember Studios,Growth,SMB,Media,27,1500,2024-06-25,active,,US,monthly,card
+CUST-1009,cus_ar3ZLt4bnlz2MP,Alder & Finch,Business,Mid-Market,Fintech,65,3600,2024-07-28,active,,UK,monthly,card
+CUST-1010,cus_KgcjnCqaXNv1sy,Juniper Labs,Starter,SMB,Developer tools,16,900,2024-08-15,active,,Singapore,monthly,card
+CUST-1011,cus_eefnLOpaMxxNDi,Copperleaf Home,Starter,SMB,E-commerce,13,700,2024-09-15,active,,US,monthly,card
+CUST-1012,cus_9LE1Ki3ylOjt6o,Tidewater Apps,Starter,SMB,Mobile apps,15,800,2024-10-19,active,,US,monthly,card
+CUST-1013,cus_0NpUmkVO8JmR8y,Sable Security,Starter,SMB,Cybersecurity,20,1100,2024-12-07,active,,Germany,monthly,card
+CUST-1014,cus_4EMfAdggcG9qpV,Paperkite,Starter,SMB,Stationery e-commerce,9,500,2024-12-20,churned,2025-09-09,US,monthly,card
+CUST-1015,cus_TzqA05MFsHl7Ue,Fjord Commerce,Starter,SMB,E-commerce,25,1400,2025-01-06,active,,Netherlands,monthly,card
+CUST-1016,cus_ioEJP2NNern66n,Lumo Outdoor,Starter,SMB,Retail,16,900,2025-02-13,churned,2025-12-03,Canada,monthly,card
+CUST-1017,cus_VberACpdclsxHK,Willow Wearables,Starter,SMB,Consumer hardware,11,600,2025-02-26,active,,US,monthly,card
+CUST-1018,cus_ifxi5CvQUSHL8i,Quanta Payments,Growth,Mid-Market,Fintech,58,3200,2025-04-17,active,,India,monthly,card
+CUST-1019,cus_Lc7bE6wSt9cbMO,Zephyr Fitness,Growth,SMB,Health & fitness,35,1900,2025-05-16,active,,US,monthly,card
+CUST-1020,cus_eEeUtuieeCIxVc,Redwood Commerce,Growth,Mid-Market,E-commerce,56,3100,2025-05-24,churned,2026-07-15,US,monthly,card
+CUST-1021,cus_57VVTiY96vwfRE,Northwind Logistics,Enterprise,Enterprise,Logistics,131,7200,2025-06-17,active,,US,monthly,ach_debit
+CUST-1022,cus_5e32A8Yb3FKaNQ,Maple Mobility,Starter,SMB,Mobility,24,1300,2025-06-21,active,,Canada,monthly,card
+CUST-1023,cus_yyLaMeffOhq4AU,Verdant Foods,Growth,Mid-Market,Food & beverage,53,2900,2025-07-20,active,,US,monthly,card
+CUST-1024,cus_vy7VSLDCD1IfHW,Skyline Edtech,Growth,Mid-Market,Education,62,3400,2025-09-06,active,,India,monthly,card
+CUST-1025,cus_GbtMfEbo9ShFXN,Blue Ox Studio,Starter,SMB,Media,11,600,2025-09-15,churned,2026-02-12,UK,monthly,card
+CUST-1026,cus_Q6Fq5axtjRNmHk,Lattice Robotics,Growth,Mid-Market,Robotics,45,2500,2025-09-26,active,,Germany,monthly,card
+CUST-1027,cus_W5vQ7CF5puzQqm,Brightwave Health,Enterprise,Enterprise,Digital health,127,7000,2025-10-04,active,,US,monthly,ach_debit
+CUST-1028,cus_OBZZW6m4nyoL6u,Ferro Tools,Starter,SMB,Hardware,15,800,2025-10-21,churned,2026-05-20,US,monthly,card
+CUST-1029,cus_niiFw152cTe8r0,Orbit Mobility,Business,Mid-Market,Mobility,98,5400,2025-11-15,active,,UK,monthly,ach_debit
+CUST-1030,cus_khCEr7n1AyOHFR,Stratus Cloudworks,Growth,Mid-Market,Cloud services,51,2800,2025-11-20,churned,2026-08-28,US,monthly,card
+CUST-1031,cus_uT11NCue1cr3Mc,Tessera Games,Business,Mid-Market,Gaming,73,4000,2025-12-10,active,,Canada,monthly,card
+CUST-1032,cus_RTrKwtPYKbPizD,Vantage Mobility,Growth,Mid-Market,Mobility,40,2200,2025-12-21,churned,2026-09-21,Australia,monthly,card
+CUST-1033,cus_mbX1rpXjYdOhCg,Halcyon Finance,Business,Mid-Market,Fintech,105,5800,2026-01-05,active,,UK,monthly,ach_debit
+CUST-1034,cus_OIPOZx9eRmm0Eq,Cobalt Retail,Business,Mid-Market,Retail,113,6200,2026-02-03,active,,US,monthly,ach_debit
+CUST-1035,cus_lTaWEITclorXwI,Polaris HR Tech,Starter,SMB,HR tech,22,1200,2026-03-18,active,,India,monthly,card
+CUST-1036,cus_S8HGNWkz2YS5of,Nimbus Telecom,Growth,Mid-Market,Telecom,45,2500,2026-07-26,active,,Singapore,monthly,card
+CUST-1037,cus_A75UyiCDmO46ay,Harbor Insurance Tech,Growth,Mid-Market,Insurtech,38,2100,2026-08-23,active,,US,monthly,card

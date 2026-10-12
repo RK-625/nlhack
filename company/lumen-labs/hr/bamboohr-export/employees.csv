@@ -1,0 +1,41 @@
+employee_id,name,work_email,job_title,department,manager_id,location,country,start_date,employment_type,salary_band,base_salary_usd_annual,annual_leave_balance_days
+E001,Aarav Menon,aarav.menon@lumenlabs.example,CEO & Co-founder,Executive,,Bengaluru,India,2022-03-01,Full-time,L6,190000,13
+E002,Priya Raman,priya.raman@lumenlabs.example,CTO & Co-founder,Engineering,E001,Bengaluru,India,2022-03-01,Full-time,L6,185000,12
+E003,Sofia Alvarez,sofia.alvarez@lumenlabs.example,VP Sales,Sales,E001,"Austin, TX",US,2023-02-13,Full-time,L6,170000,12
+E004,Rohan Kapoor,rohan.kapoor@lumenlabs.example,Head of Customer Success,Customer Success,E001,Bengaluru,India,2022-09-05,Full-time,L5,115000,7
+E005,Nisha Verma,nisha.verma@lumenlabs.example,Head of People & Operations,People & Ops,E001,Bengaluru,India,2023-04-03,Full-time,L5,85000,13
+E006,Marcus Chen,marcus.chen@lumenlabs.example,Head of Marketing,Marketing,E001,Remote - US,US,2024-01-08,Full-time,L5,140000,10
+E007,Ananya Rao,ananya.rao@lumenlabs.example,Head of Finance,Finance,E001,Bengaluru,India,2023-07-17,Full-time,L5,90000,8
+E008,Vikram Shah,vikram.shah@lumenlabs.example,Head of Product,Product,E001,Bengaluru,India,2022-11-14,Full-time,L5,125000,16
+E009,Lena Fischer,lena.fischer@lumenlabs.example,Legal & Compliance Counsel,Legal,E001,Berlin,Germany,2025-02-03,Full-time,L5,110000,15
+E010,Arjun Pillai,arjun.pillai@lumenlabs.example,"Engineering Manager, Platform",Engineering,E002,Bengaluru,India,2022-10-03,Full-time,L5,105000,16
+E011,Divya Krishnan,divya.krishnan@lumenlabs.example,"Engineering Manager, Product",Engineering,E002,Bengaluru,India,2023-01-09,Full-time,L5,98000,11
+E012,Tomas Herrera,tomas.herrera@lumenlabs.example,Staff Engineer,Engineering,E010,Madrid,Spain,2023-06-12,Full-time,L5,135000,19
+E013,Ishaan Gupta,ishaan.gupta@lumenlabs.example,Senior Software Engineer,Engineering,E010,Bengaluru,India,2023-03-20,Full-time,L4,62000,20
+E014,Kavya Reddy,kavya.reddy@lumenlabs.example,Senior Software Engineer,Engineering,E011,Bengaluru,India,2023-08-21,Full-time,L4,60000,10
+E015,Neil Patel,neil.patel@lumenlabs.example,Software Engineer,Engineering,E011,Bengaluru,India,2024-06-03,Full-time,L3,40000,8
+E016,Sana Qureshi,sana.qureshi@lumenlabs.example,Software Engineer,Engineering,E010,Bengaluru,India,2024-02-12,Full-time,L3,36000,8
+E017,Rahul Desai,rahul.desai@lumenlabs.example,Software Engineer,Engineering,E011,Bengaluru,India,2025-01-20,Full-time,L3,35000,9
+E018,Meghna Joshi,meghna.joshi@lumenlabs.example,Software Engineer,Engineering,E011,Bengaluru,India,2025-06-02,Full-time,L3,34000,11
+E019,Pranav Bhat,pranav.bhat@lumenlabs.example,DevOps Engineer,Engineering,E010,Bengaluru,India,2023-10-09,Full-time,L4,55000,7
+E020,Julia Novak,julia.novak@lumenlabs.example,Senior Data Engineer,Engineering,E010,Prague,Czechia,2024-04-15,Full-time,L4,90000,11
+E021,Harsh Vardhan,harsh.vardhan@lumenlabs.example,ML Engineer,Engineering,E010,Bengaluru,India,2025-03-10,Full-time,L4,70000,20
+E022,Aditi Sharma,aditi.sharma@lumenlabs.example,QA Engineer,Engineering,E011,Bengaluru,India,2024-09-02,Full-time,L3,32000,18
+E023,Omar Haddad,omar.haddad@lumenlabs.example,Software Engineer,Engineering,E011,Lisbon,Portugal,2025-09-01,Full-time,L3,78000,19
+E024,Shruti Banerjee,shruti.banerjee@lumenlabs.example,Product Manager,Product,E008,Bengaluru,India,2024-03-04,Full-time,L4,68000,7
+E025,Kunal Mehta,kunal.mehta@lumenlabs.example,Product Designer,Product,E008,Bengaluru,India,2023-05-22,Full-time,L4,48000,15
+E026,Ritu Saxena,ritu.saxena@lumenlabs.example,UX Researcher,Product,E008,Bengaluru,India,2025-04-07,Part-time,L3,38000,20
+E027,Jake Morrison,jake.morrison@lumenlabs.example,Senior Account Executive,Sales,E003,Remote - US,US,2024-02-05,Full-time,L4,120000,18
+E028,Emily Walsh,emily.walsh@lumenlabs.example,Account Executive,Sales,E003,Remote - US,US,2025-05-12,Full-time,L3,90000,14
+E029,Siddharth Malhotra,siddharth.malhotra@lumenlabs.example,Account Executive,Sales,E003,Bengaluru,India,2025-08-18,Full-time,L3,38000,9
+E030,Hannah Muller,hannah.muller@lumenlabs.example,Sales Development Rep,Sales,E003,Berlin,Germany,2026-02-02,Full-time,L2,45000,8
+E031,Aisha Khan,aisha.khan@lumenlabs.example,Revenue Operations Analyst,Sales,E003,Bengaluru,India,2025-11-03,Full-time,L3,42000,16
+E032,Tara Singh,tara.singh@lumenlabs.example,Content Marketing Manager,Marketing,E006,Bengaluru,India,2024-10-14,Full-time,L3,40000,17
+E033,Ben Foster,ben.foster@lumenlabs.example,Demand Generation Manager,Marketing,E006,Remote - US,US,2026-07-13,Full-time,L3,80000,8
+E034,Ira Chopra,ira.chopra@lumenlabs.example,Product Marketing Manager,Marketing,E006,Bengaluru,India,2025-07-21,Full-time,L4,75000,10
+E035,Nandini Rao,nandini.rao@lumenlabs.example,Senior Customer Success Manager,Customer Success,E004,Bengaluru,India,2024-05-13,Full-time,L4,52000,8
+E036,Chris Doyle,chris.doyle@lumenlabs.example,Customer Success Manager,Customer Success,E004,Remote - US,US,2026-05-04,Full-time,L3,70000,22
+E037,Faizal Ahmed,faizal.ahmed@lumenlabs.example,Support Engineer,Customer Success,E004,Bengaluru,India,2024-08-05,Full-time,L2,22000,16
+E038,Pooja Nambiar,pooja.nambiar@lumenlabs.example,Support Engineer,Customer Success,E004,Bengaluru,India,2026-06-15,Full-time,L2,20000,13
+E039,Jaya Thomas,jaya.thomas@lumenlabs.example,Recruiter & People Partner,People & Ops,E005,Bengaluru,India,2025-10-06,Full-time,L3,36000,20
+E040,Sameer Kulkarni,sameer.kulkarni@lumenlabs.example,Accountant,Finance,E007,Bengaluru,India,2026-08-03,Full-time,L2,26000,21

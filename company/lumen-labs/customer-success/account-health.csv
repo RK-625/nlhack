@@ -1,0 +1,32 @@
+customer_id,name,mrr_usd,health_score,health_band,usage_trend_30d_pct,weekly_active_users,last_nps_0_10,csm_owner,renewal_date,risk_flag,risk_reason
+CUST-1001,Basil & Co,1700,90,Healthy,6,25,10,Chris Doyle,2026-11-18,None,
+CUST-1002,Kite Analytics,1600,89,Healthy,4,23,9,Chris Doyle,2027-01-28,None,
+CUST-1003,Pinecrest Software,4700,76,Healthy,2,58,8,Nandini Rao,2027-02-15,None,
+CUST-1005,Drift Media,500,89,Healthy,-3,7,8,Chris Doyle,2027-04-17,None,
+CUST-1006,Meridian Travel,4300,48,Unhealthy,-19,34,5,Nandini Rao,2026-11-20,At-risk,Reliability complaints post Aug incident; dashboard performance P2 open; renewal 2026-11-20
+CUST-1008,Ember Studios,1500,86,Healthy,0,21,9,Chris Doyle,2027-06-25,None,
+CUST-1009,Alder & Finch,3600,80,Healthy,12,47,10,Nandini Rao,2027-07-28,None,
+CUST-1010,Juniper Labs,900,92,Healthy,10,13,9,Chris Doyle,2027-08-15,None,
+CUST-1011,Copperleaf Home,700,78,Healthy,3,9,9,Chris Doyle,2027-09-15,None,
+CUST-1012,Tidewater Apps,800,92,Healthy,5,12,10,Chris Doyle,2026-10-19,None,
+CUST-1013,Sable Security,1100,81,Healthy,12,15,10,Chris Doyle,2026-12-07,None,
+CUST-1015,Fjord Commerce,1400,44,Unhealthy,-27,10,5,Chris Doyle,2026-11-30,At-risk,Contracted in Jul; low adoption; history of failed payments; renewal 2026-11-30
+CUST-1017,Willow Wearables,600,84,Healthy,5,8,10,Chris Doyle,2027-02-26,None,
+CUST-1018,Quanta Payments,3200,88,Healthy,2,46,9,Nandini Rao,2027-04-17,None,
+CUST-1019,Zephyr Fitness,1900,80,Healthy,12,25,9,Chris Doyle,2027-05-16,None,
+CUST-1020,Redwood Commerce,3100,22,Unhealthy,-41,11,3,Nandini Rao,,Churned,Churned 2026-07-15: missing SAML SSO
+CUST-1021,Northwind Logistics,7200,31,Unhealthy,-34,37,4,Nandini Rao,2026-12-15,Critical,"2 open P1s (ingestion), Oct payment failed, SSO ask, SLA credit dispute; non-renewal notice deadline 2026-10-16"
+CUST-1022,Maple Mobility,1300,91,Healthy,2,20,9,Chris Doyle,2027-06-21,None,
+CUST-1023,Verdant Foods,2900,79,Healthy,12,38,8,Nandini Rao,2027-07-20,None,
+CUST-1024,Skyline Edtech,3400,88,Healthy,-4,49,10,Nandini Rao,2027-09-06,None,
+CUST-1026,Lattice Robotics,2500,66,Neutral,2,27,7,Nandini Rao,2027-09-26,Watch,Needs SAML SSO for German security review
+CUST-1027,Brightwave Health,7000,72,Neutral,6,82,8,Nandini Rao,2027-10-04,Watch,Healthy usage; HIPAA/BAA docs and SSO needed for expansion
+CUST-1029,Orbit Mobility,5400,63,Neutral,-3,56,7,Nandini Rao,2026-11-15,Watch,New product head; CSV export bug open
+CUST-1030,Stratus Cloudworks,2800,18,Unhealthy,-52,8,2,Nandini Rao,,Churned,Churned 2026-08-28: Aug 14 outage
+CUST-1031,Tessera Games,4000,58,Neutral,-12,38,6,Nandini Rao,2026-12-01,Watch,Aug incident impact; missing events after SDK upgrade (open P2); exec sponsor changed
+CUST-1032,Vantage Mobility,2200,35,Unhealthy,-30,13,5,Chris Doyle,,Churned,Churned 2026-09-21: champion left
+CUST-1033,Halcyon Finance,5800,79,Healthy,4,75,8,Nandini Rao,2027-01-05,None,Needs SOC 2 Type II report for EMEA expansion
+CUST-1034,Cobalt Retail,6200,77,Healthy,12,78,9,Nandini Rao,2027-02-03,None,
+CUST-1035,Polaris HR Tech,1200,79,Healthy,11,16,8,Chris Doyle,2027-03-18,None,
+CUST-1036,Nimbus Telecom,2500,81,Healthy,-2,33,10,Nandini Rao,2027-07-26,None,
+CUST-1037,Harbor Insurance Tech,2100,90,Healthy,9,31,9,Chris Doyle,2027-08-23,None,

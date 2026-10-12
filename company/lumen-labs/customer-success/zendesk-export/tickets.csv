@@ -1,0 +1,37 @@
+ticket_id,created_date,customer_id,customer_name,requester,subject,category,priority,status,assignee,escalated_to,first_response_minutes,resolved_date,csat_1_5,notes
+ZD-10500,2026-10-11,CUST-1027,Brightwave Health,Dr. Alisha Menon,BAA/HIPAA documentation request,Compliance,P3,open,Pooja Nambiar,Lena Fischer,35,,,Needed for expansion D-3003.
+ZD-10501,2026-10-11,CUST-1015,Fjord Commerce,Lars Vermeulen,How do I invite team members?,How-to,P4,open,Pooja Nambiar,,20,,,Low adoption signal.
+ZD-10499,2026-10-10,CUST-1026,Lattice Robotics,Jonas Keller,SAML SSO availability for German security review,Feature Request,P3,open,Faizal Ahmed,,40,,,Duplicate theme; tag sso-demand.
+ZD-10497,2026-10-09,CUST-1021,Northwind Logistics,Elena Brandt,"Webhook ingestion returning intermittent 502s, dashboards stale",Data Ingestion,P1,open,Faizal Ahmed,Ishaan Gupta,9,,,Second P1 in 5 days; customer threatened to invoke chronic-SLA termination clause.
+ZD-10493,2026-10-08,CUST-1029,Orbit Mobility,Ben Hargreaves,CSV export truncates at 10k rows,Bug,P3,open,Pooja Nambiar,,55,,,
+ZD-10490,2026-10-07,CUST-1021,Northwind Logistics,Marcus Teller,Invoice payment failed - AP portal registration,Billing,P2,pending,Faizal Ahmed,Ananya Rao,30,,,Finance engaged; see failed-payments FP-2001.
+ZD-10488,2026-10-06,CUST-1031,Tessera Games,Daria Volkov,Missing events after SDK upgrade,Bug,P2,pending,Faizal Ahmed,Ishaan Gupta,38,,,Waiting on customer SDK logs.
+ZD-10440,2026-10-06,CUST-1019,Zephyr Fitness,Tom Alvarado,Duplicated feedback items from App Store import,Bug,P3,solved,Faizal Ahmed,Ishaan Gupta,28,2026-10-08,4,
+ZD-10482,2026-10-05,CUST-1021,Northwind Logistics,Elena Brandt,Event ingestion delayed 6+ hours since overnight,Data Ingestion,P1,open,Pooja Nambiar,Pranav Bhat,12,,,Escalated to Platform; partial backlog drain in progress; exec sponsor Rohan Kapoor informed.
+ZD-10426,2026-10-03,CUST-1035,Polaris HR Tech,Isha Mehra,Custom fields in survey widget,How-to,P4,solved,Pooja Nambiar,,17,2026-10-04,5,
+ZD-10476,2026-10-02,CUST-1006,Meridian Travel,Sam Okafor,Dashboard load times over 20 seconds,Performance,P2,open,Pooja Nambiar,Tomas Herrera,25,,,Query planner regression being investigated.
+ZD-10420,2026-10-02,CUST-1022,Maple Mobility,Jean Tremblay,Billing contact change,Billing,P4,solved,Faizal Ahmed,,12,2026-10-02,5,
+ZD-10412,2026-10-01,CUST-1033,Halcyon Finance,Oliver Grant,Do you have a SOC 2 Type II report?,Compliance,P3,solved,Pooja Nambiar,Lena Fischer,22,2026-10-03,4,Provided SOC 2 Type I and bridge status.
+ZD-10407,2026-09-30,CUST-1002,Kite Analytics,Ravi Chandran,Webhook retry settings,How-to,P4,solved,Faizal Ahmed,,18,2026-09-30,5,
+ZD-10394,2026-09-29,CUST-1023,Verdant Foods,Pat Sullivan,Slow export of quarterly report,Performance,P3,solved,Pooja Nambiar,Tomas Herrera,31,2026-10-02,4,
+ZD-10455,2026-09-28,CUST-1021,Northwind Logistics,Priya Nair,SAML SSO required for security review - timeline?,Feature Request,P3,pending,Faizal Ahmed,,60,,,Answered: SSO/SAML launch targeted for Nov 2026; awaiting customer InfoSec reply.
+ZD-10385,2026-09-25,CUST-1036,Nimbus Telecom,Wei Lim,Onboarding: SSO for pilot users (asked about SAML),Feature Request,P3,solved,Faizal Ahmed,,35,2026-09-26,4,Third SAML ask in 60 days across tickets.
+ZD-10380,2026-09-24,CUST-1037,Harbor Insurance Tech,Greg Dunn,Onboarding: connecting Intercom feedback,Integration,P3,solved,Pooja Nambiar,,20,2026-09-26,5,
+ZD-10372,2026-09-22,CUST-1024,Skyline Edtech,Neha Bansal,Role-based access question,How-to,P4,solved,Faizal Ahmed,,15,2026-09-22,5,
+ZD-10360,2026-09-20,CUST-1018,Quanta Payments,Aditya Rao,Tag taxonomy import fails on large CSV,Bug,P3,solved,Pooja Nambiar,,28,2026-09-23,4,
+ZD-10431,2026-09-19,CUST-1021,Northwind Logistics,Marcus Teller,SLA credit request for Aug 14 incident,Billing,P2,open,Faizal Ahmed,Rohan Kapoor,45,,,Credit calc: 10% of monthly fee ($720) per SLA schedule; customer wants 30%.
+ZD-10351,2026-09-17,CUST-1009,Alder & Finch,Rosa Whitfield,Salesforce connector sync gap,Integration,P3,solved,Faizal Ahmed,Ishaan Gupta,42,2026-09-22,4,
+ZD-10335,2026-09-14,CUST-1003,Pinecrest Software,Andy Liu,Jira integration field mapping,Integration,P3,solved,Pooja Nambiar,,33,2026-09-16,5,
+ZD-10330,2026-09-12,CUST-1034,Cobalt Retail,Maria Gomez,How to set up weekly digests,How-to,P4,solved,Faizal Ahmed,,25,2026-09-12,5,
+ZD-10312,2026-09-10,CUST-1032,Vantage Mobility,Rina Patel,Request full data export for offboarding,Data Request,P3,solved,Pooja Nambiar,Ishaan Gupta,30,2026-09-15,4,
+ZD-10301,2026-09-08,CUST-1032,Vantage Mobility,Rina Patel,Admin account owner left company - transfer ownership,Account,P3,solved,Pooja Nambiar,,18,2026-09-09,4,Champion departure confirmed.
+ZD-10244,2026-08-19,CUST-1021,Northwind Logistics,Elena Brandt,RCA request for Aug 14 incident,Incident,P2,solved,Faizal Ahmed,Priya Raman,50,2026-08-24,3,RCA shared.
+ZD-10240,2026-08-18,CUST-1030,Stratus Cloudworks,Kevin Zhao,Request: written RCA and service credits,Billing,P2,solved,Faizal Ahmed,Rohan Kapoor,40,2026-08-22,2,Credits issued; customer still churned 2026-08-28.
+ZD-10225,2026-08-15,CUST-1033,Halcyon Finance,Oliver Grant,Delayed data after outage,Incident,P2,solved,Faizal Ahmed,,22,2026-08-16,4,
+ZD-10213,2026-08-14,CUST-1021,Northwind Logistics,Elena Brandt,Ingestion pipeline down - no new events,Incident,P1,solved,Faizal Ahmed,Pranav Bhat,6,2026-08-15,2,Aug 14 outage; resolved after DB failover fix.
+ZD-10216,2026-08-14,CUST-1006,Meridian Travel,Sam Okafor,Dashboards blank during incident,Incident,P2,solved,Faizal Ahmed,,14,2026-08-15,3,
+ZD-10214,2026-08-14,CUST-1031,Tessera Games,Daria Volkov,Outage - event stream stopped,Incident,P1,solved,Faizal Ahmed,Pranav Bhat,7,2026-08-15,2,
+ZD-10219,2026-08-14,CUST-1027,Brightwave Health,Dr. Alisha Menon,Insights dashboard not updating,Incident,P2,solved,Faizal Ahmed,,11,2026-08-15,3,
+ZD-10211,2026-08-14,CUST-1030,Stratus Cloudworks,Kevin Zhao,Dashboards not loading / data missing,Incident,P1,solved,Faizal Ahmed,Pranav Bhat,5,2026-08-15,1,Customer very upset; second outage-related ticket in Aug.
+ZD-10133,2026-07-02,CUST-1020,Redwood Commerce,Hayden Cole,Security questionnaire: SSO is mandatory for vendors,Feature Request,P3,solved,Faizal Ahmed,Lena Fischer,55,2026-07-06,2,Led to non-renewal (D-3023).
+ZD-10012,2026-06-09,CUST-1020,Redwood Commerce,Hayden Cole,Does Lumen support SAML SSO?,Feature Request,P3,solved,Faizal Ahmed,,70,2026-06-10,3,"Answered: not yet supported, no committed date."
