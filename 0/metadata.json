@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RMNX9BMBJMWA8QNXY2ZM5M",
+  "session_id": "01a12fe9-d9cb-72a2-b7fc-64309f043e97",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T18:06:49.154675Z",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "site/public/evidence/2026-10-12/57-neatbot-cost-prompt.png",
+    "site/public/evidence/2026-10-12/58-neatbot-cost-analysis.png",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/public/evidence/2026-10-12/thumbs/57-neatbot-cost-prompt.jpg",
+    "site/public/evidence/2026-10-12/thumbs/58-neatbot-cost-analysis.jpg",
+    "site/src/components/cfo-proof.tsx",
+    "site/src/content.ts",
+    "site/src/pages/Judges.tsx"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "10e9fb9a9c77",
+  "checkpoint_transcript_start": 2116,
+  "transcript_lines_at_start": 2116,
+  "compact_transcript_start": 281,
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T18:06:47.166652Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 43,
+    "human_modified": 43,
+    "human_removed": 0,
+    "total_committed": 43,
+    "total_lines_changed": 86,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
