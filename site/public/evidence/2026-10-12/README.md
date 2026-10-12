@@ -150,3 +150,46 @@ are the public record.
 - `24-entire-checkpoint-8887e9ba.txt`: `entire checkpoint explain 8887e9ba` (assistant turns only) and token usage.
 - `25-entire-checkpoints-key-commits.txt`: short explain and tokens for all six checkpoints.
 - `26-entire-checkpoint-trailers-and-refs.txt`: commit trailers and matching `refs/entire/checkpoints/*` refs on `origin`.
+
+## cfo.ai: connect and CFO Bot hiring-expense plan
+
+Real captures from the app on 12 October 2026 (about 16:05-16:22 IST, Admin user,
+CFO Bot). Request ID on the consent page (28) is kept as captured.
+
+| File | Title | What it proves |
+| --- | --- | --- |
+| [27-cfoai-connect-banner.png](27-cfoai-connect-banner.png) | CFO Bot: Connect cfo.ai banner | Empty CFO Bot with the "Connect your cfo.ai account" banner before connecting. |
+| [28-cfoai-oauth-consent.png](28-cfoai-oauth-consent.png) | cfo.ai consent page | "Connect CFO.ai, external MCP access, step 3 of 3": the WorkOS consent handoff for the per-user connection. |
+| [29-cfoai-connected.png](29-cfoai-connected.png) | "cfo.ai connected." | The app returns with the connected toast, so the per-user OAuth connection works end to end. |
+| [30-cfoai-hiring-expense-question.png](30-cfoai-hiring-expense-question.png) | Question typed | The question as typed: "plan what is the expenses here according current hiring requirement of the company". |
+| [31-cfoai-cfo-bot-working.png](31-cfoai-cfo-bot-working.png) | CFO Bot working | Tool-call activity ("Done · 5 tools") while the bot reads the company folder. |
+| [32-cfoai-hiring-expense-answer.png](32-cfoai-hiring-expense-answer.png) | Hiring-expense answer | 4 open roles, about $447k loaded annual payroll, burn $295,061 to about $326k, runway 20.4 to about 18.5 months, role table. |
+| [33-cfoai-token-cap-approved.png](33-cfoai-token-cap-approved.png) | Token cap, approved | Card: "This reply hit its 300k token limit after 349k. Finishing needs about $0.38 more." Approved as a one-time extension; the answer then starts again. |
+| [34-cfoai-continuation-sensitivity.png](34-cfoai-continuation-sensitivity.png) | Continuation: sensitivity | The repeated answer: comp sensitivity, 2026 cash timing (about $19,023), runway sensitivity. |
+| [35-cfoai-continuation-actions.png](35-cfoai-continuation-actions.png) | Continuation: actions | Risks and recommended actions at the end of the repeated answer. |
+
+**What this proves.** The per-user cfo.ai OAuth connection (WorkOS consent,
+external MCP access) completes end to end in the app (27-29).
+
+**Which tools the answer used.** A read-only query of the CFO Bot thread in
+`data/mastra.db` shows 9 tool calls in the assistant messages: 8 x
+`company_read_file` and 1 x `company_list_files`. No cfo.ai tools (`cfo_*`) were
+called. So the figures come from the local fictional Lumen Labs files (it cites
+`hr/open-roles.md`, `finance/summary.md`, `hr/salary-bands.md`,
+`hr/greenhouse-export/candidates.csv`), not from live cfo.ai workspace data. The
+connection was established but not exercised by this answer.
+
+**Scope.** This is a hiring-expense plan for the fictional Lumen Labs. It is not
+the cfo.ai business plan for Bot Company (pricing, costs, runway) that the mentor
+asked for; that is still to do.
+
+**Verification.** The answer figures are not independently verified, except three
+that match `company/lumen-labs/finance/summary.md`: cash $6,019,000, average
+monthly net burn $295,061, runway 20.4 months. The roles table, the $447k
+payroll, and the 18.5-month runway were not recomputed.
+
+**Finding (known issue, no code changed).** The token cap tripped (349k vs 300k)
+after the answer had already been written. Approve then produced a near-duplicate
+answer (33-35), and the offer asked for about $0.38 more. So the escalation is
+offered even when the capping step was the final answer. Candidate fix: skip the
+offer when the capping step finished with no pending tool calls.
