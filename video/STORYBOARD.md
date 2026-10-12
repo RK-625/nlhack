@@ -1,33 +1,37 @@
-# Bot Company — launch video storyboard (Sprint 1 draft)
+# Bot Company — hackathon product demo
 
-1920×1080 · 30 fps · ~82 s · Remotion · **dark look** (near-black gradient, bot colours as accents) · music bed + short, confident female VO (Kokoro) · on-screen headlines ≤ 7 words. Status: approved 2026-10-12.
+1920×1080 · 30 fps · 160 seconds (2:40) · Remotion · music and bold on-screen text · no voiceover.
 
-Style (from the whatships refs): one idea per scene, word-by-word blur-in headlines, real UI in floating cards with a soft shadow and slow push-in, cursor with click ripples, blur-dissolve transitions (never hard cuts), a whoosh at each scene change. Mascots = the app's own bot avatars (gradient shapes with capsule eyes); Neat Bot = the Neatlogs dot-matrix "nl" tile.
+The five-minute maximum and labelled reconstructed demos were confirmed by the user. The editable composition remains in Remotion; MP4 is the export format. Dark backgrounds, Geist typography, expressive app mascots, moving packets, cursor actions and matched UI framing stitch the film together.
 
-| # | Time | Scene (visual) | On-screen text | Voiceover |
-|---|------|----------------|----------------|-----------|
-| 1 | 0–6s | **Mascot lineup** (MausBot style). The camera dollies along the row of bots and each one gets a beat with its own expression: Primary Bot (violet hex) first, then the specialists. The last stop is **Neat Bot**: its dots spring together into the "nl" tile, it blinks, and it holds as the final hero pose. | — | "Meet Bot Company." |
-| 2 | 6–11s | **Title.** "Bot Company" blurs in glyph by glyph, then the subtitle word by word. The bots pop up from the bottom edge, staggered. | **Bot Company** / A company of AI agents that asks before it acts. | "A company of AI agents… that asks before it acts." |
-| 3 | 11–19s | **The team.** Primary Bot in the centre; 9 specialists orbit, then connect to it with curved lines (delegation hub). Each label pops: Research · CFO · GitHub · Legal · Sales · … | One assistant. Nine specialists. | "Ask the Primary Bot anything. It hands the work to the right specialist." |
-| 4 | 19–27s | **Real work, real UI.** App card (sidebar + chat). A prompt pill types the US-expansion question. "Delegated to Research Bot / CFO Bot" chips tick in. The cost and token meters climb. *(shots 19, 20)* | Real work. Live costs. | "Every turn shows its cost and tokens, live." |
-| 5 | 27–35s | **Guardrails.** The cap card slides up ("302k / 300k tokens"). The cursor clicks **Approve**, which turns into "One-time extension granted". Quick flash of the Approve/Deny tool card. *(shots 21, 16, 01)* | Nothing happens without you. | "Hit a limit, or about to change something? It stops — and asks." |
-| 6 | 35–40s | **Neat Bot returns.** The "nl" tile from the intro bursts back into dots, which reassemble into Neat Bot in the app sidebar. A status chip reads "Reading traces…". | Meet Neat Bot. | "And watching every run… Neat Bot." |
-| 7 | 40–50s | **Employee vs Admin** split screen with the same question on both sides. Left (Employee): own traces only; asking for project analytics returns "not available to you". Right (Admin): all traces, analytics, detections and triage, and a triage change still shows an Approve card. *(new captures)* | Employees: own runs. Admins: everything. | "Employees see only their own runs. Admins see everything — and even their changes need approval." |
-| 8 | 50–62s | **It debugs your agents.** Neatlogs trace dashboard: a red ERROR run *(shot 17)*. Push into the Neat Bot chat: verdict, then waste found, then ranked fixes *(shots 08 → 10 → 11)*. A checklist ticks. | It reads every trace. | "When a run fails, Neat Bot reads the Neatlogs trace, finds the cause, and ranks the fixes." |
-| 9 | 62–70s | **Fixed. Measured.** Animated counters: ERROR becomes SUCCESS; tokens 323,923 → 237,208 (−26.8%); cost −15.4%; CFO file reads 29 → 10. Small footnote: "same task, before vs after". *(shots 12, 18)* | One fix. Measured. | "One fix later, the failure's gone — with a quarter fewer tokens." |
-| 10 | 70–75s | **Built with receipts.** An Entire checkpoint card slides in over a commit timeline. | Every change, checkpointed. | "Every change, checkpointed with Entire." |
-| 11 | 75–82s | **End card.** The bots line up again (the same pose as scene 1, so it loops). "Try Bot Company" with the Primary Bot tile, then a URL pill github.com/RK-625/nlhack, then "Built for neatHack 2026 · Neatlogs · Entire · cfo.ai". Fade out. | Try Bot Company | "Bot Company. AI that asks before it acts." |
+| Time | Sequence | Visible demonstration |
+| --- | --- | --- |
+| 0–24 s | Enterprise chaos | Close-up workflow console: three agents working (0–4 s); failed action selection and missing parent trace (4–9 s); uncapped spend climbing (9–14 s); retry click creates duplicate jobs (14–20 s); deadpan mascot reaction (20–24 s). Labelled illustration. |
+| 24–30 s | Mascot lineup | Expressive bots introduced, ending on the Neatlogs tile. |
+| 30–35 s | Bot Company | Product identity and promise. |
+| 35–43 s | Primary Bot | Typed question, delegation, live token and cost meters over captured UI. |
+| 43–51 s | Cap and approve | Reconstructed pending controls → cursor approval → captured one-time extension. |
+| 51–67 s | Research Bot | Typed company comparison → Crustdata search/enrichment and web search → comparison table → company profile and hiring trend. Labelled illustrative data. |
+| 67–83 s | GitHub Bot | Typed release-failure question → repository/actions/log tools → missing environment variable → drafted issue → human approval → created issue. Labelled illustrative data. |
+| 83–99 s | CFO Bot | Reconstructed prompt → actual CFO tool/approval capture → saved business plan in cfo.ai. |
+| 99–107 s | Department team | Primary Bot connects to eight department specialists; packets travel between them. Neat Bot is introduced separately next. |
+| 107–112 s | Meet Neat Bot | Dot-matrix hero animation. |
+| 112–128 s | Role-aware investigation | Employee request is scoped to own runs → transition to a separate admin account → all-user results, analytics/detections/triage → open actual failure trace. Reconstructed comparison is labelled. |
+| 128–140 s | Diagnose and improve | Actual trace and Neat Bot evidence: failure, duplicated retrieval, ranked shared-context/output-cap recommendations. |
+| 140–148 s | Measured results | Observed Northwind token/cost/status comparison and separately labelled CFO file-read sample. |
+| 148–153 s | Entire checkpoint | Actual checkpoint and linked commit trail. |
+| 153–160 s | End card | Product, mascot lineup, repository and acknowledgements; fade out. |
 
-## Honesty guardrails
-- No speed claims: the after runs were not faster.
-- The before/after numbers are labelled as one task / our runs, not a benchmark.
-- The approved answer's text (shots 22–23) is never zoomed in, because it contains a runway miscalculation.
+## Evidence boundaries
 
-## Asset plan
-- **Existing screenshots:** docs/demo/evidence/2026-10-12 (17, 19, 20, 21, 16, 01, 08, 10, 11, 12, 18).
-- **New captures** (from a local copy of the app signed in as admin and as employee):
-  - the sidebar with the new Neat Bot avatar;
-  - Employee vs Admin asking Neat Bot the same question;
-  - an admin triage change behind an Approve card.
-- **Mascots:** rebuilt in Remotion from the real avatar shapes and colours (web/src/lib/avatar).
-- **Audio:** a Pixabay track (you choose from 3) + Kokoro VO + whoosh/click SFX.
+Research uses direct Crustdata API tools, not a Crustdata MCP transport. Research companies, GitHub repository/issue, and role comparison users are illustrative. Their reconstructions follow the app's chat styling and tool behaviour; they are not recorded runs. GitHub writes require approval. The employee/admin transition represents different signed-in accounts, not employee self-elevation.
+
+Primary/cap, CFO, Neatlogs diagnosis and trace visuals reuse existing captures from `docs/demo/evidence/2026-10-12`, copied into `public/evidence`. Pending cap controls are reconstructed from `web/src/shell/MessageBubble.tsx` using shot 21 numbers; its approved state is captured evidence. The CFO plan was requested directly from CFO Bot, not delegated by Primary Bot. Shots 22–23 containing the runway miscalculation are unused.
+
+The live token-cap trace and Northwind diagnosis are separate labelled examples. Northwind results are one observed before/after pair: 323,923 → 237,208 tokens (−26.8%), $0.0589567 → $0.0498578 (−15.4%), ERROR → SUCCESS. CFO reads 29 → 10 are a separate three-runs-per-group application-log sample, labelled observational. No general speed or benchmark claim is made. Entire checkpoint `01M4QMYG0STA2ZQR90286XF297` links to commit `8887e9b`.
+
+## Audio and render
+
+Music: “The Last Point” by raspberrymusic (Pixabay). Existing local asset: `public/music/raspberrymusic-the-last-point-beat-electronic-digital-394291.mp3`; standalone track stays gitignored. The 124.584-second track repeats with a four-second crossfade at 116–120 seconds and a final 1.2-second fade. Kokoro assets are unused.
+
+From `video/`: `npm run typecheck`, then `npm run render`. Rendering uses local port 3006 and concurrency 2. Output: `out/launch.mp4`. The prior 146-second cut is preserved as `out/launch-146s-previous.mp4`. The prior 94-second cut is preserved as `out/launch-94s-previous.mp4`. See `FINAL-REVIEW.md` for export validation.
