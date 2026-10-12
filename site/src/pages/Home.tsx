@@ -308,10 +308,10 @@ function MarkCell({ mark }: { mark: Mark }) {
     <span
       className={cx(
         "inline-flex items-center gap-1.5 text-sm",
-        mark === "yes" ? "font-medium text-fg" : "text-muted-fg",
+        mark === "yes" ? "font-semibold text-ok" : mark === "no" ? "text-bad" : "text-warn",
       )}
     >
-      <Icon aria-hidden className={cx("size-4", mark === "yes" && "text-ok")} />
+      <Icon aria-hidden className="size-4" />
       {markLabel[mark]}
     </span>
   );

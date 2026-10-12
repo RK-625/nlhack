@@ -401,14 +401,21 @@ export type Criterion = {
   criterion: string;
   badge: Badge;
   proof: Maybe<string>;
+  steps?: ProcessStep[];
   shots?: Shot[];
   links?: { href: Maybe<string>; label: string }[];
+};
+
+export type ProcessStep = {
+  status: "failed" | "passed" | "changed" | "recorded" | "check";
+  title: string;
+  text: string;
 };
 
 export const evidence: Criterion[] = [
   {
     id: "improved",
-    short: "Agent improved",
+    short: "Agent cost reduction",
     criterion: "Agent improved (run before and after, with numbers)",
     badge: "Screenshots",
     proof: "We asked the agent whether fictional Lumen Labs should offer Northwind a renewal credit, and what that would mean for cash runway. One run hit its token limit without a final answer. We inspected the trace, changed how agents share company facts, and repeated the same question.",
@@ -425,10 +432,15 @@ export const evidence: Criterion[] = [
   },
   {
     id: "neatlogs",
-    short: "neatlogs",
+    short: "Trace diagnosis",
     criterion: "Used neatlogs (trace links or screenshots)",
     badge: "Screenshots",
-    proof: "Real dashboard captures of a live turn: the capped trace bbb32395… ends in ERROR (\"Execution Failed\", 14 steps); its approved continuation 3c670bab… finishes normally (11 steps). Neat Bot reads traces through the neatlogs MCP; six more traces were exported that way. Trace links need project sign-in, so screenshots stand in.",
+    proof: "When a run stops, neatlogs lets us look inside it. We captured the stopped run and its continuation, then asked Neat Bot to investigate a separate Northwind failure.",
+    steps: [
+      { status: "failed", title: "The dashboard shows where the live run stopped", text: "Trace bbb32395… ended in **ERROR** after **14 steps**. The dashboard reports Execution Failed. The CFO Bot was blocked by the cap." },
+      { status: "passed", title: "The approved continuation has its own trace", text: "Trace 3c670bab… names the earlier run and the approval decision. It finished normally in **11 steps**, so we can follow __the stopped run and its continuation__ separately." },
+      { status: "recorded", title: "Neat Bot helped us investigate the Northwind failure", text: "Given the failed Northwind trace, Neat Bot highlighted repeated reads and large prompts, then suggested changes. We exported **six traces** through the neatlogs MCP. The trace links require project sign-in; the screenshots below can be viewed directly." },
+    ],
     shots: [
       shot("17-neatlogs-capped-trace-error.png", "Capped trace: web.request ERROR, Execution Failed, 14 steps, 4m 27.5s. The CFO Bot span lasted 11 ms, blocked by the cap."),
       shot("18-neatlogs-approved-continuation-trace.png", "Approved continuation: its input names the capped trace and \"Decision: approved\"; 11 steps, 2m 11.3s, normal finish."),
@@ -443,10 +455,15 @@ export const evidence: Criterion[] = [
   },
   {
     id: "entire",
-    short: "Entire",
+    short: "Coding checkpoints",
     criterion: "Used Entire (checkpoints or entire-graph output)",
     badge: "In repo",
-    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer; ${repoFacts.checkpointRefs} Entire refs are pushed to the repository. The fix commit 8887e9ba maps to checkpoint 01M4QMYG…: Codex session, 6041.7k tokens, 45 API calls, one file changed. Inspect the commit on GitHub or read the saved CLI output below (email redacted).`,
+    proof: "Entire connects the code change to the coding session that produced it. For the Northwind fix, you can inspect both the public commit and its saved checkpoint output.",
+    steps: [
+      { status: "recorded", title: "Start with the change that reduced repeated reads", text: "Commit **8887e9ba** changes one file: src/mastra/prompts/index.ts. Its trailer points to checkpoint **01M4QMYG0STA2ZQR90286XF297**." },
+      { status: "passed", title: "The checkpoint records the coding session", text: "The saved CLI output identifies Codex, **45 API calls**, **6041.7k tokens**, and the one changed file. Email addresses are redacted in the published text." },
+      { status: "recorded", title: "Check the wider commit trail", text: `At the recorded snapshot, **${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits** have checkpoint trailers and **${repoFacts.checkpointRefs} checkpoint refs** were pushed. These are __snapshot counts__, not today's repository totals.` },
+    ],
     links: [
       { href: `${site.repoUrl}/commit/8887e9ba75daabceb339b35193ccd7c66c518ec1`, label: "Commit and checkpoint trailer" },
       { href: proofFile("24-entire-checkpoint-8887e9ba.txt"), label: "8887e9ba checkpoint" },
@@ -456,10 +473,16 @@ export const evidence: Criterion[] = [
   },
   {
     id: "cfo",
-    short: "cfo.ai",
+    short: "cfo.ai business plan",
     criterion: "Used cfo.ai (business plan covering pricing, costs, revenue, runway)",
     badge: "Screenshots",
-    proof: "The user asked CFO Bot directly, and CFO Bot created Lumen Labs – 12-Month Business Plan#140 in cfo.ai. The chat shows Cfo edit pages, two Cfo edit scenarios calls, Cfo inspect documentation, and another Cfo edit pages call (Done · 5 tools · 6m 26s). Adding the plan text paused on Approve for cfo_edit_pages. The page is open in cfo.ai with pricing, costs, and runway sections, under Main Scenario. The three requested scenario names are not visible in that shot. An earlier hiring-expense answer used local fictional Lumen Labs files (9 file tool calls, no cfo.ai tool calls): 4 open roles, about $447k loaded annual payroll, burn $295,061 → about $326k a month, runway 20.4 → about 18.5 months. The per-user cfo.ai OAuth connection completes end to end.",
+    proof: "We connected cfo.ai and asked CFO Bot to write a 12-month business plan for fictional Lumen Labs. The screenshots follow the connection, the approval, and the resulting page in cfo.ai.",
+    steps: [
+      { status: "passed", title: "Connect a cfo.ai account", text: "The OAuth consent flow returns to the app with **cfo.ai connected**. Each user connects their own account." },
+      { status: "changed", title: "Approve the plan text before it is written", text: "CFO Bot's activity lists **five tool calls** over **6m 26s**, including page edits, scenario edits, and documentation inspection. The **cfo_edit_pages** call that adds the plan text __pauses for approval__." },
+      { status: "passed", title: "Open the plan in cfo.ai", text: "CFO Bot reports **Lumen Labs – 12-Month Business Plan#140**. The same page is open in cfo.ai with pricing, costs, and runway sections, under **Main Scenario**." },
+      { status: "check", title: "Keep the two finance examples separate", text: "An earlier hiring answer used **local files only**, with nine file-tool calls and no cfo.ai calls: four roles, about $447k annual payroll, and runway **20.4 → 18.5 months**. The later plan used cfo.ai tools. The screenshots do not show the three requested scenario names, so __those names remain unverified__." },
+    ],
     shots: [
       shot("27-cfoai-connect-banner.png", "CFO Bot before connecting, with the \"Connect your cfo.ai account\" banner."),
       shot("28-cfoai-oauth-consent.png", "cfo.ai consent page: external MCP access, step 3 of 3, WorkOS handoff."),
@@ -472,10 +495,16 @@ export const evidence: Criterion[] = [
   },
   {
     id: "recovery",
-    short: "Recovery",
+    short: "Cap and recovery",
     criterion: "Agent recovers from failures (a run where an action failed, then what it did next)",
     badge: "Screenshots",
-    proof: "Live turn on the public app: it hit the 300k token cap at 302k ($0.026 of $0.03). The card offered a one-time extension; after Approve the continuation finished within its $0.05 / 454k budget, using $0.034 and 167k tokens. In the Northwind check, Approve finished at $0.031799 and Deny returned a tool-free answer marked Incomplete.",
+    proof: "A live run reached its token limit before it could finish. The app asked for a one-time extension, and the user approved it. Here is what happened next.",
+    steps: [
+      { status: "failed", title: "The run reached its token cap", text: "Usage reached **302k tokens against a 300k cap**, while cost was $0.026 of $0.03. Checks happen after model steps, so the step that hits the cap can overshoot it." },
+      { status: "changed", title: "The user approved a one-time extension", text: "The cap card asked for about **$0.05 more**. Approve granted a continuation budget of **$0.05 and 454k tokens**; __the saved limit stayed unchanged__." },
+      { status: "passed", title: "The continuation finished within its budget", text: "The answer completed using **$0.034 and 167k tokens**. The app and neatlogs show the same continuation usage." },
+      { status: "check", title: "We also checked what happens when the user declines", text: "In the separate Northwind test, Approve completed at **$0.031799**. Deny returned a **tool-free answer marked Incomplete**. Declining the extension still incurs the final answer's model cost." },
+    ],
     shots: [
       shot("15-live-capped-turn-usage-token-cap.png", "Stopped by the token cap: 302k / 300k while cost was $0.026 / $0.03."),
       shot("21-live-cap-card-approved-continuing.png", "Cap card: \"Finishing needs about $0.05 more.\" Approved as a one-time extension; the Primary Bot thinks again."),
@@ -489,15 +518,23 @@ export const evidence: Criterion[] = [
     short: "Built in public",
     criterion: "Built in public (posts tagged #neatHack)",
     badge: "Public",
-    proof: "Four posts on X from @rk625dev on 10–12 October 2026. The tags on the posts are #neatlogs, #neathacks, and #neathack. They lock the stack with neatlogs and Entire, show the work in progress, describe the startup agent team with Neat Bot, and name the submission Bot Company.",
+    proof: "We shared the build as it happened, from choosing the stack to posting the Bot Company submission. The four original posts are linked below.",
+    steps: [
+      { status: "recorded", title: "Follow the build from 10 to 12 October", text: "The posts from **@rk625dev** show the neatlogs and Entire setup, work in progress, the startup agent team, and the submission film." },
+      { status: "passed", title: "Open the original posts", text: "All **four posts** have direct X links. Their actual tags are **#neatlogs, #neathacks, and #neathack**; the submission post includes #neathack." },
+    ],
     links: posts.map((post) => ({ href: post.url, label: post.title })),
   },
   {
     id: "commits",
-    short: "Dated commits",
+    short: "Hackathon commit history",
     criterion: "Code written during the hackathon (dated commits)",
     badge: "In repo",
-    proof: `${repoFacts.commits} commits at the recorded snapshot, all dated ${repoFacts.firstCommit} to ${repoFacts.lastCommit}. The first commit is the README with the hackathon problem statement. Browse the public GitHub history or read the saved commit list with dates and checkpoint IDs.`,
+    proof: "The public Git history shows when the code was written. The counts below come from a fixed snapshot, so they remain reproducible as we keep improving the project.",
+    steps: [
+      { status: "passed", title: "The recorded commits fall within the build dates", text: `The snapshot contains **${repoFacts.commits} commits**, dated **10–12 October 2026**. The first commit is the README with the hackathon problem statement.` },
+      { status: "recorded", title: "Verify the dates yourself", text: "Open the public commit history or clone the repository and run the commands below. The saved list also includes checkpoint IDs. __Later commits are not included in these counts__." },
+    ],
     links: [
       { href: `${site.repoUrl}/commits/${repoFacts.ref}`, label: "Commit history on GitHub" },
       { href: proofFile("repo-checkpoints.txt"), label: "Saved commit list with dates" },
@@ -539,11 +576,17 @@ export const entireTerminal = [
 export const improvement = {
   summary: "The fix (commit 8887e9ba) makes the Primary Bot pass the figures and file paths it has already read, so specialists stop re-reading them and reply with a compact brief. Six Northwind runs on fictional local company data, recorded 12 October 2026: three before, three after." as Maybe<string>,
   story: [
-    { title: "Before: the run stopped without an answer", text: "The agent used 323,923 tokens, exceeding its 300,000-token limit. Its trace ended in ERROR after 20 model calls, at a cost of $0.0590. Neat Bot's trace review highlighted repeated file reads and large prompts." },
-    { title: "The fix: share facts instead of reading them again", text: "In commit 8887e9ba, the Primary Bot passes the figures and file paths it has already read to each specialist. Specialists read only missing information and return a short brief." },
-    { title: "After: the same question finished within the limit", text: "The matching after run succeeded with 237,208 tokens and 16 model calls, at a cost of $0.0499. That single trace pair used 26.8% fewer tokens and cost 15.4% less." },
+    { status: "failed", title: "Before: the run stopped without an answer", text: "The agent used **323,923 tokens**, exceeding its **300,000-token limit**. Its trace ended in **ERROR** after **20 model calls**, at a cost of **$0.0590**. Neat Bot's trace review highlighted repeated file reads and large prompts." },
+    { status: "changed", title: "The fix: share facts instead of reading them again", text: "In commit **8887e9ba**, the Primary Bot passes the figures and file paths it has already read to each specialist. Specialists __read only missing information__ and return a short brief." },
+    { status: "passed", title: "After: the same question finished within the limit", text: "The matching after run succeeded with **237,208 tokens** and **16 model calls**, at a cost of **$0.0499**. That single trace pair used **26.8% fewer tokens** and cost **15.4% less**." },
+  ] satisfies ProcessStep[],
+  pairedRuns: [
+    { label: "Outcome", before: "Failed · no final answer", after: "Succeeded · answer completed" },
+    { label: "Tokens", before: "323,923", after: "237,208" },
+    { label: "Model calls", before: "20", after: "16" },
+    { label: "Trace cost", before: "$0.0590", after: "$0.0499" },
   ],
-  note: "The cards show totals across three runs before and three after, separate from the single trace pair above. All three after runs finished within their caps; two of three before runs did. Total estimated cost fell 3.3%, but total time rose from 497.2 to 522.2 seconds. CFO replies were 74.1% shorter (25,989 → 6,730 characters). File-read counts come from app logs; neatlogs recorded no tool spans. This six-run sample does not establish general savings or a speed improvement.",
+  note: "The cards show totals across **three runs before and three after**, separate from the single trace pair above. All three after runs finished within their caps; two of three before runs did. Total estimated cost fell **3.3%**, but total time rose from **497.2 to 522.2 seconds**. CFO replies were **74.1% shorter** (25,989 → 6,730 characters). File-read counts come from app logs; neatlogs recorded no tool spans. __This six-run sample does not establish general savings or a speed improvement.__",
   link: `${proofReport}#benchmark`,
   stats: [
     { label: "CFO file reads (3 runs)", v1: "29" as Maybe<string>, v2: "10" as Maybe<string> },

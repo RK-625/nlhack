@@ -2,6 +2,7 @@ import { ArrowDown } from "lucide-react";
 import { Footer, Nav } from "../components/chrome";
 import { GitHubLink } from "../components/github";
 import { CopyCommand, Gallery } from "../components/media";
+import { ProcessSteps, ReviewText } from "../components/review";
 import { Container, ExtLink, Section, Show } from "../components/ui";
 import {
   architecture,
@@ -22,13 +23,13 @@ import {
 } from "../content";
 
 const titles: Record<string, string> = {
-  improved: "Agent improved",
-  neatlogs: "neatlogs",
-  entire: "Entire",
-  cfo: "cfo.ai",
-  recovery: "Failure and recovery",
-  public: "Built in public",
-  commits: "Code written during the hackathon",
+  improved: "Reducing agent cost and repeated work",
+  neatlogs: "Tracing a failed run with neatlogs",
+  entire: "Recording the code changes with Entire",
+  cfo: "Writing a business plan in cfo.ai",
+  recovery: "Finishing a capped run with user approval",
+  public: "Sharing the build in public",
+  commits: "Verifying when the hackathon code was written",
 };
 
 function Header() {
@@ -72,14 +73,28 @@ function Header() {
 function ImprovementStats() {
   return (
     <>
-      <ol className="mb-10 max-w-3xl space-y-6">
-        {improvement.story.map((step) => (
-          <li key={step.title} className="border-l-2 border-line pl-5">
-            <h3 className="text-lg font-semibold">{step.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-fg">{step.text}</p>
-          </li>
-        ))}
-      </ol>
+      <ProcessSteps steps={improvement.story} />
+      <div className="mb-10 overflow-x-auto rounded-2xl border border-line">
+        <table className="num w-full min-w-[340px] text-left text-sm">
+          <caption className="border-b border-line bg-card px-5 py-4 text-left font-semibold">One failed run compared with its matching successful run</caption>
+          <thead className="bg-muted">
+            <tr>
+              <th scope="col" className="px-4 py-3">Metric</th>
+              <th scope="col" className="px-4 py-3 text-bad">Before · failed</th>
+              <th scope="col" className="px-4 py-3 text-ok">After · completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {improvement.pairedRuns.map((row) => (
+              <tr key={row.label} className="border-t border-line">
+                <th scope="row" className="px-4 py-3 font-medium">{row.label}</th>
+                <td className="px-4 py-3 text-bad">{row.before}</td>
+                <td className="bg-ok/5 px-4 py-3 font-semibold text-ok">{row.after}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <h3 className="mb-4 text-lg font-semibold">The broader check: three runs before, three after</h3>
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {improvement.stats.map((stat) => (
@@ -87,18 +102,18 @@ function ImprovementStats() {
             <p className="text-sm font-medium">{stat.label}</p>
             <dl className="num mt-4 grid grid-cols-2 gap-3">
               <div>
-                <dt className="text-xs text-muted-fg">Before</dt>
-                <dd className="mt-1 text-lg font-semibold text-muted-fg"><Show value={stat.v1} /></dd>
+                <dt className="text-xs text-bad">Before</dt>
+                <dd className="mt-1 text-lg font-semibold text-bad"><Show value={stat.v1} /></dd>
               </div>
               <div>
-                <dt className="text-xs text-muted-fg">After</dt>
-                <dd className="mt-1 text-lg font-semibold"><Show value={stat.v2} /></dd>
+                <dt className="text-xs text-ok">After</dt>
+                <dd className="mt-1 text-lg font-semibold text-ok"><Show value={stat.v2} /></dd>
               </div>
             </dl>
           </div>
         ))}
       </div>
-      <p className="mb-8 max-w-3xl text-sm leading-relaxed text-muted-fg">{improvement.note}</p>
+      <p className="mb-8 max-w-3xl text-sm leading-relaxed text-muted-fg"><ReviewText text={improvement.note} /></p>
     </>
   );
 }
@@ -136,10 +151,11 @@ function CriterionSection({ item }: { item: Criterion }) {
     <Section
       id={item.id}
       title={titles[item.id] ?? item.short}
-      intro={isTodo(item.proof) ? "Posts tagged #neatHack will appear here once their links are supplied." : item.proof}
+      intro={isTodo(item.proof) ? "Posts tagged #neatHack will appear here once their links are supplied." : <ReviewText text={item.proof} />}
       className="border-t border-line"
     >
       {item.id === "improved" && <ImprovementStats />}
+      {item.steps && <ProcessSteps steps={item.steps} />}
       {item.id === "entire" && <EntireCheckpoint />}
       {item.id === "commits" && <CommitHistory />}
       {item.shots && <Gallery name={titles[item.id] ?? item.short} shots={item.shots} />}
