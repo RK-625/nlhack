@@ -41,13 +41,18 @@ function Hero() {
             change waits for your approval, every turn has a spending cap, and every run is traced with{" "}
             <strong className="font-bold text-fg">NEATLOGS</strong>.
           </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Button href="#video" icon={<Play aria-hidden className="size-4 fill-current" />}>
-              Watch the demo
-            </Button>
-            <Button href="/judges/" variant="ghost">
-              See the proof
-            </Button>
+          <div className="mt-9 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-3">
+              <Button href="#video" icon={<Play aria-hidden className="size-4 fill-current" />}>
+                Watch the demo
+              </Button>
+              <Button href="/judges/" variant="ghost">
+                See the proof
+              </Button>
+            </div>
+            <span className="ml-auto rounded-full border border-line bg-card px-3 py-1.5 text-xs text-muted-fg">
+              Inspired by Grok Bot
+            </span>
           </div>
         </div>
         <HeroTranscript />
@@ -143,12 +148,11 @@ function Team() {
                 </li>
               ))}
             </ul>
-            {b.gate && <p className="mt-4 border-t border-line pt-3 text-sm text-warn">{b.gate}</p>}
           </article>
         ))}
       </div>
       <div className="mt-4 rounded-3xl border border-dashed border-line p-6">
-        <h3 className="text-sm font-medium text-muted-fg">Advisers with no tools yet. They work from what you tell them.</h3>
+        <h3 className="text-sm font-medium text-muted-fg">More agents for your company</h3>
         <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {plain.map((b) => (
             <li key={b.name} className="flex gap-3">

@@ -108,7 +108,7 @@ export function PublicTimeline({ posts }: { posts: Post[] }) {
     <div className="mx-auto max-w-5xl">
       {rows.map((row, rowIndex) => (
         <div key={row[0].url} className="relative pb-8 md:pb-10">
-          <div aria-hidden className="pointer-events-none absolute left-[18%] right-[18%] top-[5px] hidden border-t-2 border-[#3b82f6] md:block" />
+          <div aria-hidden className={`pointer-events-none absolute left-[18%] top-[5px] hidden border-t-2 border-[#3b82f6] md:block ${rowIndex < rows.length - 1 ? "right-[10%]" : "right-[18%]"}`} />
           {rowIndex < rows.length - 1 && (
             <div
               aria-hidden
@@ -118,7 +118,6 @@ export function PublicTimeline({ posts }: { posts: Post[] }) {
           <ol className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
             {row.map((post) => (
               <li key={post.url} className="relative pt-6">
-                <span aria-hidden className="absolute left-1/2 top-0 size-3 -translate-x-1/2 rounded-full border-2 border-[#3b82f6] bg-bg" />
                 <p className="mb-3 text-center text-sm text-muted-fg">{post.when}</p>
                 <PostCard post={post} />
               </li>

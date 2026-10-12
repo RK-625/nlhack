@@ -72,6 +72,15 @@ function Header() {
 function ImprovementStats() {
   return (
     <>
+      <ol className="mb-10 max-w-3xl space-y-6">
+        {improvement.story.map((step) => (
+          <li key={step.title} className="border-l-2 border-line pl-5">
+            <h3 className="text-lg font-semibold">{step.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-fg">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+      <h3 className="mb-4 text-lg font-semibold">The broader check: three runs before, three after</h3>
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {improvement.stats.map((stat) => (
           <div key={stat.label} className="min-w-0 rounded-2xl border border-line bg-card p-5">

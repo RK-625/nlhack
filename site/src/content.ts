@@ -104,7 +104,7 @@ export const bots: Bot[] = [
   },
   {
     name: "Legal Bot",
-    role: "Contract and compliance checklists, policy drafts. Not legal advice.",
+    role: "Contract and compliance checklists, policy drafts.",
     tools: [],
     agent: "legal",
     file: "src/mastra/agents/legal.ts",
@@ -411,7 +411,7 @@ export const evidence: Criterion[] = [
     short: "Agent improved",
     criterion: "Agent improved (run before and after, with numbers)",
     badge: "Screenshots",
-    proof: "Same Northwind question before and after commit 8887e9ba. Paired traces: the failed run (0ce0e491…, $0.0590, 323,923 tokens, 20 LLM calls) became a successful one (b0392391…, $0.0499, 237,208 tokens, 16 LLM calls). Over three runs each: CFO file reads 29 → 10, completed within caps 2/3 → 3/3, cost −3.3%, no latency gain.",
+    proof: "We asked the agent whether fictional Lumen Labs should offer Northwind a renewal credit, and what that would mean for cash runway. One run hit its token limit without a final answer. We inspected the trace, changed how agents share company facts, and repeated the same question.",
     shots: [
       shot("12-neatbot-compare-before-after.png", "Neat Bot compares the two traces: failed $0.0589567 / 323,923 tokens / 20 calls → succeeded $0.0498578 / 237,208 / 16."),
       shot("14-neatbot-compare-what-changed.png", "What changed, as seen in span inputs: the CFO Bot is told not to re-read figures already in its brief."),
@@ -538,7 +538,12 @@ export const entireTerminal = [
 
 export const improvement = {
   summary: "The fix (commit 8887e9ba) makes the Primary Bot pass the figures and file paths it has already read, so specialists stop re-reading them and reply with a compact brief. Six Northwind runs on fictional local company data, recorded 12 October 2026: three before, three after." as Maybe<string>,
-  note: "Totals over three runs each. CFO reply characters fell 74.1% (25,989 → 6,730). The failed before run and the matching after run were compared trace by trace with Neat Bot: 15.4% cheaper, 26.8% fewer tokens, 20 → 16 LLM calls. Total elapsed time rose from 497.2 to 522.2 seconds. A small sample, so no guaranteed savings; the CFO file-read count comes from app logs because neatlogs recorded no tool spans.",
+  story: [
+    { title: "Before: the run stopped without an answer", text: "The agent used 323,923 tokens, exceeding its 300,000-token limit. Its trace ended in ERROR after 20 model calls, at a cost of $0.0590. Neat Bot's trace review highlighted repeated file reads and large prompts." },
+    { title: "The fix: share facts instead of reading them again", text: "In commit 8887e9ba, the Primary Bot passes the figures and file paths it has already read to each specialist. Specialists read only missing information and return a short brief." },
+    { title: "After: the same question finished within the limit", text: "The matching after run succeeded with 237,208 tokens and 16 model calls, at a cost of $0.0499. That single trace pair used 26.8% fewer tokens and cost 15.4% less." },
+  ],
+  note: "The cards show totals across three runs before and three after, separate from the single trace pair above. All three after runs finished within their caps; two of three before runs did. Total estimated cost fell 3.3%, but total time rose from 497.2 to 522.2 seconds. CFO replies were 74.1% shorter (25,989 → 6,730 characters). File-read counts come from app logs; neatlogs recorded no tool spans. This six-run sample does not establish general savings or a speed improvement.",
   link: `${proofReport}#benchmark`,
   stats: [
     { label: "CFO file reads (3 runs)", v1: "29" as Maybe<string>, v2: "10" as Maybe<string> },
