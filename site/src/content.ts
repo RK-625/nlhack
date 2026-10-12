@@ -211,6 +211,8 @@ export const capCardExample = {
 /* ------------------------------------------------------------------ demo */
 
 export const demo = {
+  /** Local launch film. A YouTube id can replace this later. */
+  src: "/video/launch.mp4",
   youtubeId: todo("TODO: YouTube video id") as Maybe<string>,
   /** Chapters for the judges page. `start` is seconds into the video. */
   chapters: [

@@ -244,9 +244,9 @@ function Trust() {
 
 function Video() {
   return (
-    <Section id="video" title="See a full turn in the demo." className="border-t border-line">
+    <Section id="video" title="Watch the launch film." className="border-t border-line">
       <div className="mx-auto max-w-4xl">
-        <VideoEmbed id={demo.youtubeId} title={`${site.name} demo`} />
+        <VideoEmbed src={demo.src} title={`${site.name} launch film`} />
       </div>
     </Section>
   );

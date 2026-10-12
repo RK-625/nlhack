@@ -3,15 +3,38 @@ import { useEffect, useRef, useState } from "react";
 import { isTodo, type Maybe, type Shot } from "../content";
 import { Soon, cx } from "./ui";
 
-/** Click-to-play YouTube embed. Loads nothing from YouTube until clicked. */
-export function VideoEmbed({ id, title, start }: { id: Maybe<string>; title: string; start?: number }) {
+/** Local launch film, or a click-to-play YouTube embed once an id exists. */
+export function VideoEmbed({
+  id,
+  title,
+  start,
+  src,
+}: {
+  id?: Maybe<string>;
+  title: string;
+  start?: number;
+  src?: string;
+}) {
   const [playing, setPlaying] = useState(false);
-  if (isTodo(id)) {
+  if (src) {
+    return (
+      <video
+        className="aspect-video w-full rounded-2xl border border-line bg-black"
+        controls
+        playsInline
+        preload="metadata"
+        aria-label={title}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+    );
+  }
+  if (!id || isTodo(id)) {
     return (
       <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-line bg-muted text-muted-fg">
         <Play aria-hidden className="size-8" />
         <p className="text-sm">The demo video goes here.</p>
-        <Soon note={id.todo} />
+        <Soon note={id && isTodo(id) ? id.todo : "TODO: video"} />
       </div>
     );
   }
