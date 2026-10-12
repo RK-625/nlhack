@@ -3,14 +3,27 @@
   "checkpoint_id": "01M4QXJ48M8GRWP4MJTJJ7VDJ6",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
     "video/STORYBOARD.md",
+    "video/package-lock.json",
+    "video/package.json",
+    "video/scripts/render-stills.mjs",
+    "video/src/Main.tsx",
+    "video/src/Root.tsx",
+    "video/src/audio/Soundtrack.tsx",
+    "video/src/components/Backdrop.tsx",
+    "video/src/components/BlurInText.tsx",
+    "video/src/components/Camera.tsx",
     "video/src/components/DotMatrixLogo.tsx",
     "video/src/components/Mascot.tsx",
+    "video/src/components/ScenePlaceholder.tsx",
+    "video/src/index.ts",
     "video/src/lib/motion.ts",
     "video/src/scenes/Scene01Lineup.tsx",
-    "video/src/scenes/Scene02Title.tsx"
+    "video/src/scenes/Scene02Title.tsx",
+    "video/src/timeline.ts",
+    "video/src/transitions/blurDissolve.tsx"
   ],
   "sessions": [
     {
@@ -19,20 +32,27 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 84,
-    "cache_creation_tokens": 114553,
-    "cache_read_tokens": 3999819,
-    "output_tokens": 31555,
-    "api_call_count": 35,
+    "input_tokens": 274,
+    "cache_creation_tokens": 676374,
+    "cache_read_tokens": 17763436,
+    "output_tokens": 96351,
+    "api_call_count": 124,
     "subagent_tokens": {
-      "input_tokens": 206,
-      "cache_creation_tokens": 244802,
-      "cache_read_tokens": 11804031,
-      "output_tokens": 4673,
-      "api_call_count": 103
+      "input_tokens": 288,
+      "cache_creation_tokens": 346649,
+      "cache_read_tokens": 17451775,
+      "output_tokens": 7183,
+      "api_call_count": 144
     }
   }
 }

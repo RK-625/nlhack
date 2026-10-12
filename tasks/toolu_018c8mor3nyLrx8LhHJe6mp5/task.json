@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_018c8mor3nyLrx8LhHJe6mp5",
+  "agent_id": "a78695977c1f422dd",
+  "subagent_type": "general-purpose",
+  "task_description": "Fill site with real evidence",
+  "token_usage": {
+    "input_tokens": 88,
+    "cache_creation_tokens": 178839,
+    "cache_read_tokens": 5764760,
+    "output_tokens": 2668,
+    "api_call_count": 44
+  },
+  "started_at": "2026-10-12T16:34:01.236437+05:30",
+  "completed_at": "2026-10-12T16:40:42.608146+05:30"
+}

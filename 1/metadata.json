@@ -1,0 +1,85 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QXJ48M8GRWP4MJTJJ7VDJ6",
+  "session_id": "9ef57287-da2b-49a5-9594-772ac4cb2676",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T11:21:59.321497Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    "video/package-lock.json",
+    "video/package.json",
+    "video/scripts/render-stills.mjs",
+    "video/src/Main.tsx",
+    "video/src/Root.tsx",
+    "video/src/audio/Soundtrack.tsx",
+    "video/src/components/Backdrop.tsx",
+    "video/src/components/BlurInText.tsx",
+    "video/src/components/Camera.tsx",
+    "video/src/components/DotMatrixLogo.tsx",
+    "video/src/components/Mascot.tsx",
+    "video/src/components/ScenePlaceholder.tsx",
+    "video/src/index.ts",
+    "video/src/scenes/Scene01Lineup.tsx",
+    "video/src/scenes/Scene02Title.tsx",
+    "video/src/timeline.ts",
+    "video/src/transitions/blurDissolve.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "d31d1eaa71d7",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 190,
+    "cache_creation_tokens": 561821,
+    "cache_read_tokens": 13763617,
+    "output_tokens": 64796,
+    "api_call_count": 89,
+    "subagent_tokens": {
+      "input_tokens": 82,
+      "cache_creation_tokens": 101847,
+      "cache_read_tokens": 5647744,
+      "output_tokens": 2510,
+      "api_call_count": 41
+    }
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T11:21:59.190625Z",
+    "agent_lines": 5256,
+    "agent_removed": 0,
+    "human_added": 1007,
+    "human_modified": 43,
+    "human_removed": 0,
+    "total_committed": 6306,
+    "total_lines_changed": 6306,
+    "agent_percentage": 83.34919124643197,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 942,
+      "user_lines_removed": 0,
+      "agent_lines_added": 4000,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "video/.gitignore": 11,
+        "video/public/fonts/OFL-Geist.txt": 93,
+        "video/remotion.config.ts": 12,
+        "video/scripts/extract-nl-dots.mjs": 142,
+        "video/src/assets/nl-dots.ts": 132,
+        "video/src/lib/avatar-colors.ts": 181,
+        "video/src/lib/avatar-shapes.ts": 43,
+        "video/src/lib/expressions.ts": 71,
+        "video/src/lib/motion.ts": 171,
+        "video/src/theme/fonts.ts": 20,
+        "video/src/theme/tokens.ts": 48,
+        "video/tsconfig.json": 18
+      }
+    }
+  ]
+}
