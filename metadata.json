@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4QW16ZY7V8F042M4Z2S60J1",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 6,
+  "checkpoints_count": 8,
   "files_touched": [
     "docs/demo/evidence/2026-10-12/27-cfoai-connect-banner.png",
     "docs/demo/evidence/2026-10-12/28-cfoai-oauth-consent.png",
@@ -42,6 +42,13 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
