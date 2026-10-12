@@ -345,7 +345,6 @@ export const galleries: { id: string; name: string; shots: Maybe<Shot[]> }[] = [
   { id: "app", name: "Actual app captures · Northwind budget flow", shots: [
     { src: `${proofBase}/01-northwind-budget-extension-pending-desktop.png`, alt: "Pending budget extension — desktop app capture" },
     { src: `${proofBase}/02-northwind-empty-reply-reload-mobile.png`, alt: "Empty reply survives reload — mobile app capture" },
-    { src: `${proofBase}/03-northwind-extension-denied-desktop.png`, alt: "Denied extension after reload — desktop app capture" },
     { src: `${proofBase}/04-northwind-incomplete-answer-desktop.png`, alt: "Incomplete answer after denial — desktop app capture" },
   ] },
   { id: "neatlogs", name: "Saved evidence reports · rendered from JSON, not dashboard captures", shots: [
