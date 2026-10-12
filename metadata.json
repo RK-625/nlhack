@@ -3,14 +3,29 @@
   "checkpoint_id": "01M4QR96BQVZC4R040RHGPFDTH",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
-  "files_touched": null,
+  "checkpoints_count": 3,
+  "files_touched": [
+    "docs/demo/evidence/2026-10-12/03-northwind-extension-denied-desktop.png",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/public/evidence/2026-10-12/03-northwind-extension-denied-desktop.png",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/src/content.ts"
+  ],
   "sessions": [
     {
       "metadata": "/0/metadata.json",
       "transcript": "/0/full.jsonl",
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
       "prompt": ""
     }
   ],
