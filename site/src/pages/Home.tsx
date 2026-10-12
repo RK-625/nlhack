@@ -3,7 +3,8 @@ import { BotAvatar } from "../components/avatar";
 import { ApprovalCard, BotPill, CapCard, ToolActivity, UsagePopover } from "../components/cards";
 import { Footer, Nav } from "../components/chrome";
 import { ShotFrame, VideoEmbed } from "../components/media";
-import { Button, Container, ExtLink, Section, Show, cx } from "../components/ui";
+import { PublicTimeline } from "../components/timeline";
+import { Button, Container, ExtLink, Section, cx } from "../components/ui";
 import {
   bots,
   caps,
@@ -352,23 +353,7 @@ function Compare() {
 function Timeline() {
   return (
     <Section id="timeline" title="Built in public, one post at a time." className="border-t border-line">
-      <Show value={posts}>
-        {(list) => (
-          <ol className="relative space-y-8 border-l border-line pl-6">
-            {list.map((p) => (
-              <li key={p.url} className="relative">
-                <span aria-hidden className="absolute -left-[29px] top-1.5 size-2.5 rounded-full bg-[var(--bot-orange)]" />
-                <time className="num text-sm text-muted-fg" dateTime={p.date}>
-                  {p.date}
-                </time>
-                <p className="mt-1">
-                  <ExtLink href={p.url}>{p.title}</ExtLink>
-                </p>
-              </li>
-            ))}
-          </ol>
-        )}
-      </Show>
+      <PublicTimeline posts={posts} />
     </Section>
   );
 }

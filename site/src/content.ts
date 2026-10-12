@@ -317,29 +317,54 @@ export const comparison: {
 
 /* ------------------------------------------------------- built in public */
 
-export type Post = { date: string; title: string; url: string };
+export type Post = {
+  date: string;
+  when: string;
+  stamp: string;
+  title: string;
+  text: string;
+  url: string;
+  image?: string;
+  video?: string;
+};
 
-/** Posts from @rk625dev during the hackathon. Tags used: #neatlogs, #neathacks, and #neathack. */
+/** Posts from @rk625dev during the hackathon. Tags used: #neatlogs, #neathacks, and #neathack. Times are IST. */
 export const posts: Post[] = [
   {
     date: "2026-10-10",
+    when: "Sat Oct 10, 4:11 PM",
+    stamp: "4:11 PM · Oct 10, 2026",
     title: "Locked the stack with neatlogs and Entire",
+    text: "setting up #neatlogs @neatlogs @EntireHQ\nlocked the stack for the project",
     url: "https://x.com/rk625dev/status/2108870591029850518",
-  },
-  {
-    date: "2026-10-10",
-    title: "Cooking with neatlogs",
-    url: "https://x.com/rk625dev/status/2109049238357426319",
+    image: "/posts/01-stack.jpg",
   },
   {
     date: "2026-10-11",
-    title: "An agent team for startups, plus Neat Bot",
-    url: "https://x.com/rk625dev/status/2109396835257467109",
+    when: "Sun Oct 11, 4:01 AM",
+    stamp: "4:01 AM · Oct 11, 2026",
+    title: "Cooking with neatlogs",
+    text: "@neatlogs #neatlogs cooking here",
+    url: "https://x.com/rk625dev/status/2109049238357426319",
+    image: "/posts/02-cooking.jpg",
   },
   {
     date: "2026-10-12",
+    when: "Mon Oct 12, 3:02 AM",
+    stamp: "3:02 AM · Oct 12, 2026",
+    title: "An agent team for startups, plus Neat Bot",
+    text: "@neatlogs #neathacks @simranrambles\ninspired from grok bot building a complete agent team for startups with all the integrations and a separate bot (NeatBot) the can see the other bots traces and help u plan and access the user cost here. more to add yet",
+    url: "https://x.com/rk625dev/status/2109396835257467109",
+    image: "/posts/03-team.jpg",
+  },
+  {
+    date: "2026-10-12",
+    when: "Mon Oct 12, 6:54 PM",
+    stamp: "6:54 PM · Oct 12, 2026",
     title: "Gearing up for the submission: Bot Company",
+    text: "#neatlogs #neathack @neatlogs @EntireHQ @simranrambles\nGearing up for the submission\nProject name Bot Company\ninspired from grokbot",
     url: "https://x.com/rk625dev/status/2109636285593993557",
+    video: "/video/launch.mp4",
   },
 ];
 
