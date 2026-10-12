@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QW16ZY7V8F042M4Z2S60J1",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "docs/demo/evidence/2026-10-12/27-cfoai-connect-banner.png",
+    "docs/demo/evidence/2026-10-12/28-cfoai-oauth-consent.png",
+    "docs/demo/evidence/2026-10-12/29-cfoai-connected.png",
+    "docs/demo/evidence/2026-10-12/30-cfoai-hiring-expense-question.png",
+    "docs/demo/evidence/2026-10-12/31-cfoai-cfo-bot-working.png",
+    "docs/demo/evidence/2026-10-12/32-cfoai-hiring-expense-answer.png",
+    "docs/demo/evidence/2026-10-12/33-cfoai-token-cap-approved.png",
+    "docs/demo/evidence/2026-10-12/34-cfoai-continuation-sensitivity.png",
+    "docs/demo/evidence/2026-10-12/35-cfoai-continuation-actions.png",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/public/evidence/2026-10-12/27-cfoai-connect-banner.png",
+    "site/public/evidence/2026-10-12/28-cfoai-oauth-consent.png",
+    "site/public/evidence/2026-10-12/29-cfoai-connected.png",
+    "site/public/evidence/2026-10-12/30-cfoai-hiring-expense-question.png",
+    "site/public/evidence/2026-10-12/31-cfoai-cfo-bot-working.png",
+    "site/public/evidence/2026-10-12/32-cfoai-hiring-expense-answer.png",
+    "site/public/evidence/2026-10-12/33-cfoai-token-cap-approved.png",
+    "site/public/evidence/2026-10-12/34-cfoai-continuation-sensitivity.png",
+    "site/public/evidence/2026-10-12/35-cfoai-continuation-actions.png",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 64321,
+    "cache_read_tokens": 871178,
+    "output_tokens": 12173,
+    "api_call_count": 11
+  }
+}

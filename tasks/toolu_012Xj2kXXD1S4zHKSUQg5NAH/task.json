@@ -1,0 +1,14 @@
+{
+  "tool_use_id": "toolu_012Xj2kXXD1S4zHKSUQg5NAH",
+  "agent_id": "a978d66ac3200ed42",
+  "task_description": "Inventory demo assets and Remotion",
+  "token_usage": {
+    "input_tokens": 12,
+    "cache_creation_tokens": 133955,
+    "cache_read_tokens": 452976,
+    "output_tokens": 375,
+    "api_call_count": 6
+  },
+  "started_at": "2026-10-12T16:07:37.587243+05:30",
+  "completed_at": "2026-10-12T16:08:49.225893+05:30"
+}
