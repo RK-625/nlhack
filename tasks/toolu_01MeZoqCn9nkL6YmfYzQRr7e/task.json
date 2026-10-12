@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01MeZoqCn9nkL6YmfYzQRr7e",
+  "agent_id": "a09c65881e9ac9ee8",
+  "subagent_type": "general-purpose",
+  "task_description": "Sprints 1+2: cap trace and escalation",
+  "token_usage": {
+    "input_tokens": 192,
+    "cache_creation_tokens": 242248,
+    "cache_read_tokens": 15864340,
+    "output_tokens": 6702,
+    "api_call_count": 96
+  },
+  "started_at": "2026-10-12T13:13:15.092872+05:30",
+  "completed_at": "2026-10-12T13:37:47.702857+05:30"
+}
