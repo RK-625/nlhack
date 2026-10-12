@@ -7,7 +7,7 @@ import { canUseAgent } from "./auth/access";
 import { approvalResumeMessage, pendingApprovalIds, withoutPendingApprovals } from "./chat-approvals";
 import type { SessionUser } from "./auth/session";
 import { mastra } from "./mastra";
-import { traceRequest } from "./telemetry";
+import { type TraceHandle, traceRequest } from "./telemetry";
 import { USER_ROLE_KEY, WORKSPACE_USER_KEY } from "./mastra/workspace";
 import { getCaps } from "./usage/caps";
 import { TURN_BUDGET_KEY, TurnBudget, type TurnUsage } from "./usage/turn-budget";
@@ -173,7 +173,7 @@ export async function handleChat(
         "app.turn_steps": usage.steps,
         "app.turn_capped": usage.capped,
       });
-      if (usage.reason) trace.addTags(usage.reason === "cost" ? "cost-capped" : "token-capped");
+      if (usage.reason) markCappedTrace(trace, budget, agentId);
       const savedId = await saveTurnUsage(agentId, user, replyId, usage).catch((error: unknown) => {
         console.warn("Could not save turn usage", { agentId, error: error instanceof Error ? error.message : error });
         return undefined;
@@ -188,6 +188,36 @@ export async function handleChat(
     const reply = savedReply;
     void trackNeatlogsUsage(reply.traceId, (neatlogsUsage) => saveNeatlogsUsage(agentId, user, reply.id, neatlogsUsage));
   }
+}
+
+/**
+ * A capped turn finished without doing its job, so its trace must not read as OK in Neatlogs: the
+ * root span gets status ERROR, a `turn.capped` event and attributes saying which limit stopped it,
+ * the cap and the amount spent, and which agent's model step went over (the chatted-with agent or
+ * a delegated sub-agent). Spend per agent is kept as JSON, since attributes must be primitives.
+ */
+function markCappedTrace(trace: TraceHandle, budget: TurnBudget, agentId: string): void {
+  const reason = budget.reason;
+  if (!reason) return;
+  const limit = reason === "cost" ? budget.caps.costCapUsd : budget.caps.tokenCap;
+  const spent = reason === "cost" ? Math.round(budget.costUsd * 1e6) / 1e6 : budget.tokens;
+  const byAgent = Object.fromEntries(
+    [...budget.byAgent].map(([id, spend]) => [id, { ...spend, costUsd: Math.round(spend.costUsd * 1e6) / 1e6 }]),
+  );
+  const attributes = {
+    "app.turn_cap_reason": reason,
+    "app.turn_cap_limit": limit,
+    "app.turn_cap_spent": spent,
+    "app.turn_cap_steps": budget.steps,
+    "app.turn_cap_agent_id": agentId,
+    "app.turn_cap_tripped_by": budget.trippedBy?.agentId ?? "unknown",
+    "app.turn_cap_tripped_step": budget.trippedBy?.step ?? budget.steps,
+    "app.turn_cap_spend_by_agent": JSON.stringify(byAgent),
+  };
+  trace.addTags(reason === "cost" ? "cost-capped" : "token-capped");
+  trace.setAttributes(attributes);
+  trace.addEvent("turn.capped", attributes);
+  trace.setError(budget.cappedMessage());
 }
 
 const TURN_USAGE_PART_ID = "turn-usage";

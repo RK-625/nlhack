@@ -33,6 +33,9 @@ export type TurnUsage = {
 
 type StepUsage = { inputTokens?: number; outputTokens?: number; totalTokens?: number; cachedInputTokens?: number };
 
+/** What one agent (the chatted-with agent or a delegated sub-agent) spent within the turn. */
+export type AgentSpend = { costUsd: number; tokens: number; steps: number };
+
 /** Usage and caps of one chat turn: every model step of the agent and of any agent it delegates to. */
 export class TurnBudget {
   inputTokens = 0;
@@ -41,6 +44,10 @@ export class TurnBudget {
   costUsd = 0;
   steps = 0;
   reason: CapReason | null = null;
+  /** The agent whose model step pushed the turn over its cap, and that step's number in the turn. */
+  trippedBy: { agentId: string; step: number } | null = null;
+  /** Spend per agent id, in the order the agents first ran (for the trace of a capped turn). */
+  readonly byAgent = new Map<string, AgentSpend>();
   /** Called after every recorded model step (the server streams it as `data-turn-usage`). */
   onStep?: (usage: TurnUsage) => void;
 
@@ -55,7 +62,7 @@ export class TurnBudget {
   }
 
   /** Adds one model step's usage, then marks the turn capped once either cap is exceeded. */
-  record(modelId: string | undefined, usage: StepUsage | undefined): void {
+  record(modelId: string | undefined, usage: StepUsage | undefined, agentId: string): void {
     const input = safeCount(usage?.inputTokens);
     // Reasoning tokens are part of the output count; if a provider reports a larger total, the
     // difference is counted as output so nothing goes uncounted.
@@ -64,11 +71,15 @@ export class TurnBudget {
     const cached = Math.min(safeCount(usage?.cachedInputTokens), input);
     this.outputTokens += output;
     this.cachedInputTokens += cached;
-    this.costUsd += estimateCostUsd(modelId, input, output, cached);
+    const cost = estimateCostUsd(modelId, input, output, cached);
+    this.costUsd += cost;
     this.steps += 1;
+    const spend = this.byAgent.get(agentId) ?? { costUsd: 0, tokens: 0, steps: 0 };
+    this.byAgent.set(agentId, { costUsd: spend.costUsd + cost, tokens: spend.tokens + input + output, steps: spend.steps + 1 });
     if (!this.reason) {
       if (this.costUsd > this.caps.costCapUsd) this.reason = "cost";
       else if (this.tokens > this.caps.tokenCap) this.reason = "tokens";
+      if (this.reason) this.trippedBy = { agentId, step: this.steps };
     }
     this.onStep?.(this.snapshot(false));
   }
@@ -112,10 +123,14 @@ export function turnBudgetFrom(requestContext: RequestContext | undefined): Turn
  * the run (TripWire), so no further model call happens. Mastra still executes the tool calls that
  * capping step already requested; a delegation among them is stopped before its first model call.
  * A run without a TurnBudget in its RequestContext (CLI, `mastra dev`) is not limited.
+ * One instance per agent, so each step is attributed to the agent that ran it (Mastra does not
+ * pass the agent to output-step processors).
  */
 class TurnBudgetProcessor implements Processor<"turn-budget"> {
   readonly id = "turn-budget";
   readonly name = "Turn usage caps";
+
+  constructor(private readonly agentId: string) {}
 
   // Before each model call: a turn that is already capped (e.g. a sub-agent delegated by the
   // step that hit the cap) never calls the model. Also notes this step's model for pricing.
@@ -131,15 +146,13 @@ class TurnBudgetProcessor implements Processor<"turn-budget"> {
     const budget = turnBudgetFrom(requestContext);
     if (!budget) return messageList;
     const modelId = state[MODEL_STATE_KEY];
-    budget.record(typeof modelId === "string" ? modelId : undefined, usage);
+    budget.record(typeof modelId === "string" ? modelId : undefined, usage, this.agentId);
     if (budget.capped) abort(budget.cappedMessage(), { metadata: budget.snapshot(false) });
     return messageList;
   }
 }
 
 const MODEL_STATE_KEY = "modelId";
-
-export const turnBudgetProcessor = new TurnBudgetProcessor();
 
 function safeCount(value: number | undefined): number {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : 0;
@@ -149,8 +162,8 @@ function round(usd: number): number {
   return Math.round(usd * 1e6) / 1e6;
 }
 
-/** Spread into every Agent config: `...turnCapProcessors`. */
-export const turnCapProcessors = {
-  inputProcessors: [turnBudgetProcessor],
-  outputProcessors: [turnBudgetProcessor],
-};
+/** Spread into every Agent config: `...turnCapProcessorsFor("<agent id>")`. */
+export function turnCapProcessorsFor(agentId: string) {
+  const processor = new TurnBudgetProcessor(agentId);
+  return { inputProcessors: [processor], outputProcessors: [processor] };
+}

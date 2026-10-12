@@ -1,3 +1,4 @@
+import { SpanStatusCode } from "@opentelemetry/api";
 import { init, log, trace } from "neatlogs";
 import { recordTraceOwners } from "./neatlogs/trace-owners";
 
@@ -40,6 +41,14 @@ export type TraceHandle = {
   traceId: string;
   addTags(...tags: string[]): void;
   setAttributes(attributes: Record<string, string | number | boolean>): void;
+  /** Adds a timestamped event to the root span (e.g. `turn.capped`). */
+  addEvent(name: string, attributes?: Record<string, string | number | boolean>): void;
+  /**
+   * Marks the root span as failed (status ERROR) with a message, for a request that completed but
+   * did not do its job (e.g. a turn stopped by its cap). neatlogs' trace() sets no status on a
+   * callback that returns normally, so this one stands.
+   */
+  setError(message: string): void;
 };
 
 export async function traceRequest<T>(
@@ -87,6 +96,8 @@ export async function traceRequest<T>(
         activeSpan.setAttribute("tags", [...tags]);
       },
       setAttributes: (attributes) => activeSpan.setAttributes(attributes),
+      addEvent: (name, attributes) => activeSpan.addEvent(name, attributes),
+      setError: (message) => activeSpan.setStatus({ code: SpanStatusCode.ERROR, message }),
     };
     log("Request started", { channel });
     try {
