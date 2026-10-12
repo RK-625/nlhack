@@ -9,7 +9,7 @@ export const customerSuccessAgent = wrapMastra(new Agent({
   id: "customer-success",
   name: "Customer Success Bot",
   description:
-    "Helps with customer onboarding, adoption, churn risk, renewals, health scores, support escalations, and customer communication drafts, working from information you provide. No CRM or live data is connected yet.",
+    "Helps with customer onboarding, adoption, churn risk, renewals, health scores, support escalations, and customer communication drafts. Also reads the company's customer records (account health, support tickets, churn log) from the shared read-only company folder.",
   instructions: CUSTOMER_SUCCESS_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,

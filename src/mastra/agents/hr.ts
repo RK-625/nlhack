@@ -9,7 +9,7 @@ export const hrAgent = wrapMastra(new Agent({
   id: "hr",
   name: "HR Bot",
   description:
-    "Helps with hiring plans, job descriptions, interview loops, onboarding, people policies, performance reviews, and compensation band framing from information you provide, handling personal data carefully. No HR system is connected yet.",
+    "Helps with hiring plans, job descriptions, interview loops, onboarding, people policies, performance reviews, and compensation band framing. Also reads the company's HR records (employee directory, salary bands, open roles, candidates, policies) from the shared read-only company folder, handling personal data carefully.",
   instructions: HR_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,

@@ -9,7 +9,7 @@ export const marketingAgent = wrapMastra(new Agent({
   id: "marketing",
   name: "Marketing Bot",
   description:
-    "Helps with positioning, messaging, campaigns, content calendars, SEO briefs, launch plans, and channel strategy from information you provide. No analytics or live search data is connected yet.",
+    "Helps with positioning, messaging, campaigns, content calendars, SEO briefs, launch plans, and channel strategy. Also reads the company's marketing records (campaigns, signups by channel, positioning, Q4 content calendar) from the shared read-only company folder.",
   instructions: MARKETING_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,

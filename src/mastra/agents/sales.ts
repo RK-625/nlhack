@@ -9,7 +9,7 @@ export const salesAgent = wrapMastra(new Agent({
   id: "sales",
   name: "Sales Bot",
   description:
-    "Helps with ICPs, prospecting sequences, outreach emails, discovery questions, objection handling, pipeline and forecast reviews, and deal strategy from information you provide. No CRM or live data is connected yet.",
+    "Helps with ICPs, prospecting sequences, outreach emails, discovery questions, objection handling, pipeline and forecast reviews, and deal strategy. Also reads the company's sales records (CRM deals, Q4 forecast, sales playbook) from the shared read-only company folder.",
   instructions: SALES_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,

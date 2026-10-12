@@ -15,7 +15,7 @@ export const cfoAgent = wrapMastra(new Agent({
   id: "cfo",
   name: "CFO Bot",
   description:
-    "Analyzes business financials, cash flow, runway, budgets, pricing, unit economics, and hiring scenarios, using live data from the user's own cfo.ai workspace when they have connected it (pages, tables, scenarios, integrations). Reads run freely; any change in cfo.ai is shown with its exact arguments and runs only after the user approves it. Never invents figures.",
+    "Analyzes business financials, cash flow, runway, budgets, pricing, unit economics, and hiring scenarios, using the company's finance exports from the shared read-only company folder and, when connected, live data from the user's own cfo.ai workspace (pages, tables, scenarios, integrations). Reads run freely; any change in cfo.ai is shown with its exact arguments and runs only after the user approves it. Never invents figures.",
   instructions: CFO_INSTRUCTIONS,
   model: "deepseek/deepseek-flash",
   memory,
