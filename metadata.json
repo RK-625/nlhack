@@ -3,8 +3,13 @@
   "checkpoint_id": "01M4R78FM4E2R4BYC9S24WTAXJ",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
-  "files_touched": null,
+  "checkpoints_count": 5,
+  "files_touched": [
+    "site/src/components/review.tsx",
+    "site/src/content.ts",
+    "site/src/pages/Home.tsx",
+    "site/src/pages/Judges.tsx"
+  ],
   "sessions": [
     {
       "metadata": "/0/metadata.json",
@@ -12,13 +17,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 824571,
+    "input_tokens": 1381076,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 24516224,
-    "output_tokens": 50877,
-    "api_call_count": 204
+    "cache_read_tokens": 45243008,
+    "output_tokens": 108723,
+    "api_call_count": 363
   }
 }
