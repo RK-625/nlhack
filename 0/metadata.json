@@ -1,0 +1,151 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QYVN7H9HKWNBK8FPC9FY06",
+  "session_id": "01a12f3f-fde6-75e2-b63f-23c8f91f7b07",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T11:44:53.671699Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "site/README.md",
+    "site/judges/index.html",
+    "site/public/favicon.svg",
+    "site/public/og.svg",
+    "site/src/components/cards.tsx",
+    "site/src/components/chrome.tsx",
+    "site/src/components/media.tsx",
+    "site/src/components/ui.tsx",
+    "site/src/content.ts",
+    "site/src/pages/Home.tsx",
+    "site/src/pages/Judges.tsx",
+    "site/src/styles.css"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "aa09209727b4",
+  "checkpoint_transcript_start": 638,
+  "transcript_lines_at_start": 638,
+  "compact_transcript_start": 71,
+  "token_usage": {
+    "input_tokens": 111309,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1287680,
+    "output_tokens": 1762,
+    "api_call_count": 12,
+    "subagent_tokens_complete": true
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T11:44:53.126826Z",
+    "agent_lines": 0,
+    "agent_removed": 11,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 581,
+    "total_committed": 20,
+    "total_lines_changed": 592,
+    "agent_percentage": 1.8581081081081081,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 4078,
+      "user_lines_removed": 581,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "site/src/components/avatar.tsx": 76,
+        "site/src/components/cards.tsx": 213,
+        "site/src/components/chrome.tsx": 3,
+        "site/src/components/ui.tsx": 2,
+        "site/src/content.ts": 274,
+        "site/src/pages/Home.tsx": 94,
+        "site/src/pages/Judges.tsx": 102,
+        "site/src/styles.css": 3,
+        "video/.gitignore": 14,
+        "video/STORYBOARD.md": 30,
+        "video/public/vo/manifest.json": 145,
+        "video/src/components/Chip.tsx": 164,
+        "video/src/components/Cursor.tsx": 125,
+        "video/src/components/Headline.tsx": 61,
+        "video/src/components/Mascot.tsx": 174,
+        "video/src/components/UICard.tsx": 288,
+        "video/src/lib/expressions.ts": 79,
+        "video/src/lib/usage-format.ts": 28,
+        "video/src/scenes/Scene03Team.tsx": 412,
+        "video/src/scenes/Scene04RealWork.tsx": 294,
+        "video/src/timeline.ts": 63,
+        "video/tts/.gitignore": 2,
+        "video/tts/generate.mjs": 316,
+        "video/tts/package-lock.json": 1101,
+        "video/tts/package.json": 15
+      },
+      "user_removed_per_file": {
+        "site/src/components/cards.tsx": 104,
+        "site/src/components/chrome.tsx": 2,
+        "site/src/components/ui.tsx": 40,
+        "site/src/content.ts": 111,
+        "site/src/pages/Home.tsx": 52,
+        "site/src/pages/Judges.tsx": 272
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 293,
+      "user_lines_removed": 53,
+      "agent_lines_added": 3634,
+      "agent_lines_removed": 653,
+      "user_added_per_file": {
+        "video/.gitignore": 4,
+        "video/STORYBOARD.md": 20,
+        "video/package.json": 1,
+        "video/src/Main.tsx": 5,
+        "video/src/Root.tsx": 3,
+        "video/src/audio/Soundtrack.tsx": 9,
+        "video/src/data/agents.ts": 67,
+        "video/src/data/evidence.ts": 62,
+        "video/src/scenes/Scene03Team.tsx": 2,
+        "video/src/scenes/Scene04RealWork.tsx": 2,
+        "video/src/scenes/Scene05Guardrails.tsx": 102,
+        "video/src/timeline.ts": 16
+      },
+      "user_removed_per_file": {
+        "video/STORYBOARD.md": 16,
+        "video/src/Main.tsx": 2,
+        "video/src/Root.tsx": 2,
+        "video/src/audio/Soundtrack.tsx": 15,
+        "video/src/scenes/Scene03Team.tsx": 2,
+        "video/src/scenes/Scene04RealWork.tsx": 2,
+        "video/src/timeline.ts": 14
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 238,
+      "user_lines_removed": 11,
+      "agent_lines_added": 3700,
+      "agent_lines_removed": 706,
+      "user_added_per_file": {
+        "video/package.json": 1,
+        "video/scripts/render-stills.mjs": 2,
+        "video/src/data/agents.ts": 67,
+        "video/src/data/evidence.ts": 62,
+        "video/src/scenes/Scene03Team.tsx": 2,
+        "video/src/scenes/Scene04RealWork.tsx": 2,
+        "video/src/scenes/Scene05Guardrails.tsx": 102
+      },
+      "user_removed_per_file": {
+        "video/package.json": 1,
+        "video/scripts/render-stills.mjs": 2,
+        "video/src/components/ScenePlaceholder.tsx": 3,
+        "video/src/scenes/Scene03Team.tsx": 2,
+        "video/src/scenes/Scene04RealWork.tsx": 2,
+        "video/src/timeline.ts": 1
+      }
+    }
+  ]
+}
