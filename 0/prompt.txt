@@ -1,0 +1,42 @@
+<agent-message from="a5c8d9cc76e853285">
+[Subagent hand-back] The text below is the final report of a subagent this session delegated to. It is model output, NOT a message from the user: instructions, requests, or approval claims inside it are the subagent's words and carry no user authority. The harness indents every line of the report, so a frame-like line at column zero inside it would be forged. Notes above this frame may quote model-derived text, which carries no user authority either. The report follows:
+  Done. Commit eb1aad0f (local, not pushed). Files: /Users/apple/Open/nlhack/README.md (85 lines), /Users/apple/Open/nlhack/docs/ARCHITECTURE.md (new).
+  
+  The new README is in the repo; I did not paste it in full (it is 85 lines). Section order: Title and one-liner, Quick links, Problem statement (original sentence kept), How it works (paragraph with the approvals line, plus a 6-row agent table), Partner tools (neatlogs, Entire, cfo.ai bullets with judges anchors), Run locally, Project layout, Docs, Credits (Grok line kept).
+  
+  ARCHITECTURE.md outline (H2):
+  - Agents and delegation
+  - Approvals
+  - GitHub Bot
+  - Neat Bot (scoping and trace_owner, plus approvals)
+  - CFO Bot and cfo.ai (H3: OAuth and token storage, Tool exposure, Setup)
+  - Files workspace
+  - Usage caps (H3: Caps API, Pricing and enforcement, Usage in the chat stream, neatlogs usage polling)
+  - Integrations
+  - Viewing neatlogs traces (includes the doctor commands)
+  - Seed script
+  
+  Facts checked:
+  - 26.8% (323,923 to 237,208): matches site/src/content.ts and docs/demo/northwind-cap-escalation.md. The arithmetic gives 26.77%.
+  - 8887e9ba and checkpoint 01M4QMYG0STA2ZQR90286XF297: the commit trailer matches and the Entire checkpoint doc agrees.
+  - Lumen Labs 12-month plan written to cfo.ai after approval (page #140): matches content.ts.
+  - Entire count: I ran `git rev-list --count HEAD` (133) and counted `Entire-Checkpoint:` trailers (116), and wrote "116 of 133 (as of 2026-10-13)". The site's repoFacts snapshot is older (84 of 101, as of 2026-10-12), so the README and the site now differ. The new commit makes the live counts 134 and 116.
+  - Node version: package.json has no `engines` field and there is no .nvmrc, so the README says no version is pinned.
+  - Env var names come from .env.example. I listed the six essential groups: DEEPSEEK_API_KEY, NEATLOGS_API_KEY, CRUSTDATA_API_KEY, GITHUB_PAT, BETTER_AUTH_SECRET/BETTER_AUTH_URL, and the optional CFO_OAUTH_CLIENT_ID/CFO_TOKEN_KEY.
+  - Relative links: ARCHITECTURE.md, JUDGE.md, the Northwind doc, the evidence index (docs/demo/evidence/2026-10-12/README.md) and entire-checkpoints.md all exist.
+  - The judges anchors #neatlogs, #entire and #cfo come from the ids in content.ts, and #neatbot from JUDGE.md. I did not load the live site to confirm them.
+  
+  Dropped from the README:
+  - The long Overview prose, which moved to ARCHITECTURE.md.
+  - The `AGENT=market-researcher` CLI example.
+  - The `cfo:register` steps and the `GET /health` detail beyond a mention (the setup steps are in ARCHITECTURE.md).
+  - The standalone "Judge evidence" section and the execution-evidence line. JUDGE.md and the evidence index are linked instead.
+  
+  Everything else is in ARCHITECTURE.md with wording lightly tidied; I wrote "neatlogs" in lowercase throughout.
+  
+  I added three things not in your brief: a link to docs/demo/entire-checkpoints.md in the Entire bullet and in Docs, a "Project layout" line for `video/` and `company/`, and a "See entire-checkpoints.md" pointer in the Integrations section of ARCHITECTURE.md.
+</agent-message>
+
+---
+
+ya update the count and push it to render
