@@ -1,0 +1,154 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist/wght.css";
+
+/* Colors follow the Bot Company app (web/src/styles/tokens.css). */
+:root {
+  color-scheme: light;
+  --background: #fafaf8;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --muted: #f0f0ed;
+  --muted-foreground: #6c6c70;
+  --accent: #eaeae6;
+  --border: #e4e4df;
+  --primary: #1a1a1a;
+  --primary-foreground: #f1f1ef;
+  --link: #2563eb;
+  --ring: #3b82f6;
+  --success: #228b3b;
+  --warning: #b7791f;
+  --destructive: #dc2626;
+  --overlay: rgba(20, 20, 22, 0.6);
+  --bot-orange: #f97316;
+  --bot-blue: #3b82f6;
+  --bot-green: #22c55e;
+  --bot-yellow: #eab308;
+  --bot-pink: #ec4899;
+  --bot-violet: #8b5cf6;
+  --bot-teal: #14b8a6;
+  --bot-slate: #94a3b8;
+  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #0b0c0e;
+    --foreground: #ececee;
+    --card: #141518;
+    --muted: #18191e;
+    --muted-foreground: #8d8d93;
+    --accent: #1a1b20;
+    --border: #23252c;
+    --primary: #f1f1ef;
+    --primary-foreground: #0b0c0e;
+    --link: #60a5fa;
+    --success: #4ecb71;
+    --warning: #e9c46a;
+    --destructive: #ef4444;
+    --overlay: rgba(4, 4, 5, 0.82);
+  }
+}
+
+@theme inline {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-bg: var(--background);
+  --color-fg: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-fg: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-line: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-foreground);
+  --color-link: var(--link);
+  --color-ok: var(--success);
+  --color-warn: var(--warning);
+  --color-bad: var(--destructive);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--bot-orange) 35%, transparent);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero transcript: one orchestrated load sequence. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.seq > * {
+  opacity: 0;
+  animation: rise 520ms var(--ease-enter) forwards;
+}
+.seq > *:nth-child(1) { animation-delay: 150ms; }
+.seq > *:nth-child(2) { animation-delay: 700ms; }
+.seq > *:nth-child(3) { animation-delay: 1300ms; }
+.seq > *:nth-child(4) { animation-delay: 2000ms; }
+.seq > *:nth-child(5) { animation-delay: 2700ms; }
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+.eye {
+  animation: blink 6s infinite;
+  transform-origin: center;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.pop {
+  animation: pop 180ms var(--ease-enter);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .seq > *,
+  .eye,
+  .pop {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
