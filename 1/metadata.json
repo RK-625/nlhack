@@ -1,0 +1,63 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QTGWDQR1HEDJA4YCHFS5P8",
+  "session_id": "b91df2cd-090e-405e-b518-70639290d90c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T10:28:52.730918Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/demo/evidence/2026-10-12/15-live-capped-turn-usage-token-cap.png",
+    "docs/demo/evidence/2026-10-12/16-live-approved-answer-continuation-budget.png",
+    "docs/demo/evidence/2026-10-12/17-neatlogs-capped-trace-error.png",
+    "docs/demo/evidence/2026-10-12/18-neatlogs-approved-continuation-trace.png",
+    "docs/demo/evidence/2026-10-12/19-live-us-expansion-question-running-cost-cap.png",
+    "docs/demo/evidence/2026-10-12/20-live-token-usage-approaching-cap.png",
+    "docs/demo/evidence/2026-10-12/21-live-cap-card-approved-continuing.png",
+    "docs/demo/evidence/2026-10-12/22-live-approved-answer-us-situation-table.png",
+    "docs/demo/evidence/2026-10-12/23-live-approved-answer-recommendation-gaps.png",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/evidence/2026-10-12/SHA256SUMS.txt",
+    "docs/demo/northwind-cap-escalation.md",
+    "site/public/evidence/2026-10-12/15-live-capped-turn-usage-token-cap.png",
+    "site/public/evidence/2026-10-12/16-live-approved-answer-continuation-budget.png",
+    "site/public/evidence/2026-10-12/17-neatlogs-capped-trace-error.png",
+    "site/public/evidence/2026-10-12/18-neatlogs-approved-continuation-trace.png",
+    "site/public/evidence/2026-10-12/19-live-us-expansion-question-running-cost-cap.png",
+    "site/public/evidence/2026-10-12/20-live-token-usage-approaching-cap.png",
+    "site/public/evidence/2026-10-12/21-live-cap-card-approved-continuing.png",
+    "site/public/evidence/2026-10-12/22-live-approved-answer-us-situation-table.png",
+    "site/public/evidence/2026-10-12/23-live-approved-answer-recommendation-gaps.png",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/public/evidence/2026-10-12/northwind-cap-escalation.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "cd7e38bf43e3",
+  "checkpoint_transcript_start": 560,
+  "transcript_lines_at_start": 560,
+  "compact_transcript_start": 106,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 30
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T10:28:52.64409Z",
+    "agent_lines": 118,
+    "agent_removed": 10,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 118,
+    "total_lines_changed": 128,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
