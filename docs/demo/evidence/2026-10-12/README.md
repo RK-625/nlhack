@@ -22,6 +22,54 @@ labeled reports rendered from saved JSON, **not Neatlogs dashboard screenshots**
 The dashboard required sign-in in the capture browser. No dashboard screenshot
 or live approved-answer screenshot has been fabricated or reconstructed.
 
+## Neat Bot: diagnose → fix → verify
+
+Live Neat Bot answers captured on 12 October 2026, **after** the fix had been
+made. They are not how the problem was first found. The diagnosis thread was a
+new conversation given only the failed "before" trace
+`0ce0e491e0e1bdc3cf89d00ca4dfb65d` and asked to diagnose it and suggest fixes,
+with no mention of the fix. Treat it as an independent diagnosis that converges
+on the same fix.
+
+| Step | File | Title | What it proves |
+|---|---|---|---|
+| Diagnose | [08-neatbot-diagnosis-verdict.png](08-neatbot-diagnosis-verdict.png) | Neat Bot: Diagnosis Verdict | From the before trace alone: errored after 208.1 s with no final answer; 20 LLM calls, 323,923 tokens, $0.05896. |
+| Diagnose | [09-neatbot-diagnosis-cost-breakdown.png](09-neatbot-diagnosis-cost-breakdown.png) | Neat Bot: Where Cost and Time Went | Per-agent calls and LLM time; prompt tokens are 89.5% of the total; the specialists ran sequentially, not in parallel. |
+| Diagnose | [10-neatbot-diagnosis-waste.png](10-neatbot-diagnosis-waste.png) | Neat Bot: What Looks Wasteful | Duplicated file retrieval, overlapping briefs, duplicate final generations, report-length inflation, an empty Sales Bot delegation. |
+| Diagnose | [11-neatbot-diagnosis-ranked-fixes.png](11-neatbot-diagnosis-ranked-fixes.png) | Neat Bot: Ranked Changes | Three ranked changes: (1) cut the fan-out, (2) run specialists concurrently, (3) share one fact sheet with file citations, cap replies at about 300-400 words, and fix the empty delegation. |
+| Fix | Commit `8887e9ba` `fix(agents): reuse company facts in delegated briefs`; prompt source `src/mastra/prompts/index.ts` | The prompt fix | The Primary Bot passes already-read figures and file paths; delegated specialists do not re-read them and reply with a compact brief. |
+| Verify | [12-neatbot-compare-before-after.png](12-neatbot-compare-before-after.png) | Neat Bot: Before vs After | Before `0ce0e491...` failed ($0.0589567, 323,923 tokens, 20 LLM calls); after `b0392391b4829a49a483b6c101ee336b` succeeded ($0.0498578, 237,208 tokens, 16 LLM calls). |
+| Verify | [13-neatbot-compare-budget-and-failure.png](13-neatbot-compare-budget-and-failure.png) | Neat Bot: Budget and Failure | Which agent used the most time and hops in each run, and the failing Sales Bot span in the before run. |
+| Verify | [14-neatbot-compare-what-changed.png](14-neatbot-compare-what-changed.png) | Neat Bot: What Changed | The prompt change visible in span inputs, with the CFO Bot told not to re-read figures already supplied in its brief. |
+
+### What matches the fix, and what does not
+
+- Ranked change 3(a) and 3(b) (one shared fact sheet with file citations, and
+  specialist replies capped at about 300-400 words) matches what commit
+  `8887e9ba` did.
+- Ranked change 1 (cut the fan-out) and change 2 (run the specialists
+  concurrently; the trace shows they ran sequentially) were **not** implemented.
+  They are future work.
+
+### Known limits
+
+- neatlogs recorded no tool spans (`tool_calls: 0`), so file reads are inferred
+  from the agents' own text. The 29 to 10 CFO file-read count comes from app SSE
+  logs, not neatlogs.
+- The Neat Bot attributed the failure to an empty Sales Bot delegation. The
+  actual trigger was the per-turn cap: once the budget was exhausted, the cap
+  processor aborted the Sales Bot before its first model call (see
+  `src/usage/turn-budget.ts`, `processInputStep`). The cap reason is not exposed
+  through the neatlogs MCP, so its fix 3(c) addresses a symptom.
+- The two threads describe the before brief slightly differently: the comparison
+  thread says the CFO brief gave file paths without the figures, while the
+  diagnosis thread says the briefs embedded a large "known context" block. This
+  is noted, not resolved.
+- The two threads also disagree on concurrency: the diagnosis thread reads the
+  span durations as strictly sequential, while the comparison thread describes
+  the specialists as parallel. The diagnosis arithmetic (specialist spans plus
+  Primary Bot time about equal to the root duration) favours sequential.
+
 ## Source Evidence
 
 - [Standalone evidence report](northwind-verified-evidence.html): opens directly without a server.

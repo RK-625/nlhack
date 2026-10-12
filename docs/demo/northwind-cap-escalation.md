@@ -39,6 +39,14 @@ which specialists to consult; the exact delegation order and cost vary by run.
    Show the Entire checkpoints on the implementation commits.
 7. Reset the Primary Bot's limits to the defaults after recording.
 
+Neat Bot order: diagnose with the before trace only, show the fix diff, then
+compare. Diagnosis prompt (give it only the before trace, no mention of the fix):
+
+> Trace 0ce0e491e0e1bdc3cf89d00ca4dfb65d failed. Diagnose it: why did it fail, where did the cost and tokens go (by agent and LLM call), and what in the delegation briefs or agent behaviour looks wasteful? Then suggest the 2–3 most effective changes to make this run cheaper and finish within budget, ranked by expected impact. Only use what the trace shows, and say what you can't see.
+
+Then show the prompt diff (step 6), then run the comparison prompt below. Captured
+answers: [Neat Bot: diagnose → fix → verify](evidence/2026-10-12/README.md#neat-bot-diagnose--fix--verify).
+
 For the Neat Bot, use the actual trace IDs from the run:
 
 > Inspect traces 0ce0e491e0e1bdc3cf89d00ca4dfb65d and b0392391b4829a49a483b6c101ee336b. Compare failures, tokens, cost, and repeated company file reads. Explain what the traces support and what they do not establish. Do not change triage items or detections.
