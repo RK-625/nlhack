@@ -181,9 +181,8 @@ called. So the figures come from the local fictional Lumen Labs files (it cites
 `hr/greenhouse-export/candidates.csv`), not from live cfo.ai workspace data. The
 connection was established but not exercised by this answer.
 
-**Scope.** This is a hiring-expense plan for the fictional Lumen Labs. It is not
-the cfo.ai business plan for Bot Company (pricing, costs, runway) that the mentor
-asked for; that is still to do.
+**Scope.** This is a hiring-expense plan for the fictional Lumen Labs. The
+business plan written into cfo.ai is 36-39 below.
 
 **Verification.** The answer figures are not independently verified, except three
 that match `company/lumen-labs/finance/summary.md`: cash $6,019,000, average
@@ -195,3 +194,24 @@ after the answer had already been written. Approve then produced a near-duplicat
 answer (33-35), and the offer asked for about $0.38 more. So the escalation is
 offered even when the capping step was the final answer. Candidate fix: skip the
 offer when the capping step finished with no pending tool calls.
+
+## cfo.ai: business plan written through approved tools
+
+Captures from the public app on 12 October 2026 (about 17:51-17:58 IST, Admin
+user, CFO Bot), plus the page that landed in cfo.ai.
+
+| File | Title | What it proves |
+| --- | --- | --- |
+| [36-cfoai-business-plan-tools.png](36-cfoai-business-plan-tools.png) | Named cfo.ai tool calls | The user asked for a page named "Lumen Labs – 12-Month Business Plan" plus 3 scenarios. A finished group, "Done · 5 tools · 6m 26s", lists Cfo edit pages, Cfo edit scenarios, Cfo edit scenarios, Cfo inspect documentation, and Cfo edit pages. The bot then says the page was created (`Lumen Labs – 12-Month Business Plan#140`). |
+| [37-cfoai-business-plan-approval.png](37-cfoai-business-plan-approval.png) | Approve adding the plan text | Card "Approve Cfo edit pages?" for `cfo_edit_pages`, with `add_text` aimed at that page and the plan body in the payload. |
+| [38-cfoai-business-plan-page.png](38-cfoai-business-plan-page.png) | The page in cfo.ai | The same page open in cfo.ai, under Main Scenario, with section 1 (starting position) and section 2 (pricing and unit economics) visible and source files named. |
+| [39-cfoai-business-plan-collapsed.png](39-cfoai-business-plan-collapsed.png) | Earlier collapsed frame | Same turn, a moment earlier: "Done · 3 tools · 6m 07s" with the tool names folded away. It does not name the tools. |
+
+**What this proves.** CFO Bot called cfo.ai tools by name, paused for approval
+before the text write, reported the page id, and the page is present in the
+cfo.ai workspace with the plan text.
+
+**What this does not prove.** Shot 38's model menu shows Main Scenario only.
+The three requested scenarios (base case, Northwind churns, R-104 deferred)
+are not visible there. Shot 36 shows two finished `Cfo edit scenarios` calls
+without their result names.
