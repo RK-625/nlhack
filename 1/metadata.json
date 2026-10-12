@@ -1,0 +1,148 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4R5ZEWEBCJ5WWKD0T66AV37",
+  "session_id": "01a12f55-d777-77d3-93ed-bd47c569347f",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T13:49:29.864064Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "save_step_count": 4,
+  "files_touched": [
+    "site/src/content.ts",
+    "site/src/pages/Home.tsx"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "73740a18917c",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 484069,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 10604928,
+    "output_tokens": 37159,
+    "api_call_count": 94,
+    "subagent_tokens_complete": true
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T13:49:29.40664Z",
+    "agent_lines": 61,
+    "agent_removed": 28,
+    "human_added": 4,
+    "human_modified": 3,
+    "human_removed": 0,
+    "total_committed": 68,
+    "total_lines_changed": 99,
+    "agent_percentage": 89.8989898989899,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 4091,
+      "user_lines_removed": 78,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/cfo/mcp-fetch.test.ts": 28,
+        "src/cfo/mcp-fetch.ts": 18,
+        "src/mastra/tools/cfo.ts": 7,
+        "video/.gitignore": 7,
+        "video/FINAL-REVIEW.md": 47,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/STORYBOARD.md": 32,
+        "video/package.json": 2,
+        "video/public/vo/manifest.json": 145,
+        "video/scripts/render-stills.mjs": 2,
+        "video/src/Main.tsx": 6,
+        "video/src/Root.tsx": 3,
+        "video/src/audio/Soundtrack.tsx": 9,
+        "video/src/components/BlurInText.tsx": 1,
+        "video/src/components/Chip.tsx": 164,
+        "video/src/components/Cursor.tsx": 125,
+        "video/src/components/Headline.tsx": 61,
+        "video/src/components/Mascot.tsx": 11,
+        "video/src/components/UICard.tsx": 288,
+        "video/src/data/agents.ts": 67,
+        "video/src/data/evidence.ts": 87,
+        "video/src/lib/expressions.ts": 8,
+        "video/src/lib/usage-format.ts": 28,
+        "video/src/scenes/Scene03Team.tsx": 412,
+        "video/src/scenes/Scene04RealWork.tsx": 294,
+        "video/src/scenes/Scene05Guardrails.tsx": 102,
+        "video/src/scenes/Scene06NeatBot.tsx": 51,
+        "video/src/scenes/Scene07Roles.tsx": 108,
+        "video/src/scenes/Scene08Diagnosis.tsx": 51,
+        "video/src/scenes/Scene09Measured.tsx": 69,
+        "video/src/scenes/Scene10Checkpoints.tsx": 58,
+        "video/src/scenes/Scene10bCfoPlan.tsx": 78,
+        "video/src/scenes/Scene11EndCard.tsx": 56,
+        "video/src/timeline.ts": 32,
+        "video/tts/.gitignore": 2,
+        "video/tts/generate.mjs": 316,
+        "video/tts/package-lock.json": 1101,
+        "video/tts/package.json": 15,
+        "web/src/lib/chat-approvals.test.ts": 82,
+        "web/src/lib/chat-approvals.ts": 39,
+        "web/src/lib/chats.ts": 27
+      },
+      "user_removed_per_file": {
+        "src/mastra/tools/cfo.ts": 8,
+        "video/STORYBOARD.md": 22,
+        "video/package.json": 1,
+        "video/scripts/render-stills.mjs": 2,
+        "video/src/Main.tsx": 3,
+        "video/src/Root.tsx": 2,
+        "video/src/audio/Soundtrack.tsx": 15,
+        "video/src/components/BlurInText.tsx": 1,
+        "video/src/components/Mascot.tsx": 4,
+        "video/src/components/ScenePlaceholder.tsx": 3,
+        "video/src/timeline.ts": 15,
+        "web/src/lib/chats.ts": 2
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 449,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3642,
+      "agent_lines_removed": 78,
+      "user_added_per_file": {
+        "src/cfo/mcp-fetch.test.ts": 28,
+        "src/cfo/mcp-fetch.ts": 18,
+        "video/FINAL-REVIEW.md": 47,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/src/data/agents.ts": 67,
+        "video/src/scenes/Scene06NeatBot.tsx": 51,
+        "video/src/scenes/Scene07Roles.tsx": 108,
+        "video/src/scenes/Scene10bCfoPlan.tsx": 78
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 449,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3642,
+      "agent_lines_removed": 78,
+      "user_added_per_file": {
+        "src/cfo/mcp-fetch.test.ts": 28,
+        "src/cfo/mcp-fetch.ts": 18,
+        "video/FINAL-REVIEW.md": 47,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/src/data/agents.ts": 67,
+        "video/src/scenes/Scene06NeatBot.tsx": 51,
+        "video/src/scenes/Scene07Roles.tsx": 108,
+        "video/src/scenes/Scene10bCfoPlan.tsx": 78
+      }
+    }
+  ]
+}
