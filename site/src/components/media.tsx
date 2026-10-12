@@ -99,7 +99,7 @@ export function ShotFrame({ src, alt, className }: { src: Maybe<string>; alt: st
   );
 }
 
-/** Thumbnails that open in a lightbox (native <dialog>). */
+/** Original captures at full content width, with a lightbox for closer inspection. */
 export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState<Shot | null>(null);
@@ -123,7 +123,7 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
 
   return (
     <>
-      <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2">
+      <ul className="grid gap-8">
         {shots.map((s) => (
           <li key={s.src}>
             <button
@@ -132,7 +132,7 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
               className="block w-full overflow-hidden rounded-xl transition-opacity hover:opacity-90"
               aria-label={`Enlarge: ${s.alt}`}
             >
-              <img src={s.thumb} alt={s.alt} loading="lazy" decoding="async" className="aspect-[16/10] w-full rounded-xl border border-line bg-muted object-contain" />
+              <img src={s.src} alt={s.alt} width={s.width} height={s.height} loading="lazy" decoding="async" className="block h-auto w-full rounded-xl border border-line" />
             </button>
             <p className="mt-2 text-xs leading-relaxed text-muted-fg">{s.alt}</p>
           </li>

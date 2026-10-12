@@ -7,6 +7,8 @@
  * Search this file for `todo(` to find everything left to fill.
  */
 
+import { captureSizes } from "./capture-sizes";
+
 export type Todo = { readonly todo: string };
 export type Maybe<T> = T | Todo;
 
@@ -390,8 +392,8 @@ export const bigNumbers = [
 
 export type Badge = "In repo" | "Public" | "Screenshots" | "Report";
 
-export type Shot = { src: string; thumb: string; alt: string };
-const shot = (file: string, alt: string): Shot => ({ src: proofFile(file), thumb: proofThumb(file), alt });
+export type Shot = { src: string; thumb: string; alt: string; width: number; height: number };
+const shot = (file: string, alt: string): Shot => ({ src: proofFile(file), thumb: proofThumb(file), alt, ...captureSizes[file]! });
 
 /** One judging criterion = one section on /judges/, with its screenshots shown inline. */
 export type Criterion = {
