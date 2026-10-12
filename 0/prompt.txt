@@ -1,0 +1,7 @@
+1. Push this commit to GitHub.
+2. Quick fixes:
+   * drop duplicate screenshot 03;
+   * fix the `~` strikethrough display bug;
+   * fix the broken links in the website copy of the evidence README.
+3. Update the public server (port 3000). It needs a rebuild and restart, about 30 seconds offline.
+4. do this
