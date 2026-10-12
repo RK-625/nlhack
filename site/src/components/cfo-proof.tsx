@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { captureSizes } from "../capture-sizes";
 import { proofFile } from "../content";
 
 const stages = [
@@ -16,8 +17,8 @@ export function CfoProof() {
     <p className="text-xs font-semibold uppercase tracking-widest text-link">Screenshot walkthrough · two separate runs</p>
     <h3 className="mt-2 text-2xl font-semibold">From a local plan to an approved cfo.ai write.</h3>
     <div className="mt-5 grid gap-3 sm:grid-cols-2">
-      <p className="rounded-xl border border-line p-4 text-sm"><strong>Without cfo.ai</strong><br />Company files → local Markdown.<br /><span className="text-muted-fg">Fresh baseline: captures 43–47.</span></p>
-      <p className="rounded-xl border border-link/40 p-4 text-sm"><strong>With cfo.ai MCP</strong><br />Named tools → approval → saved page.<br /><span className="text-muted-fg">Earlier connected run: captures 36–38.</span></p>
+      <button type="button" onClick={() => setSelected(0)} aria-pressed={selected === 0} className={`cursor-pointer rounded-xl border p-4 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 hover:bg-accent ${selected === 0 ? "border-link bg-link/10" : "border-line"}`}><strong>Without cfo.ai</strong><br />Company files → local Markdown.<br /><span className="text-muted-fg">Fresh baseline: captures 43–47.</span><span className="mt-3 block text-xs text-link">View disconnected result →</span></button>
+      <button type="button" onClick={() => setSelected(1)} aria-pressed={selected > 0} className={`cursor-pointer rounded-xl border p-4 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 hover:bg-accent ${selected > 0 ? "border-link bg-link/10" : "border-line"}`}><strong>With cfo.ai MCP</strong><br />Named tools → approval → saved page.<br /><span className="text-muted-fg">Earlier connected run: captures 36–38.</span><span className="mt-3 block text-xs text-link">View connected workflow →</span></button>
     </div>
     <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="CFO evidence stages">
       {stages.map((s, i) => <button key={s.label} type="button" aria-pressed={selected === i} onClick={() => setSelected(i)} className={`rounded-full border px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-4 ${selected === i ? "border-link bg-link/15 text-link" : "border-line hover:bg-accent"}`}>{s.label}</button>)}
@@ -31,7 +32,7 @@ export function CfoProof() {
       <a className="text-link underline underline-offset-4" href={proofFile(stage.file)} target="_blank" rel="noreferrer">Open original full size ↗</a>
     </div>
     <a href={proofFile(stage.file)} target="_blank" rel="noreferrer" className="relative block overflow-hidden rounded-xl border border-line" aria-label={`Open screenshot: ${stage.title}`}>
-      <img src={proofFile(stage.file)} alt={stage.title} className="block h-auto w-full" loading="lazy" />
+      <img src={proofFile(stage.file)} alt={stage.title} width={captureSizes[stage.file]?.width} height={captureSizes[stage.file]?.height} className="block h-auto w-full" loading="lazy" />
       {highlight && stage.rect && <span aria-hidden className="pointer-events-none absolute rounded border-[3px] border-amber-400 bg-amber-400/10" style={{ left: `${stage.rect[0]}%`, top: `${stage.rect[1]}%`, width: `${stage.rect[2]}%`, height: `${stage.rect[3]}%` }} />}
     </a>
     <p className="mt-4 text-xs leading-relaxed text-muted-fg">Highlights are website overlays; original screenshots are unchanged. Different prompts and starting state: this demonstrates workflow capability, not an accuracy or speed advantage. Financial outputs require verification.</p>
