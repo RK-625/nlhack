@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RCWCSV5WF7557Z0GV00CYJ",
+  "session_id": "72942800-b4f5-478e-8b9f-09def0db98cf",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T15:50:35.310382Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "video/STORYBOARD.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "ebda9588aa58",
+  "checkpoint_transcript_start": 466,
+  "transcript_lines_at_start": 466,
+  "compact_transcript_start": 76,
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  },
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T15:50:35.118264Z",
+    "agent_lines": 32,
+    "agent_removed": 28,
+    "human_added": 87,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 119,
+    "total_lines_changed": 147,
+    "agent_percentage": 40.816326530612244,
+    "metric_version": 2
+  }
+}
