@@ -31,3 +31,16 @@
 ---
 
 i have used the cfo.ai here as a product here itslef here directly here i can sent a screen shot here save this as evidence for cfo.ai here btw
+
+---
+
+<pasted_content id="a7b9">
+Two things to be honest about ⚠️
+
+1. The answer may not use cfo.ai data at all. It only cites the local company files (hr/open-roles.md, finance/summary.md and so on). Being connected doesn’t mean the bot read your cfo.ai workspace. The agent is checking the app’s database for which tools the bot actually called. If it’s only the local files, the evidence will say “cfo.ai connected”, not “answer from cfo.ai”.
+2. This isn’t the business plan Chetan asked for. He wants a cfo.ai business plan for Bot Company itself (pricing, costs, runway). This is a hiring plan for the fictional Lumen Labs. It shows the integration, but that requirement is still open.
+</pasted_content id="a7b9">
+
+ 
+
+i can ask cfo for question that can repsonse back for this case
