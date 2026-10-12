@@ -1,0 +1,52 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4R6JKWAV2NVFZWYK6A1Z753",
+  "session_id": "01a12f55-d777-77d3-93ed-bd47c569347f",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T14:00:00.199903Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "5410b2ee5d80",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 520611,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 15976832,
+    "output_tokens": 44044,
+    "api_call_count": 131,
+    "subagent_tokens_complete": true
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 449,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3642,
+      "agent_lines_removed": 78,
+      "user_added_per_file": {
+        "src/cfo/mcp-fetch.test.ts": 28,
+        "src/cfo/mcp-fetch.ts": 18,
+        "video/FINAL-REVIEW.md": 47,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/src/data/agents.ts": 67,
+        "video/src/scenes/Scene06NeatBot.tsx": 51,
+        "video/src/scenes/Scene07Roles.tsx": 108,
+        "video/src/scenes/Scene10bCfoPlan.tsx": 78
+      }
+    }
+  ]
+}
