@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RG3E5921GMG4C5728SZRXR",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "JUDGE.md",
+    "README.md",
+    "docs/demo/evidence/2026-10-12/40-cfo-disconnected-existing-draft.png",
+    "docs/demo/evidence/2026-10-12/41-cfo-disconnected-existing-summary.png",
+    "docs/demo/evidence/2026-10-12/42-cfo-disconnected-existing-method.png",
+    "docs/demo/evidence/2026-10-12/43-cfo-disconnected-fresh-prompt.png",
+    "docs/demo/evidence/2026-10-12/44-cfo-disconnected-fresh-summary.png",
+    "docs/demo/evidence/2026-10-12/45-cfo-disconnected-fresh-scenarios.png",
+    "docs/demo/evidence/2026-10-12/46-cfo-disconnected-fresh-cash-hiring.png",
+    "docs/demo/evidence/2026-10-12/47-cfo-disconnected-fresh-actions.png",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/README.md",
+    "site/public/JUDGE.md",
+    "site/public/evidence/2026-10-12/40-cfo-disconnected-existing-draft.png",
+    "site/public/evidence/2026-10-12/41-cfo-disconnected-existing-summary.png",
+    "site/public/evidence/2026-10-12/42-cfo-disconnected-existing-method.png",
+    "site/public/evidence/2026-10-12/43-cfo-disconnected-fresh-prompt.png",
+    "site/public/evidence/2026-10-12/44-cfo-disconnected-fresh-summary.png",
+    "site/public/evidence/2026-10-12/45-cfo-disconnected-fresh-scenarios.png",
+    "site/public/evidence/2026-10-12/46-cfo-disconnected-fresh-cash-hiring.png",
+    "site/public/evidence/2026-10-12/47-cfo-disconnected-fresh-actions.png",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt",
+    "site/src/capture-sizes.ts",
+    "site/src/components/cfo-proof.tsx",
+    "site/src/content.ts",
+    "site/src/pages/Judges.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
