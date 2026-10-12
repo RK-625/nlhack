@@ -1,0 +1,17 @@
+{
+  "tool_use_id": "toolu_01Va3yXKQGjpWbPaSW4fpS2U",
+  "agent_id": "ac47b40a0b6b84e3e",
+  "task_description": "Generate Kokoro af_heart voiceover",
+  "files": [
+    "video/tts/generate.mjs"
+  ],
+  "token_usage": {
+    "input_tokens": 36,
+    "cache_creation_tokens": 80084,
+    "cache_read_tokens": 1385026,
+    "output_tokens": 9277,
+    "api_call_count": 18
+  },
+  "started_at": "2026-10-12T16:58:42.30111+05:30",
+  "completed_at": "2026-10-12T17:06:19.141383+05:30"
+}

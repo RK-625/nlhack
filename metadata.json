@@ -3,11 +3,12 @@
   "checkpoint_id": "01M4QYVN7H9HKWNBK8FPC9FY06",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 9,
   "files_touched": [
     "site/README.md",
     "site/judges/index.html",
     "site/public/favicon.svg",
+    "site/public/img/neatlogs-nl.png",
     "site/public/og.svg",
     "site/src/components/avatar.tsx",
     "site/src/components/cards.tsx",
@@ -40,13 +41,27 @@
       "compact_transcript": "/2/transcript.jsonl",
       "content_hash": "/2/content_hash.txt",
       "prompt": "/2/prompt.txt"
+    },
+    {
+      "metadata": "/3/metadata.json",
+      "transcript": "/3/full.jsonl",
+      "compact_transcript": "/3/transcript.jsonl",
+      "content_hash": "/3/content_hash.txt",
+      "prompt": "/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 289493,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 4796416,
-    "output_tokens": 18930,
-    "api_call_count": 39
+    "input_tokens": 289509,
+    "cache_creation_tokens": 10127,
+    "cache_read_tokens": 5963654,
+    "output_tokens": 25226,
+    "api_call_count": 48,
+    "subagent_tokens": {
+      "input_tokens": 232,
+      "cache_creation_tokens": 509242,
+      "cache_read_tokens": 16859173,
+      "output_tokens": 71143,
+      "api_call_count": 109
+    }
   }
 }

@@ -1,0 +1,14 @@
+{
+  "tool_use_id": "toolu_018HyFohbda9ugctoTmmM9Sh",
+  "agent_id": "af513ca179b91f07e",
+  "task_description": "Find music download URL and size",
+  "token_usage": {
+    "input_tokens": 46,
+    "cache_creation_tokens": 77198,
+    "cache_read_tokens": 1019136,
+    "output_tokens": 216,
+    "api_call_count": 16
+  },
+  "started_at": "2026-10-12T16:52:31.313283+05:30",
+  "completed_at": "2026-10-12T16:54:18.190453+05:30"
+}
