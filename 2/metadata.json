@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RCQ0XHVYNZZ3HCN82JZTBM",
+  "session_id": "01a12fe9-d9cb-72a2-b7fc-64309f043e97",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T15:47:51.682373Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "ca798cad9c90",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 742990,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 19027968,
+    "output_tokens": 75178,
+    "api_call_count": 159
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 652,
+      "user_lines_removed": 0,
+      "agent_lines_added": 3651,
+      "agent_lines_removed": 95,
+      "user_added_per_file": {
+        "src/cfo/mcp-fetch.test.ts": 28,
+        "src/cfo/mcp-fetch.ts": 18,
+        "video/FINAL-REVIEW.md": 24,
+        "video/REVISION-PITCH.md": 11,
+        "video/SPRINT3-REVIEW.md": 52,
+        "video/src/data/agents.ts": 67,
+        "video/src/demo/AppDemo.tsx": 100,
+        "video/src/scenes/Scene00Chaos.tsx": 71,
+        "video/src/scenes/Scene06NeatBot.tsx": 51,
+        "video/src/scenes/Scene07Roles.tsx": 45,
+        "video/src/scenes/Scene10bCfoPlan.tsx": 78,
+        "video/src/scenes/SceneCfoDemo.tsx": 15,
+        "video/src/scenes/SceneGithubDemo.tsx": 41,
+        "video/src/scenes/SceneResearchDemo.tsx": 51
+      }
+    }
+  ]
+}
