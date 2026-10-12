@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4RP9CPYJM5NN5QRX3552TBD",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 7,
+  "checkpoints_count": 11,
   "files_touched": [
     "site/src/content.ts",
     "site/src/pages/Judges.tsx"
@@ -15,6 +15,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
-  ]
+  ],
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 41217,
+    "cache_read_tokens": 1567173,
+    "output_tokens": 7797,
+    "api_call_count": 12
+  }
 }
