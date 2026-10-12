@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RCQ0XHVYNZZ3HCN82JZTBM",
+  "session_id": "01a12f3f-fde6-75e2-b63f-23c8f91f7b07",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T15:47:00.106483Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "web/src/lib/chat-approvals.test.ts",
+    "web/src/lib/chat-approvals.ts",
+    "web/src/lib/chats.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "d89075920651",
+  "checkpoint_transcript_start": 1631,
+  "transcript_lines_at_start": 1631,
+  "compact_transcript_start": 196,
+  "session_metrics": {
+    "turn_count": 12
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T15:46:59.224637Z",
+    "agent_lines": 148,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 148,
+    "total_lines_changed": 150,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
