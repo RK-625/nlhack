@@ -3,14 +3,33 @@
   "checkpoint_id": "01M4QHZ2KNRQG7N3XPHTB1ARE4",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
-  "files_touched": null,
+  "checkpoints_count": 5,
+  "files_touched": [
+    "src/mastra/agents/assistant.ts",
+    "src/mastra/agents/cfo.ts",
+    "src/mastra/agents/customer-success.ts",
+    "src/mastra/agents/github.ts",
+    "src/mastra/agents/hr.ts",
+    "src/mastra/agents/legal.ts",
+    "src/mastra/agents/market-researcher.ts",
+    "src/mastra/agents/marketing.ts",
+    "src/mastra/agents/neatlogs.ts",
+    "src/mastra/agents/sales.ts",
+    "src/usage/turn-budget.ts"
+  ],
   "sessions": [
     {
       "metadata": "/0/metadata.json",
       "transcript": "/0/full.jsonl",
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
       "prompt": ""
     }
   ],
