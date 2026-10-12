@@ -1,0 +1,22 @@
+{
+  "tool_use_id": "toolu_0185sfDCQPEpbPnNCcPFgKHM",
+  "agent_id": "a55473212e74522b6",
+  "subagent_type": "general-purpose",
+  "task_description": "Price cached input tokens in estimate",
+  "files": [
+    "README.md",
+    "src/usage/pricing.ts",
+    "src/usage/turn-budget.ts",
+    "web/src/lib/turn-usage.ts",
+    "web/src/shell/UsagePanel.tsx"
+  ],
+  "token_usage": {
+    "input_tokens": 28,
+    "cache_creation_tokens": 95967,
+    "cache_read_tokens": 1047712,
+    "output_tokens": 504,
+    "api_call_count": 14
+  },
+  "started_at": "2026-10-12T10:05:19.620187+05:30",
+  "completed_at": "2026-10-12T10:05:19.620538+05:30"
+}
