@@ -439,8 +439,8 @@ export const evidence: Criterion[] = [
     badge: "Screenshots",
     proof: "When a run stops, neatlogs lets us look inside it. We captured the stopped run and its continuation, then asked Neat Bot to investigate a separate Northwind failure.",
     steps: [
-      { status: "failed", title: "The dashboard shows where the live run stopped", text: "Trace bbb32395… ended in **ERROR** after **14 steps**. The dashboard reports Execution Failed. The CFO Bot was blocked by the cap." },
-      { status: "passed", title: "The approved continuation has its own trace", text: "Trace 3c670bab… names the earlier run and the approval decision. It finished normally in **11 steps**, so we can follow __the stopped run and its continuation__ separately." },
+      { status: "failed", title: "The dashboard shows where the live run stopped", text: `Trace [bbb32395…](${traceUrl("bbb3239517e0bcbe0ff9eed8e9309a5d")}) ended in **ERROR** after **14 steps**. The dashboard reports Execution Failed. The CFO Bot was blocked by the cap.` },
+      { status: "passed", title: "The approved continuation has its own trace", text: `Trace [3c670bab…](${traceUrl("3c670bab3ed85e64a42acdc15513ca20")}) names the earlier run and the approval decision. It finished normally in **11 steps**, so we can follow __the stopped run and its continuation__ separately.` },
       { status: "recorded", title: "Neat Bot helped us investigate the Northwind failure", text: "Given the failed Northwind trace, Neat Bot highlighted repeated reads and large prompts, then suggested changes. We exported **six traces** through the neatlogs MCP. The trace links require project sign-in; the screenshots below can be viewed directly." },
     ],
     shots: [

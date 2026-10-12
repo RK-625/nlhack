@@ -1,14 +1,16 @@
 import { ArrowRight, Check, Minus, Search, X } from "lucide-react";
 import type { ProcessStep } from "../content";
-import { cx } from "./ui";
+import { cx, ExtLink } from "./ui";
 
-/** Small authored emphasis markers; no HTML from captured pages is rendered. */
+/** Authored emphasis and HTTPS references; captured HTML is never rendered. */
 export function ReviewText({ text }: { text: string }) {
-  return <>{text.split(/(\*\*.+?\*\*|__.+?__)/g).map((part, i) =>
-    part.startsWith("**") ? <strong key={i} className="font-semibold text-fg">{part.slice(2, -2)}</strong>
-      : part.startsWith("__") ? <span key={i} className="text-fg underline decoration-link/50 decoration-2 underline-offset-4">{part.slice(2, -2)}</span>
-        : part,
-  )}</>;
+  return <>{text.split(/(\[[^\]]+\]\(https:\/\/[^\s)]+\)|\*\*.+?\*\*|__.+?__)/g).map((part, i) => {
+    const link = part.match(/^\[([^\]]+)\]\((https:\/\/[^\s)]+)\)$/);
+    if (link) return <ExtLink key={i} href={link[2]!} className="underline focus-visible:outline-2 focus-visible:outline-offset-4">{link[1]}</ExtLink>;
+    if (part.startsWith("**")) return <strong key={i} className="font-semibold text-fg">{part.slice(2, -2)}</strong>;
+    if (part.startsWith("__")) return <span key={i} className="text-fg underline decoration-link/50 decoration-2 underline-offset-4">{part.slice(2, -2)}</span>;
+    return part;
+  })}</>;
 }
 
 const statuses = {
