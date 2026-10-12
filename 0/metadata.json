@@ -1,0 +1,106 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QXJ48M8GRWP4MJTJJ7VDJ6",
+  "session_id": "72942800-b4f5-478e-8b9f-09def0db98cf",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T11:21:58.883133Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    "video/STORYBOARD.md",
+    "video/src/components/DotMatrixLogo.tsx",
+    "video/src/components/Mascot.tsx",
+    "video/src/lib/motion.ts",
+    "video/src/scenes/Scene01Lineup.tsx",
+    "video/src/scenes/Scene02Title.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "2735fada1862",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 84,
+    "cache_creation_tokens": 114553,
+    "cache_read_tokens": 3999819,
+    "output_tokens": 31555,
+    "api_call_count": 35,
+    "subagent_tokens": {
+      "input_tokens": 206,
+      "cache_creation_tokens": 244802,
+      "cache_read_tokens": 11804031,
+      "output_tokens": 4673,
+      "api_call_count": 103
+    }
+  },
+  "session_metrics": {
+    "turn_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T11:21:58.728753Z",
+    "agent_lines": 688,
+    "agent_removed": 0,
+    "human_added": 1794,
+    "human_modified": 86,
+    "human_removed": 0,
+    "total_committed": 2525,
+    "total_lines_changed": 2568,
+    "agent_percentage": 26.791277258566975,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 942,
+      "user_lines_removed": 0,
+      "agent_lines_added": 4000,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "video/.gitignore": 11,
+        "video/public/fonts/OFL-Geist.txt": 93,
+        "video/remotion.config.ts": 12,
+        "video/scripts/extract-nl-dots.mjs": 142,
+        "video/src/assets/nl-dots.ts": 132,
+        "video/src/lib/avatar-colors.ts": 181,
+        "video/src/lib/avatar-shapes.ts": 43,
+        "video/src/lib/expressions.ts": 71,
+        "video/src/lib/motion.ts": 171,
+        "video/src/theme/fonts.ts": 20,
+        "video/src/theme/tokens.ts": 48,
+        "video/tsconfig.json": 18
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 879,
+      "user_lines_removed": 43,
+      "agent_lines_added": 5503,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "video/.gitignore": 11,
+        "video/public/fonts/OFL-Geist.txt": 93,
+        "video/remotion.config.ts": 12,
+        "video/scripts/extract-nl-dots.mjs": 142,
+        "video/src/Root.tsx": 4,
+        "video/src/assets/nl-dots.ts": 132,
+        "video/src/components/DotMatrixLogo.tsx": 10,
+        "video/src/components/Mascot.tsx": 3,
+        "video/src/dev/CastSheet.tsx": 45,
+        "video/src/lib/avatar-colors.ts": 181,
+        "video/src/lib/avatar-shapes.ts": 43,
+        "video/src/lib/expressions.ts": 71,
+        "video/src/scenes/Scene01Lineup.tsx": 33,
+        "video/src/scenes/Scene02Title.tsx": 13,
+        "video/src/theme/fonts.ts": 20,
+        "video/src/theme/tokens.ts": 48,
+        "video/tsconfig.json": 18
+      },
+      "user_removed_per_file": {
+        "video/src/components/DotMatrixLogo.tsx": 10,
+        "video/src/components/Mascot.tsx": 3,
+        "video/src/scenes/Scene01Lineup.tsx": 20,
+        "video/src/scenes/Scene02Title.tsx": 10
+      }
+    }
+  ]
+}

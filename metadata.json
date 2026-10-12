@@ -1,0 +1,38 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QXJ48M8GRWP4MJTJJ7VDJ6",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "video/STORYBOARD.md",
+    "video/src/components/DotMatrixLogo.tsx",
+    "video/src/components/Mascot.tsx",
+    "video/src/lib/motion.ts",
+    "video/src/scenes/Scene01Lineup.tsx",
+    "video/src/scenes/Scene02Title.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 84,
+    "cache_creation_tokens": 114553,
+    "cache_read_tokens": 3999819,
+    "output_tokens": 31555,
+    "api_call_count": 35,
+    "subagent_tokens": {
+      "input_tokens": 206,
+      "cache_creation_tokens": 244802,
+      "cache_read_tokens": 11804031,
+      "output_tokens": 4673,
+      "api_call_count": 103
+    }
+  }
+}
