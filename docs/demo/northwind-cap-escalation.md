@@ -1,5 +1,8 @@
 # Northwind: failure, recovery, and a trace-driven fix
 
+Preserved screenshots with titles and provenance are in the
+[12 October evidence index](evidence/2026-10-12/README.md).
+
 ## The task
 
 Lumen Labs and Northwind Logistics are fictional demo companies. This run uses the
@@ -124,14 +127,14 @@ empty `parts`, which also loses its escalation metadata. The fix stores a short
 budget-stop explanation when no partial text exists, so the pending offer remains
 available after reload.
 
-![Pending budget extension after a reload](northwind-cap-card.png)
+![Pending budget extension after a reload](evidence/2026-10-12/01-northwind-budget-extension-pending-desktop.png)
 
 The empty-reply regression was reproduced with the Northwind question plus
 "Do not send progress updates; respond only when the final recommendation is
 ready." After the fix, reloading shows the fallback text and the pending card.
 The same card was checked at 390 x 844 before clicking Deny.
 
-![Empty-reply budget card on mobile](northwind-cap-mobile.png)
+![Empty-reply budget card on mobile](evidence/2026-10-12/02-northwind-empty-reply-reload-mobile.png)
 
 ## Fresh browser verification
 
@@ -155,7 +158,7 @@ runway effect as 1.5 days. The $1,440 increment at $302,261 monthly burn is abou
 0.143 days. These are answer-quality limitations, not evidence that a credit was
 issued. Verify the full answer before using it as a decision memo.
 
-![Denied extension and incomplete answer](northwind-denied.png)
+![Denied extension and incomplete answer](evidence/2026-10-12/04-northwind-incomplete-answer-desktop.png)
 
 ## Submission narrative
 
