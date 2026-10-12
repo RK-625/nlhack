@@ -12,11 +12,11 @@ export function ExecutionProof() {
     </div>
     <p className="mt-3 text-xs leading-relaxed text-muted-fg">Costs and token counts are rounded values from the supplied app popovers; durations come from the dashboard screenshots. Matching display values are not an independent billing audit. Each dashboard shows four LLM spans and eight displayed steps, with no separate tool spans shown.</p>
     <div className="mt-6 space-y-4">
-      {executionRuns.map(run => <details key={run.name} className="group rounded-2xl border border-line bg-card p-4 sm:p-6">
-        <summary className="cursor-pointer text-lg font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{run.name} · {run.summary}<span className="mt-2 block text-xs font-normal text-link">Open {run.shots.length} original screenshots: task → answer → usage → trace</span></summary>
+      {executionRuns.map(run => <article key={run.name} className="group rounded-2xl border border-line bg-card p-4 sm:p-6">
+        <h3 className="text-lg font-semibold">{run.name} · {run.summary}<span className="mt-2 block text-xs font-normal text-link">{run.shots.length} original screenshots · use the arrows to inspect the run</span></h3>
         <p className="my-5 max-w-3xl text-sm leading-relaxed text-muted-fg">{run.detail}</p>
         <Gallery name={`${run.name} execution evidence`} shots={run.shots} />
-      </details>)}
+      </article>)}
     </div>
   </div>;
 }

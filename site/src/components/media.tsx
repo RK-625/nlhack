@@ -1,4 +1,4 @@
-import { Check, Copy, ImageIcon, Play, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Copy, ImageIcon, Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { isTodo, type Maybe, type Shot } from "../content";
 import { Soon, cx } from "./ui";
@@ -99,10 +99,11 @@ export function ShotFrame({ src, alt, className }: { src: Maybe<string>; alt: st
   );
 }
 
-/** Original captures at full content width, with a lightbox for closer inspection. */
+/** One screenshot window with previous/next controls and original-image lightbox. */
 export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState<Shot | null>(null);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const d = dialog.current;
@@ -121,23 +122,37 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
     );
   }
 
+  const active = index % shots.length;
+  const current = shots[active]!;
+  const move = (direction: number) => setIndex(i => (i + direction + shots.length) % shots.length);
   return (
     <>
-      <ul className="grid gap-8">
-        {shots.map((s) => (
-          <li key={s.src}>
-            <button
-              type="button"
-              onClick={() => setOpen(s)}
-              className="block w-full overflow-hidden rounded-xl transition-opacity hover:opacity-90"
-              aria-label={`Enlarge: ${s.alt}`}
-            >
-              <img src={s.src} alt={s.alt} width={s.width} height={s.height} loading="lazy" decoding="async" className="block h-auto w-full rounded-xl border border-line" />
-            </button>
-            <p className="mt-2 text-xs leading-relaxed text-muted-fg">{s.alt}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="overflow-hidden rounded-2xl border border-line bg-card" role="region" aria-roledescription="carousel" aria-label={name} tabIndex={0} onKeyDown={event => {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.preventDefault(); move(event.key === "ArrowLeft" ? -1 : 1);
+        }
+      }}>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+          <p className="min-w-0 text-sm font-medium">{name}</p>
+          <div className="flex items-center gap-3">
+            <span className="num text-xs text-muted-fg" aria-live="polite">{active + 1} / {shots.length}</span>
+            <button type="button" onClick={() => move(-1)} disabled={shots.length < 2} aria-label={`Previous screenshot: ${name}`} className="flex size-10 items-center justify-center rounded-full border border-line hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-40"><ArrowLeft aria-hidden className="size-4" /></button>
+            <button type="button" onClick={() => move(1)} disabled={shots.length < 2} aria-label={`Next screenshot: ${name}`} className="flex size-10 items-center justify-center rounded-full border border-line hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-40"><ArrowRight aria-hidden className="size-4" /></button>
+          </div>
+        </div>
+        <figure>
+          <button type="button" onClick={() => setOpen(current)} className="flex aspect-[16/10] w-full items-center justify-center bg-black/20 p-2 focus-visible:outline-2 focus-visible:outline-offset-[-4px]" aria-label={`Enlarge: ${current.alt}`}>
+            <img src={current.src} alt={current.alt} width={current.width} height={current.height} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
+          </button>
+          <figcaption aria-live="polite" className="border-t border-line p-4 text-sm leading-relaxed text-muted-fg">{current.alt}</figcaption>
+        </figure>
+        <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-4">
+          <div className="flex flex-wrap gap-2" role="group" aria-label={`${name} screenshot selection`}>
+            {shots.map((s, i) => <button type="button" key={s.src} aria-label={`Screenshot ${i + 1}: ${s.alt}`} aria-pressed={active === i} onClick={() => setIndex(i)} className={`flex size-8 items-center justify-center rounded-full border text-xs focus-visible:outline-2 focus-visible:outline-offset-2 ${active === i ? "border-link bg-link/15 text-link" : "border-line hover:bg-accent"}`}>{i + 1}</button>)}
+          </div>
+          <a href={current.src} target="_blank" rel="noreferrer" className="text-xs text-link underline underline-offset-4">Open original full size ↗</a>
+        </div>
+      </div>
       <dialog
         ref={dialog}
         onClose={() => setOpen(null)}

@@ -25,3 +25,7 @@ Source: [RK-625/nlhack](https://github.com/RK-625/nlhack).
 CFO evidence on `/judges/#cfo` compares the fresh disconnected file-based run (43–47) with the earlier approved cfo.ai MCP write (36–38). Interactive proof highlights retain the original captures. All eight new attachments (40–47) are archived with checksums; 40–42 are excluded from the featured baseline. See `../JUDGE.md`. No financial accuracy or speed advantage is claimed.
 
 Specialist execution evidence: [GitHub and Research task completion, cost, tokens and trace captures](https://bot-company.onrender.com/judges/#execution). Original captures 48–56 and measurement limits are indexed in the evidence folder.
+
+The CFO comparison has separate linked pill sequences: five disconnected views (prompt, local plan, assumptions, cash flow, calculation issue) and three connected views (MCP tools, approval, saved page). Each view can be shared using its URL. The local arithmetic error is highlighted; complete numerical consistency of the connected plan remains unverified.
+
+Judge screenshot galleries use a single framed viewer with previous/next arrows, numbered selection, captions and full-size lightboxes. GitHub and Research have independent, always-visible viewers.
