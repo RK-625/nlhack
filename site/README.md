@@ -19,5 +19,5 @@ The judges page presents the seven criteria as separate sections with inline
 screenshots. Entire uses saved CLI output; built-in-public awaits post links.
 Home uses the app avatar shapes, usage popover, approval and cap-card layouts.
 
-The home page plays `public/video/launch.mp4` (94 seconds, 1920×1080). The CFO Bot scene is at 75–87 seconds, just before the end card: the finished tool list, the Approve click on cfo_edit_pages, then the page open in cfo.ai. Built in public links three posts from @rk625dev. Still needed: chapter timestamps and a YouTube upload.
+The home page plays `public/video/launch.mp4` (94 seconds, 1920×1080). The CFO Bot scene is at 75–87 seconds, just before the end card: the finished tool list, the Approve click on cfo_edit_pages, then the page open in cfo.ai. Built in public links four posts from @rk625dev. Still needed: chapter timestamps and a YouTube upload.
 Source: [RK-625/nlhack](https://github.com/RK-625/nlhack).

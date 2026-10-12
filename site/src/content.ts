@@ -319,7 +319,7 @@ export const comparison: {
 
 export type Post = { date: string; title: string; url: string };
 
-/** Posts from @rk625dev during the hackathon. The tags on the posts are #neatlogs and #neathacks. */
+/** Posts from @rk625dev during the hackathon. Tags used: #neatlogs, #neathacks, and #neathack. */
 export const posts: Post[] = [
   {
     date: "2026-10-10",
@@ -335,6 +335,11 @@ export const posts: Post[] = [
     date: "2026-10-11",
     title: "An agent team for startups, plus Neat Bot",
     url: "https://x.com/rk625dev/status/2109396835257467109",
+  },
+  {
+    date: "2026-10-12",
+    title: "Gearing up for the submission: Bot Company",
+    url: "https://x.com/rk625dev/status/2109636285593993557",
   },
 ];
 
@@ -459,7 +464,7 @@ export const evidence: Criterion[] = [
     short: "Built in public",
     criterion: "Built in public (posts tagged #neatHack)",
     badge: "Public",
-    proof: "Three posts on X from @rk625dev on 10 and 11 October 2026. The tags on the posts are #neatlogs and #neathacks. They lock the stack with neatlogs and Entire, show the work in progress, and describe the startup agent team with Neat Bot reading the other bots' traces and cost.",
+    proof: "Four posts on X from @rk625dev on 10–12 October 2026. The tags on the posts are #neatlogs, #neathacks, and #neathack. They lock the stack with neatlogs and Entire, show the work in progress, describe the startup agent team with Neat Bot, and name the submission Bot Company.",
     links: posts.map((post) => ({ href: post.url, label: post.title })),
   },
   {
