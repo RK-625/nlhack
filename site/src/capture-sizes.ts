@@ -148,4 +148,13 @@ export const captureSizes: Record<string, { width: number; height: number }> = {
   "45-cfo-disconnected-fresh-scenarios.png": {"width": 3024, "height": 1738},
   "46-cfo-disconnected-fresh-cash-hiring.png": {"width": 3024, "height": 1728},
   "47-cfo-disconnected-fresh-actions.png": {"width": 3024, "height": 1734},
+  "48-github-assignment-answer.png": {"width": 3024, "height": 1734},
+  "49-research-crustdata-start.png": {"width": 3024, "height": 1730},
+  "50-research-refined-search.png": {"width": 3024, "height": 1732},
+  "51-research-company-answer.png": {"width": 3018, "height": 1738},
+  "52-research-sources-limits.png": {"width": 3024, "height": 1738},
+  "53-research-usage.png": {"width": 3024, "height": 1740},
+  "54-github-usage.png": {"width": 3024, "height": 1732},
+  "55-github-neatlogs-completed.png": {"width": 3024, "height": 1732},
+  "56-research-neatlogs-completed.png": {"width": 3024, "height": 1726},
 };

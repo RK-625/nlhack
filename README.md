@@ -82,3 +82,5 @@ The look and feel is inspired by Grok bot, and the UI was built with help from l
 ## Judge evidence
 
 See [JUDGE.md](JUDGE.md) for the live judge site, the CFO disconnected/connected workflow comparison and screenshot provenance.
+
+Specialist execution evidence: [GitHub and Research task completion, cost, tokens and trace captures](https://bot-company.onrender.com/judges/#execution). Original captures 48–56 and measurement limits are indexed in the evidence folder.

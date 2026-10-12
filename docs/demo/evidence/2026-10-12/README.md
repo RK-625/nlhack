@@ -236,3 +236,30 @@ Screenshots 40–42 preserve the earlier disconnected run that reused an existin
 | [45-cfo-disconnected-fresh-scenarios.png](45-cfo-disconnected-fresh-scenarios.png) | Local scenario assumptions |
 | [46-cfo-disconnected-fresh-cash-hiring.png](46-cfo-disconnected-fresh-cash-hiring.png) | Local cash flow / hiring |
 | [47-cfo-disconnected-fresh-actions.png](47-cfo-disconnected-fresh-actions.png) | Actions / limitations / erroneous burn claim |
+
+## Specialist execution and usage: GitHub and Research
+
+User-supplied captures 48–56 preserve two direct specialist runs on 12 October 2026. They are separate from the Northwind before/after benchmark and the CFO comparison. They demonstrate returned answers, search refinement, execution visibility and rounded usage accounting; they do not establish a general reliability rate or independently validate every answer claim.
+
+GitHub Bot reports six assigned issues (three open, three closed), checks the assignee filter after noting semantic search can include authored issues, and describes the window as recently updated rather than newly assigned. The answer explicitly leaves PR attribution unverified. App groups show 4 tools / 6.8s, then 1 tool / 1.4s. The usage popover displays estimated and neatlogs values of $0.012 / 98k tokens, with $0.25 / 300k caps. The dashboard capture shows Request completed, 19.5s, eight displayed steps and four LLM spans. Those steps are not eight tool calls; tool spans are not separately shown.
+
+Research Bot starts with named Crustdata company/web search tools, reports irrelevant initial company results, refines the search and enriches company profiles. Its answer includes citations and limitations. App tool groups show 2 / 8.4s, 4 / 31s and 2 / 1s. The usage popover displays estimated and neatlogs values of $0.0063 / 36k tokens, with $0.25 / 300k caps. The dashboard capture shows Request completed, 55.0s, eight displayed steps and four LLM spans. Company funding/headcount/trend claims remain captured agent output, not independently verified facts.
+
+User-supplied trace references (project access may be required):
+
+- [87076f45034abc2541cc7c93b381052d](https://app.neatlogs.com/traces/87076f45034abc2541cc7c93b381052d?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
+- [16f68f56484261784e446ec67d793d19](https://app.neatlogs.com/traces/16f68f56484261784e446ec67d793d19?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
+
+Both URLs opened the neatlogs sign-in screen in the review browser. Their individual mapping to the two screenshot runs is not independently verified, so the site lists them together without assigning IDs to metric rows. The dashboard and app evidence is from the supplied screenshots; no fresh API trace export was obtained. Cost and token values are rounded display values, not provider invoices. All nine PNGs are unmodified attachment copies.
+
+| File | Evidence |
+|---|---|
+| [48-github-assignment-answer.png](48-github-assignment-answer.png) | GitHub answer and assignment check |
+| [49-research-crustdata-start.png](49-research-crustdata-start.png) | Crustdata tool activity |
+| [50-research-refined-search.png](50-research-refined-search.png) | Refined search and enrichment |
+| [51-research-company-answer.png](51-research-company-answer.png) | Research answer |
+| [52-research-sources-limits.png](52-research-sources-limits.png) | Sources and research limitations |
+| [53-research-usage.png](53-research-usage.png) | Research usage popover |
+| [54-github-usage.png](54-github-usage.png) | GitHub usage popover |
+| [55-github-neatlogs-completed.png](55-github-neatlogs-completed.png) | GitHub completed dashboard trace |
+| [56-research-neatlogs-completed.png](56-research-neatlogs-completed.png) | Research completed dashboard trace |

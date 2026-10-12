@@ -292,6 +292,7 @@ function PoweredBy() {
             <p className="mt-2 text-xs text-muted-fg">{p.caption}</p>
             <p className="mt-4 text-sm">
               <ExtLink href={p.link}>{p.linkLabel}</ExtLink>
+              {p.id === "neatlogs" && <a href="/judges/#execution" className="mt-3 block text-link underline underline-offset-4">See GitHub and Research execution costs and tokens →</a>}
             </p>
           </article>
         ))}

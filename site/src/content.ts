@@ -415,6 +415,19 @@ export type ProcessStep = {
   text: string;
 };
 
+export const executionRuns = [
+  {
+    name: "GitHub Bot", cost: "$0.012", tokens: "~98k", duration: "19.5s", spans: "4 LLM spans · 8 displayed steps",
+    summary: "Checks assignment before answering", detail: "The answer reports six issues, then explains that assignee filtering removed authored-only matches. It uses recent updates as the time window and leaves PR attribution unverified.",
+    shots: [shot("48-github-assignment-answer.png", "GitHub Bot returns six issues and explains its assignee check, updated-date window and attribution limits."), shot("54-github-usage.png", "GitHub app usage: estimated $0.012 / 98k tokens matches the rounded neatlogs values shown beside it; caps are $0.25 / 300k."), shot("55-github-neatlogs-completed.png", "GitHub neatlogs dashboard: Request completed, 19.5s, eight displayed steps and four LLM spans; output matches the captured answer.")],
+  },
+  {
+    name: "Research Bot", cost: "$0.0063", tokens: "~36k", duration: "55.0s", spans: "4 LLM spans · 8 displayed steps",
+    summary: "Refines weak results before answering", detail: "Named Crustdata searches return weak initial matches. The bot narrows its search, enriches profiles and returns a cited answer with limits on dates and ranking methodology. The captured market claims are not independently verified.",
+    shots: [shot("49-research-crustdata-start.png", "Research begins with named Crustdata company search and web search tools."), shot("50-research-refined-search.png", "The bot reports irrelevant initial matches and switches to targeted search, profile enrichment and web coverage."), shot("51-research-company-answer.png", "Research returns a company-focused answer with citations. Numerical market claims are captured output, not independently verified."), shot("52-research-sources-limits.png", "The answer states research scope, source limitations and point-in-time data caveats."), shot("53-research-usage.png", "Research app usage: estimated $0.0063 / 36k tokens matches the rounded neatlogs values shown beside it; caps are $0.25 / 300k."), shot("56-research-neatlogs-completed.png", "Research neatlogs dashboard: Request completed, 55.0s, eight displayed steps and four LLM spans; the final answer is visible.")],
+  },
+];
+
 export const evidence: Criterion[] = [
   {
     id: "improved",
@@ -473,6 +486,16 @@ export const evidence: Criterion[] = [
       { href: proofFile("25-entire-checkpoints-key-commits.txt"), label: "Six key checkpoints" },
       { href: proofFile("26-entire-checkpoint-trailers-and-refs.txt"), label: "Trailers and refs" },
     ],
+  },
+  {
+    id: "execution", short: "Execution and usage", criterion: "Specialist task completion with visible cost, tokens and traces", badge: "Screenshots",
+    proof: "Two direct specialist runs show how the bots check or refine their work, return answers and expose per-turn usage. Original app captures are paired with neatlogs dashboard captures. These are examples of observable execution, separate from the Northwind improvement benchmark.",
+    steps: [
+      { status: "passed", title: "Answers returned; requests completed", text: "GitHub Bot checks the **assignee filter** before returning its issue list. Research Bot **refines irrelevant search results** before returning a cited answer. Both supplied dashboards show **Request completed** and the final output." },
+      { status: "recorded", title: "Usage visible in the app and dashboard", text: "The app shows **$0.012 / ~98k tokens** for GitHub and **$0.0063 / ~36k tokens** for Research. Rounded app estimates and neatlogs values agree in each popover. Both are below the displayed **$0.25 / 300k** per-message caps. Dashboard durations are **19.5s** and **55.0s**; tool-group durations are not end-to-end run times." },
+      { status: "check", title: "What these two runs establish", text: "These captures show completion, visible checking/refinement and usage accounting, not a general reliability rate or proof that every answer claim is correct. Eight dashboard steps are **not eight tool calls**. The two supplied trace links require project access; their individual mapping to these screenshot runs was not independently verified." },
+    ],
+    links: [{ href: traceUrl("87076f45034abc2541cc7c93b381052d"), label: "Supplied trace 87076f45…" }, { href: traceUrl("16f68f56484261784e446ec67d793d19"), label: "Supplied trace 16f68f56…" }, { href: `${proofBase}/README.md`, label: "Capture provenance and measurement notes" }],
   },
   {
     id: "cfo",
