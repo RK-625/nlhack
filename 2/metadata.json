@@ -1,0 +1,66 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QYVN7H9HKWNBK8FPC9FY06",
+  "session_id": "01a12fe9-d9cb-72a2-b7fc-64309f043e97",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T11:45:40.880579Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "a9eb7d7648c5",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 84866,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1052544,
+    "output_tokens": 8002,
+    "api_call_count": 14
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 3528,
+      "user_lines_removed": 352,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "site/src/components/avatar.tsx": 76,
+        "site/src/components/cards.tsx": 213,
+        "site/src/components/chrome.tsx": 3,
+        "site/src/components/ui.tsx": 2,
+        "site/src/content.ts": 171,
+        "site/src/pages/Home.tsx": 80,
+        "site/src/styles.css": 3,
+        "video/.gitignore": 3,
+        "video/STORYBOARD.md": 3,
+        "video/public/vo/manifest.json": 145,
+        "video/src/components/Chip.tsx": 164,
+        "video/src/components/Cursor.tsx": 125,
+        "video/src/components/Headline.tsx": 61,
+        "video/src/components/Mascot.tsx": 11,
+        "video/src/components/UICard.tsx": 288,
+        "video/src/lib/expressions.ts": 8,
+        "video/src/lib/usage-format.ts": 28,
+        "video/src/scenes/Scene03Team.tsx": 412,
+        "video/src/scenes/Scene04RealWork.tsx": 294,
+        "video/src/timeline.ts": 4,
+        "video/tts/.gitignore": 2,
+        "video/tts/generate.mjs": 316,
+        "video/tts/package-lock.json": 1101,
+        "video/tts/package.json": 15
+      },
+      "user_removed_per_file": {
+        "site/src/components/cards.tsx": 104,
+        "site/src/components/chrome.tsx": 2,
+        "site/src/components/ui.tsx": 40,
+        "site/src/content.ts": 144,
+        "site/src/pages/Home.tsx": 50,
+        "video/STORYBOARD.md": 6,
+        "video/src/components/Mascot.tsx": 4,
+        "video/src/timeline.ts": 2
+      }
+    }
+  ]
+}
