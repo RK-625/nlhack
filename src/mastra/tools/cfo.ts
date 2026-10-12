@@ -2,6 +2,7 @@ import type { RequestContext } from "@mastra/core/request-context";
 import { createTool } from "@mastra/core/tools";
 import { MCPClient, type RequireToolApprovalContext } from "@mastra/mcp";
 import { z } from "zod";
+import { createCfoMcpFetch } from "../../cfo/mcp-fetch";
 import { CFO_MCP_URL, cfoConfigError, getCfoAccessToken, getCfoStatus } from "../../cfo/oauth";
 import { WORKSPACE_USER_KEY } from "../workspace";
 
@@ -49,9 +50,9 @@ function requestUserId(requestContext: RequestContext | undefined): string | und
 }
 
 type McpTools = Awaited<ReturnType<MCPClient["listTools"]>>;
-type ClientEntry = { token: string; client: MCPClient; tools?: Promise<McpTools> };
+type ClientEntry = { client: MCPClient; tools?: Promise<McpTools> };
 
-/** One MCPClient per user, keyed by user id and rebuilt when that user's access token changes. */
+/** One MCPClient per user; its transport resolves the current token for every request. */
 const clients = new Map<string, ClientEntry>();
 
 function dropClient(userId: string, entry: ClientEntry): void {
@@ -59,18 +60,16 @@ function dropClient(userId: string, entry: ClientEntry): void {
   void entry.client.disconnect().catch(() => {});
 }
 
-function clientFor(userId: string, token: string): ClientEntry {
+function clientFor(userId: string): ClientEntry {
   const existing = clients.get(userId);
-  if (existing?.token === token) return existing;
-  if (existing) dropClient(userId, existing);
+  if (existing) return existing;
   const entry: ClientEntry = {
-    token,
     client: new MCPClient({
       id: `cfo:${userId}`,
       servers: {
         cfo: {
           url: new URL(CFO_MCP_URL),
-          requestInit: { headers: { Authorization: `Bearer ${token}` } },
+          fetch: createCfoMcpFetch(() => getCfoAccessToken(userId)),
           // Refuse to follow redirects/requests to any other host with the token attached.
           allowedHosts: ["api.cfo.ai"],
           // cfo.ai sends server instructions; keep them out of the system prompt.
@@ -128,7 +127,7 @@ export async function getCfoTools({ requestContext }: { requestContext?: Request
     if (stale) dropClient(userId, stale);
     return base;
   }
-  const entry = clientFor(userId, token);
+  const entry = clientFor(userId);
   if (!entry.tools) {
     // listTools() reports a failed server as an empty result instead of throwing.
     const pending = entry.client.listTools();
