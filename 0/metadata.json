@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QNHZBBACCMDZGYF6S8TQ80",
+  "session_id": "01a12f3f-fde6-75e2-b63f-23c8f91f7b07",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T09:02:11.529295Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/demo/build-evidence.mjs",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/northwind-cap-escalation.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "dacab850c474",
+  "checkpoint_transcript_start": 482,
+  "transcript_lines_at_start": 482,
+  "compact_transcript_start": 53,
+  "token_usage": {
+    "input_tokens": 228852,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1800960,
+    "output_tokens": 7103,
+    "api_call_count": 12
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T09:02:11.321238Z",
+    "agent_lines": 101,
+    "agent_removed": 3,
+    "human_added": 34,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 135,
+    "total_lines_changed": 138,
+    "agent_percentage": 75.36231884057972,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
