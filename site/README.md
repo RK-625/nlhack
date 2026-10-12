@@ -19,5 +19,5 @@ The judges page presents the seven criteria as separate sections with inline
 screenshots. Entire uses saved CLI output; built-in-public awaits post links.
 Home uses the app avatar shapes, usage popover, approval and cap-card layouts.
 
-The home page plays `public/video/launch.mp4` (94 seconds, 1920×1080). The CFO Bot scene is at 75–87 seconds, just before the end card: the finished tool list, the Approve click on cfo_edit_pages, then the page open in cfo.ai. Built in public links four posts from @rk625dev. Still needed: chapter timestamps and a YouTube upload.
+The home page plays `public/video/launch.mp4` (160 seconds / 2:40, 1920×1080, 30 fps). The 24-second opener demonstrates missing trace history, uncapped spend and duplicate retries in a labelled illustrative workflow. Primary Bot, Research, GitHub and CFO demonstrations follow, then Neat Bot role-aware investigation, measured results and Entire. The video URL is versioned to refresh browser caches. The MP4 is optimized for streaming with its metadata at the beginning. Built in public links four posts from @rk625dev. A YouTube upload remains optional.
 Source: [RK-625/nlhack](https://github.com/RK-625/nlhack).

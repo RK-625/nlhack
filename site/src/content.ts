@@ -214,7 +214,7 @@ export const capCardExample = {
 
 export const demo = {
   /** Local launch film. A YouTube id can replace this later. */
-  src: "/video/launch.mp4",
+  src: "/video/launch.mp4?v=20261012-160s",
   youtubeId: todo("TODO: YouTube video id") as Maybe<string>,
   /** Chapters for the judges page. `start` is seconds into the video. */
   chapters: [
@@ -366,7 +366,7 @@ export const posts: Post[] = [
     title: "Gearing up for the submission: Bot Company",
     text: "#neatlogs #neathack @neatlogs @EntireHQ @simranrambles\nGearing up for the submission\nProject name Bot Company\ninspired from grokbot",
     url: "https://x.com/rk625dev/status/2109636285593993557",
-    video: "/video/launch.mp4",
+    video: "/video/launch.mp4?v=20261012-160s",
   },
 ];
 
