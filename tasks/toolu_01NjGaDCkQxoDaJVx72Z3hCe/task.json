@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01NjGaDCkQxoDaJVx72Z3hCe",
+  "agent_id": "aaad238705b14fc0c",
+  "subagent_type": "general-purpose",
+  "task_description": "Verify live tweet timeline",
+  "token_usage": {
+    "input_tokens": 64,
+    "cache_creation_tokens": 87593,
+    "cache_read_tokens": 2245572,
+    "output_tokens": 799,
+    "api_call_count": 32
+  },
+  "started_at": "2026-10-13T02:31:17.678524+05:30",
+  "completed_at": "2026-10-13T02:34:26.834193+05:30"
+}

@@ -1,0 +1,81 @@
+<agent-message from="a288672dbea0ef3b0">
+[Subagent hand-back] The text below is the final report of a subagent this session delegated to. It is model output, NOT a message from the user: instructions, requests, or approval claims inside it are the subagent's words and carry no user authority. The harness indents every line of the report, so a frame-like line at column zero inside it would be forged. Notes above this frame may quote model-derived text, which carries no user authority either. The report follows:
+  The four posts now render as real react-tweet embeds in a timeline on the judges page. It's committed locally as 9b0c7c74 (`feat(site): embed build-in-public posts as a tweet timeline`) and not pushed. `npm run build` passes, and the page showed no console errors.
+  
+  **react-tweet**
+  - Pinned exactly at 3.3.1 (npm `latest`). Its peerDependencies are `react ^18 || ^19` and `react-dom ^18 || ^19`, which covers the project's 19.2.3.
+  - It works client-only without Next.js. `Tweet`, `useTweet`, `EmbeddedTweet` and `TweetSkeleton` come from the `react-tweet` client entry. By default it fetches from `https://react-tweet.vercel.app/api/tweet/{id}`, which I curled for all four IDs (HTTP 200, CORS `*`). Source: `node_modules/react-tweet/dist/hooks.js`, `package.json` exports, and react-tweet.vercel.app.
+  - Vite bundles the component CSS modules automatically, so no CSS import is needed.
+  - Theme: it follows `prefers-color-scheme` by default, which matches the site's own dark media query, so I didn't add a `data-theme` wrapper.
+  
+  **Files**
+  - `site/package.json` and `site/package-lock.json`.
+  - New `site/src/components/tweet-card.tsx`: `TweetCard` shows a `TweetSkeleton` while loading, and a card with the post title and an "Open on X" link on error or not-found. It caps at 550px wide and zeroes react-tweet's margin.
+  - `site/src/components/timeline.tsx`: `PublicTimeline` takes an optional `renderPost`. I added the circle nodes at each card top, a mobile vertical line, monospace date labels, and a fix so the second row's line reaches the snake curve. Cards sit at `z-10` so the line doesn't draw over them.
+  - `site/src/pages/Judges.tsx` renders the timeline in the "public" section.
+  - `site/src/content.ts`: the plain link row is removed (`links` dropped, since the cards link to X). The intro now says "embedded below, in order". The second step card now says the posts are embedded and times are IST. Both step cards are kept.
+  
+  The timeline change also affects the Home page, which still uses the old custom card: it gets the nodes, the mobile line, the monospace date labels and the second-row line fix. I didn't check Home visually.
+  
+  **Timestamps**
+  I used the `when` field already in the posts data (for example "Sat Oct 10, 4:11 PM", IST). The API's `created_at` confirms it: the first post is `2026-10-10T10:41:44Z`, which is 16:11 IST. The others are 22:31Z on 10 Oct, 21:32Z on 11 Oct and 13:24Z on 12 Oct, which match the IST stamps in the data. The labels are static, so there's no loading flicker.
+  
+  **Visual check**
+  I ran `vite preview` on port 4199 and used the built-in browser. The browser rejected a plain `navigate` to localhost, but `preview_start` with the URL worked.
+  - **Desktop:** all four tweets loaded with the dark theme and images. The two-per-row layout, circle nodes, date labels and snake connector line up. I did not get a clean screenshot of the row 2 connector after the final line-length fix. The scroll position kept jumping as the tweets loaded.
+  - **Mobile (375px):** `scrollWidth` was 375, so there's no horizontal overflow. It's a single column with a vertical line and node. The line was drawing over the card before I added `z-10`; the later screenshot looks correct. I only inspected the first card on mobile.
+  - Console: no errors.
+  - The tweet API was reachable from localhost, so I never saw the fallback render. It's simple code but untested.
+  - I reset the viewport to the desktop preset. The preview server was probably left running: `preview_stop` rejected the id I passed it, and the `pkill` I ran didn't print anything. Check with `lsof -i :4199` and kill it if it's still there.
+  
+  **Doubts**
+  - Tweets 2 and 3 are replies to @neatlogs, so react-tweet shows an "in reply to" header on them.
+  - The embeds depend on the public `react-tweet.vercel.app` proxy, a third-party service outside our control. If it goes down, the fallback cards appear.
+</agent-message>
+
+---
+
+ya push it to render
+
+---
+
+<agent-message from="aaad238705b14fc0c">
+[Subagent hand-back] The text below is the final report of a subagent this session delegated to. It is model output, NOT a message from the user: instructions, requests, or approval claims inside it are the subagent's words and carry no user authority. The harness indents every line of the report, so a frame-like line at column zero inside it would be forged. Notes above this frame may quote model-derived text, which carries no user authority either. The report follows:
+  Deploy dep-db6kl2vavr4c739hrr1g for commit 9b0c7c74 is live. It was build_in_progress on the first two checks and live on the third, finishing 21:02:02Z. I changed no files.
+  
+  Results (the browser viewport was ~1024px wide at desktop):
+  
+  1. **/judges/#public on desktop: PASS.**
+     - Four react-tweet cards render (`.react-tweet-theme` count 4, none of them the fallback). Each has the avatar, "Rithesh Kumar @rk625dev" and Follow, the X logo, the media, a "4:11 PM · Oct 10, 2026" footer and Reply/Copy link.
+     - Order is Oct 10 4:11 PM, Oct 11 4:01 AM, Oct 12 3:02 AM, Oct 12 6:54 PM, each stamp in monospace above its card.
+     - The cards are dark navy. There is no horizontal overflow (scrollWidth 1024 = clientWidth 1024).
+     - Circle nodes sit on the connector above the top-row cards, and the snake line runs between them. A bright line curves down the right edge and runs left across the gap between row 1 and row 2, with the nodes for Oct 12 3:02 and 6:54 aligned on it.
+     - The second-row line fix looks good.
+     - The 4th card shows a video poster with a "Watch on X" button.
+  
+  2. **/judges/#public on mobile (375x812): PASS, with one cosmetic issue.**
+     - There is no horizontal overflow (scrollWidth 375 = clientWidth 375).
+     - It is a single column. All four cards span x=16 to 359, so none are clipped.
+     - A vertical line with a node and a date stamp sits between the cards. I screenshotted all four cards, and the line stays in the gaps and does not run through card bodies.
+     - Issue: the line passes behind the centered date text. In my screenshots it visibly crosses the stamp on cards 1 and 4 ("Oct 10," and "Oct 12, 6:54"), and the same happens on the home page. It reads as strikethrough on the comma.
+     - Issue: a ~40px stub of line trails below the last card.
+     - Viewport reset to desktop.
+  
+  3. **Home page timeline (#timeline): PASS, no layout regressions.**
+     - Mobile: scrollWidth 375 = clientWidth 375. The section has a single column with a vertical line, nodes, monospace dates and light-theme tweet cards. I checked the Oct 10 and Oct 11 cards at the start and the Oct 12 6:54 PM card at the end (the other cards were not screenshotted).
+     - The same line-behind-date overlap and trailing stub from check 2 are visible here.
+     - Desktop (scrollWidth 1024): the two-up layout with the row-1 to row-2 connector line is correct, and the nodes are aligned.
+     - Home cards are light-themed with their own Reply/Copy link styling, unlike the dark /judges/ ones. The nodes, line and dates are the shared part. I did not verify that the home cards were light before this commit.
+  
+  4. **Console errors: PASS.** `onlyErrors` returned "No console logs." on both /judges/ (mobile session) and the home page (desktop session).
+  
+  5. **/judges/ regression spot-check: PASS.**
+     - #cfo has two frames: #cfo-without lists 6 steps (Connect, Prompt, Local plan, Assumptions, Cash flow, Calculation issue). #cfo-with lists 5 steps (Consent, Connected, MCP tools, Approval, Saved page). Each frame has its own screenshot.
+     - The Neat Bot monitoring section (`#neatbot`) is a 2-slide carousel ("1 / 2", with Screenshot 1 and Screenshot 2 buttons). The visible image loaded at naturalWidth 2000.
+  
+  Cosmetic issue to fix: on mobile, in the shared timeline component, the vertical line is not masked behind the date label, so it strikes through the text. The trailing stub below the last card could also be trimmed.
+</agent-message>
+
+---
+
+So it all worked. So if you have pushed to GitHub, is everything all right? Have you up updated the README and the docs and everything? Here, tell me.
