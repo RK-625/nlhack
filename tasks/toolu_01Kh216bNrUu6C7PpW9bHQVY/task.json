@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01Kh216bNrUu6C7PpW9bHQVY",
+  "agent_id": "a77858dbbd22674b0",
+  "subagent_type": "general-purpose",
+  "task_description": "Research auth and persistence options",
+  "token_usage": {
+    "input_tokens": 50,
+    "cache_creation_tokens": 201909,
+    "cache_read_tokens": 3262919,
+    "output_tokens": 617,
+    "api_call_count": 25
+  },
+  "started_at": "2026-10-11T11:32:06.425269+05:30",
+  "completed_at": "2026-10-11T11:35:54.12722+05:30"
+}

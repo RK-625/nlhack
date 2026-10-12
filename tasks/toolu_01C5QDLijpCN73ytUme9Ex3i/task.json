@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01C5QDLijpCN73ytUme9Ex3i",
+  "agent_id": "a553e5369e5761f9d",
+  "subagent_type": "Explore",
+  "task_description": "Map codebase architecture",
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 75482,
+    "cache_read_tokens": 199345,
+    "output_tokens": 75,
+    "api_call_count": 5
+  },
+  "started_at": "2026-10-11T11:32:06.436476+05:30",
+  "completed_at": "2026-10-11T11:32:47.166708+05:30"
+}
