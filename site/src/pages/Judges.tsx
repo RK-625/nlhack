@@ -1,5 +1,7 @@
 import { ExecutionProof } from "../components/execution-proof";
 import { CfoProof } from "../components/cfo-proof";
+import { PublicTimeline } from "../components/timeline";
+import { TweetCard } from "../components/tweet-card";
 import { ArrowDown } from "lucide-react";
 import { Footer, Nav } from "../components/chrome";
 import { GitHubLink } from "../components/github";
@@ -16,6 +18,7 @@ import {
   isTodo,
   knownLimits,
   partners,
+  posts,
   proofBase,
   proofReport,
   repoFacts,
@@ -164,6 +167,7 @@ function CriterionSection({ item }: { item: Criterion }) {
       {item.steps && <ProcessSteps steps={item.steps} />}
       {item.id === "entire" && <EntireCheckpoint />}
       {item.id === "commits" && <CommitHistory />}
+      {item.id === "public" && <PublicTimeline posts={posts} renderPost={(post) => <TweetCard post={post} />} />}
       {item.shots && <Gallery name={titles[item.id] ?? item.short} shots={item.shots} />}
       {item.links && (
         <p className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">

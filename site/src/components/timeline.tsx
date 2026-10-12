@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { Post } from "../content";
 
 const author = {
@@ -101,14 +101,14 @@ function PostCard({ post }: { post: Post }) {
 }
 
 /** Two-up public posts with a path, in the shape of a build-in-public timeline. */
-export function PublicTimeline({ posts }: { posts: Post[] }) {
+export function PublicTimeline({ posts, renderPost }: { posts: Post[]; renderPost?: (post: Post) => ReactNode }) {
   const rows: Post[][] = [];
   for (let i = 0; i < posts.length; i += 2) rows.push(posts.slice(i, i + 2));
   return (
     <div className="mx-auto max-w-5xl">
       {rows.map((row, rowIndex) => (
         <div key={row[0].url} className="relative pb-8 md:pb-10">
-          <div aria-hidden className={`pointer-events-none absolute left-[18%] top-[5px] hidden border-t-2 border-[#3b82f6] md:block ${rowIndex < rows.length - 1 ? "right-[10%]" : "right-[18%]"}`} />
+          <div aria-hidden className={`pointer-events-none absolute left-[18%] top-[5px] hidden border-t-2 border-[#3b82f6] md:block ${rowIndex < rows.length - 1 || rowIndex > 0 ? "right-[10%]" : "right-[18%]"}`} />
           {rowIndex < rows.length - 1 && (
             <div
               aria-hidden
@@ -118,8 +118,10 @@ export function PublicTimeline({ posts }: { posts: Post[] }) {
           <ol className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
             {row.map((post) => (
               <li key={post.url} className="relative pt-6">
-                <p className="mb-3 text-center text-sm text-muted-fg">{post.when}</p>
-                <PostCard post={post} />
+                <span aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-[calc(100%+2rem)] w-0.5 -translate-x-1/2 bg-[#3b82f6]/40 md:hidden" />
+                <span aria-hidden className="absolute left-1/2 top-0 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-[#3b82f6] bg-background" />
+                <p className="relative z-10 mx-auto mb-3 w-fit bg-background px-2 text-center font-mono text-sm text-muted-fg">{post.when}</p>
+                <div className="relative z-10">{renderPost ? renderPost(post) : <PostCard post={post} />}</div>
               </li>
             ))}
           </ol>

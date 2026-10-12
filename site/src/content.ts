@@ -553,12 +553,11 @@ export const evidence: Criterion[] = [
     short: "Built in public",
     criterion: "Built in public (posts tagged #neatHack)",
     badge: "Public",
-    proof: "We shared the build as it happened, from choosing the stack to posting the Bot Company submission. The four original posts are linked below.",
+    proof: "We shared the build as it happened, from choosing the stack to posting the Bot Company submission. The four original posts are embedded below, in order.",
     steps: [
       { status: "recorded", title: "Follow the build from 10 to 12 October", text: "The posts from **@rk625dev** show the neatlogs and Entire setup, work in progress, the startup agent team, and the submission film." },
-      { status: "passed", title: "Open the original posts", text: "All **four posts** have direct X links. Their actual tags are **#neatlogs, #neathacks, and #neathack**; the submission post includes #neathack." },
+      { status: "passed", title: "Open the original posts", text: "All **four posts** are embedded below and link to X. Their actual tags are **#neatlogs, #neathacks, and #neathack**; the submission post includes #neathack. Times are IST." },
     ],
-    links: posts.map((post) => ({ href: post.url, label: post.title })),
   },
   {
     id: "commits",
