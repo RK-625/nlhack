@@ -1,0 +1,103 @@
+{
+  "recordedDate": "2026-10-12",
+  "source": "Saved Claude benchmark SSE streams and elapsed times; costs are app estimates, not newly fetched dashboard totals.",
+  "caps": {
+    "costCapUsd": 0.25,
+    "tokenCap": 300000
+  },
+  "model": "deepseek/deepseek-flash",
+  "runs": [
+    {
+      "label": "before-1",
+      "costUsd": 0.035506,
+      "tokens": 179824,
+      "steps": 11,
+      "capped": false,
+      "reason": null,
+      "traceId": "9c271217bee6a0c3301b2fe97ed63223",
+      "elapsedSeconds": 109.7,
+      "cfoFileReads": 7,
+      "cfoReplyCharacters": 7452
+    },
+    {
+      "label": "before-2",
+      "costUsd": 0.058957,
+      "tokens": 323923,
+      "steps": 20,
+      "capped": true,
+      "reason": "tokens",
+      "traceId": "0ce0e491e0e1bdc3cf89d00ca4dfb65d",
+      "elapsedSeconds": 208.2,
+      "cfoFileReads": 10,
+      "cfoReplyCharacters": 8341
+    },
+    {
+      "label": "before-3",
+      "costUsd": 0.051896,
+      "tokens": 264577,
+      "steps": 15,
+      "capped": false,
+      "reason": null,
+      "traceId": "b5f467846bd849ddbdeabff0ba4c7837",
+      "elapsedSeconds": 179.3,
+      "cfoFileReads": 12,
+      "cfoReplyCharacters": 10196
+    },
+    {
+      "label": "after-1",
+      "costUsd": 0.031566,
+      "tokens": 160968,
+      "steps": 12,
+      "capped": false,
+      "reason": null,
+      "traceId": "af34fd5b5156a22e441921fbf1db7602",
+      "elapsedSeconds": 99.9,
+      "cfoFileReads": 4,
+      "cfoReplyCharacters": 2108
+    },
+    {
+      "label": "after-2",
+      "costUsd": 0.049858,
+      "tokens": 237208,
+      "steps": 16,
+      "capped": false,
+      "reason": null,
+      "traceId": "b0392391b4829a49a483b6c101ee336b",
+      "elapsedSeconds": 194,
+      "cfoFileReads": 0,
+      "cfoReplyCharacters": 2004
+    },
+    {
+      "label": "after-3",
+      "costUsd": 0.06012,
+      "tokens": 295824,
+      "steps": 17,
+      "capped": false,
+      "reason": null,
+      "traceId": "b8f0e7ef2d32cad08767845934bf2849",
+      "elapsedSeconds": 228.3,
+      "cfoFileReads": 6,
+      "cfoReplyCharacters": 2618
+    }
+  ],
+  "totals": {
+    "before": {
+      "costUsd": 0.14635900000000002,
+      "tokens": 768324,
+      "steps": 46,
+      "elapsedSeconds": 497.2,
+      "cfoFileReads": 29,
+      "cfoReplyCharacters": 25989,
+      "completed": 2
+    },
+    "after": {
+      "costUsd": 0.141544,
+      "tokens": 694000,
+      "steps": 45,
+      "elapsedSeconds": 522.2,
+      "cfoFileReads": 10,
+      "cfoReplyCharacters": 6730,
+      "completed": 3
+    }
+  }
+}

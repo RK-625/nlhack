@@ -2,6 +2,8 @@
 
 Built for neatHack 2026 (neatlogs, Entire, cfo.ai).
 
+For the failure-and-recovery demo, see [Northwind cap escalation](docs/demo/northwind-cap-escalation.md), including the six-run benchmark, trace links, and answer checks.
+
 ## Problem Statement
 
 > **Build an AI agent that completes a substantial real-world task from start to finish, using neatlogs to trace and improve its runs and Entire to capture coding context and checkpoints, with other partner tools as optional enhancements.**
