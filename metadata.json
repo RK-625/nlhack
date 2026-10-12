@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4RCQ0XHVYNZZ3HCN82JZTBM",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 6,
+  "checkpoints_count": 7,
   "files_touched": [
     "web/src/lib/chat-approvals.test.ts",
     "web/src/lib/chat-approvals.ts",
@@ -30,13 +30,20 @@
       "compact_transcript": "/2/transcript.jsonl",
       "content_hash": "/2/content_hash.txt",
       "prompt": "/2/prompt.txt"
+    },
+    {
+      "metadata": "/3/metadata.json",
+      "transcript": "/3/full.jsonl",
+      "compact_transcript": "/3/transcript.jsonl",
+      "content_hash": "/3/content_hash.txt",
+      "prompt": "/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1319872,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 45565568,
-    "output_tokens": 138881,
-    "api_call_count": 347
+    "input_tokens": 1319992,
+    "cache_creation_tokens": 281254,
+    "cache_read_tokens": 52368773,
+    "output_tokens": 184165,
+    "api_call_count": 401
   }
 }

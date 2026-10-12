@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RCQ0XHVYNZZ3HCN82JZTBM",
+  "session_id": "72942800-b4f5-478e-8b9f-09def0db98cf",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T15:47:52.42275Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "web/src/lib/chats.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "ebda9588aa58",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 120,
+    "cache_creation_tokens": 281254,
+    "cache_read_tokens": 6803205,
+    "output_tokens": 45284,
+    "api_call_count": 54
+  },
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T15:47:52.231119Z",
+    "agent_lines": 27,
+    "agent_removed": 2,
+    "human_added": 39,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 66,
+    "total_lines_changed": 68,
+    "agent_percentage": 42.64705882352941,
+    "metric_version": 2
+  }
+}
