@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RCS2Y5950KAH93NGXA9KHG",
+  "session_id": "01a12fe9-d9cb-72a2-b7fc-64309f043e97",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T15:48:46.324965Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "video/.gitignore",
+    "video/package.json",
+    "video/scripts/render-stills.mjs",
+    "video/src/Main.tsx",
+    "video/src/Root.tsx",
+    "video/src/audio/Soundtrack.tsx",
+    "video/src/components/BlurInText.tsx",
+    "video/src/components/ScenePlaceholder.tsx",
+    "video/src/data/evidence.ts",
+    "video/src/scenes/Scene04RealWork.tsx",
+    "video/src/scenes/Scene05Guardrails.tsx",
+    "video/src/scenes/Scene08Diagnosis.tsx",
+    "video/src/scenes/Scene09Measured.tsx",
+    "video/src/scenes/Scene10Checkpoints.tsx",
+    "video/src/scenes/Scene11EndCard.tsx",
+    "video/src/timeline.ts"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.1-sol",
+  "turn_id": "ca798cad9c90",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 744443,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 19558912,
+    "output_tokens": 75388,
+    "api_call_count": 162
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T15:48:45.129426Z",
+    "agent_lines": 790,
+    "agent_removed": 53,
+    "human_added": 1618,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2408,
+    "total_lines_changed": 2465,
+    "agent_percentage": 34.198782961460445,
+    "metric_version": 2
+  }
+}
