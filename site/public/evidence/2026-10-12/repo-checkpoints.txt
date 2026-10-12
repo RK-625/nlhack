@@ -1,9 +1,9 @@
 Bot Company repository evidence snapshot
 As of: 2026-10-12
 Repository: RK-625/nlhack (private; source access required)
-Snapshot: 24b0a60d5093c948eab49a1602540a039a4aa88f
-Commits: 92
-Commits with Entire-Checkpoint trailers: 75
+Snapshot: e01aee1f6ece270ce53427f18df3dc687c021b21
+Commits: 101
+Commits with Entire-Checkpoint trailers: 84
 Date range: 2026-10-10 to 2026-10-12
 
 Exported from local git history. Trailers demonstrate recorded checkpoint IDs; this export does not include Entire session contents.
@@ -450,3 +450,48 @@ Commit: 24b0a60d5093c948eab49a1602540a039a4aa88f
 Date: 2026-10-12T14:32:03+05:30
 Subject: docs(demo): preserve titled Northwind proof screenshots
 Entire-Checkpoint: 01M4QNHZBBACCMDZGYF6S8TQ80
+
+Commit: 901a91b733e90a033593837aa5e15e805955e8b1
+Date: 2026-10-12T14:38:42+05:30
+Subject: feat(site): publish verified Northwind evidence and recovery results
+Entire-Checkpoint: 01M4QNY4J9JTKCP4VQVSAR814X
+
+Commit: 17253b7cf110287041c8b7f30abaede9a3a9e768
+Date: 2026-10-12T15:15:01+05:30
+Subject: docs(demo): add Neat Bot diagnosis and comparison evidence
+Entire-Checkpoint: 01M4QR0N66HWCTMG2FQE0NRKMA
+
+Commit: f162e5183e43bc944148474b435bd466e321da51
+Date: 2026-10-12T15:19:39+05:30
+Subject: fix(web): stop single tilde rendering as strikethrough
+Entire-Checkpoint: 01M4QR94CNVKS23A630X1FAPD3
+
+Commit: b77e3bec70f3f68909fc45ffdd800b9f5a873313
+Date: 2026-10-12T15:19:41+05:30
+Subject: docs(demo): drop duplicate 03 screenshot from evidence
+Entire-Checkpoint: 01M4QR96BQVZC4R040RHGPFDTH
+
+Commit: ba2d641c9908a3d34f171287100ed2d71babb059
+Date: 2026-10-12T15:58:50+05:30
+Subject: docs(demo): add live cap and Approve run with Neatlogs dashboard captures
+Entire-Checkpoint: 01M4QTGWDQR1HEDJA4YCHFS5P8
+
+Commit: cce3a7a2e15ecc3f89681761e2ca838d1ae9cee7
+Date: 2026-10-12T16:03:22+05:30
+Subject: docs(demo): add Entire checkpoint walkthrough for the Northwind fix
+Entire-Checkpoint: 01M4QTS67DGT91JTM6B5QCH3KS
+
+Commit: 3d988cdbf705bb580d349cc67dab8d217478bda5
+Date: 2026-10-12T16:25:14+05:30
+Subject: docs(demo): add cfo.ai connect and CFO Bot hiring-plan evidence
+Entire-Checkpoint: 01M4QW16ZY7V8F042M4Z2S60J1
+
+Commit: bfb5b7f5c444bbb6b52d62d7b6d7b1ba84815f7c
+Date: 2026-10-12T16:29:13+05:30
+Subject: feat(web): use Neatlogs logo as the Neat Bot avatar
+Entire-Checkpoint: 01M4QW8H1AXVKGZZ27QWYBHFCV
+
+Commit: e01aee1f6ece270ce53427f18df3dc687c021b21
+Date: 2026-10-12T16:32:30+05:30
+Subject: fix(web): show spinning working ring on image avatars
+Entire-Checkpoint: 01M4QWEGMX5HDFM5E7B546BG9F

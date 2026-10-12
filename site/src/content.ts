@@ -20,6 +20,11 @@ export const proofReport = `${proofBase}/northwind-verified-evidence.html`;
 export const traceUrl = (id: string) =>
   `https://app.neatlogs.com/traces/${id}?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3`;
 
+/** Full-size PNG capture in the evidence folder (opened in the lightbox / on click). */
+export const proofFile = (name: string) => `${proofBase}/${name}`;
+/** Lightweight JPEG preview generated with `sips` (max 1200px wide, quality 70). */
+export const proofThumb = (name: string) => `${proofBase}/thumbs/${name.replace(/\.png$/, ".jpg")}`;
+
 /* ------------------------------------------------------------------ site */
 
 export const site = {
@@ -30,7 +35,7 @@ export const site = {
     "Bot Company is a multi-agent company copilot built on Mastra. A Primary Bot delegates to specialists for research, finance, GitHub and observability. Every write waits for your approval, every turn has a cost cap, and every run is traced with neatlogs.",
   /** Public URL of this site, used for OG tags. */
   url: "https://bot-company.onrender.com" as Maybe<string>,
-  repoUrl: todo("TODO: public repo link") as Maybe<string>,
+  repoUrl: todo("Repo is private for now; public link when it opens") as Maybe<string>,
   credits:
     "Inspired by Grok bot. The UI was built with help from looking at Grok's UI and design.",
 };
@@ -150,7 +155,7 @@ export const caps = {
   tokenCap: 300_000,
 };
 
-/** Completed After 2 benchmark run; app estimate and saved neatlogs export. */
+/** Real completed run: Northwind After 2 benchmark (app estimate) and its finalized neatlogs export. */
 export const receiptExample = {
   estCostUsd: 0.049858 as Maybe<number>,
   estTokens: "237,208" as Maybe<string>,
@@ -170,7 +175,7 @@ export const demo = {
     { label: "GitHub Bot write pauses for Approve/Deny", start: todo("TODO: timestamp") as Maybe<number> },
     { label: "Cost cap stops a turn", start: todo("TODO: timestamp") as Maybe<number> },
     { label: "Neat Bot reads the trace of that turn", start: todo("TODO: timestamp") as Maybe<number> },
-    { label: "CFO Bot with live cfo.ai data", start: todo("TODO: timestamp") as Maybe<number> },
+    { label: "CFO Bot connects cfo.ai and plans hiring costs", start: todo("TODO: timestamp") as Maybe<number> },
   ],
 };
 
@@ -182,7 +187,11 @@ export type Partner = {
   claims: string[];
   link: Maybe<string>;
   linkLabel: string;
-  screenshot: Maybe<string>;
+  /** Full-size capture; the preview uses its thumbnail. */
+  screenshot?: Maybe<string>;
+  /** Short real text capture, shown when there is no screenshot. */
+  excerpt?: string;
+  caption: string;
 };
 
 export const partners: Partner[] = [
@@ -190,37 +199,54 @@ export const partners: Partner[] = [
     id: "neatlogs",
     name: "neatlogs",
     claims: [
-      "Every agent is wrapped with neatlogs/mastra: model steps, tool calls, timing, tokens and errors.",
-      "Each reply shows neatlogs' own cost and tokens beside our estimate, linked to the trace.",
-      "Neat Bot reads traces through the neatlogs MCP server; employees see only their own.",
+      "Every agent is wrapped with neatlogs/mastra: model steps, timing, tokens and errors per run.",
+      "A capped turn finalizes as ERROR (\"Execution Failed\"); its approved continuation is a separate trace that finishes normally.",
+      "Each reply shows neatlogs' cost beside our estimate. On the live run both read $0.034 for 167k tokens.",
+      "Neat Bot reads traces through the neatlogs MCP server and diagnosed the failed Northwind run from its trace alone.",
     ],
-    link: `${proofReport}#traces`,
-    linkLabel: "Read the saved trace report",
-    screenshot: `${proofBase}/05-northwind-neatlogs-trace-results-report.png`,
+    link: "/judges/#screenshots",
+    linkLabel: "See the dashboard captures",
+    screenshot: proofFile("17-neatlogs-capped-trace-error.png"),
+    caption: "Real dashboard, 12 Oct 2026: the capped turn ends with error after 14 steps, 4m 27.5s.",
   },
   {
     id: "entire",
     name: "Entire",
     claims: [
-      "Entire checkpoints were enabled on day one of the hackathon.",
-      "Commits carry an Entire-Checkpoint trailer that links code to its coding session.",
-      "A dated commit and checkpoint index is published here; source access is needed to inspect private code and sessions.",
+      "Entire was enabled on day one; git hooks add an Entire-Checkpoint trailer to commits made in a recorded coding session.",
+      `84 of 101 commits carry a trailer (as of 2026-10-12). 79 Entire refs are pushed to the private origin.`,
+      "Checkpoint 01M4QMYG… for the fix commit 8887e9ba records the agent (Codex), the one file changed and its verification of the benchmark.",
     ],
-    link: `${proofBase}/repo-checkpoints.txt`,
-    linkLabel: "See checkpoints",
-    screenshot: todo("TODO: /img/entire-graph.png"),
+    link: proofFile("24-entire-checkpoint-8887e9ba.txt"),
+    linkLabel: "Read the 8887e9ba checkpoint",
+    excerpt: [
+      "$ entire checkpoint explain --short 8887e9ba",
+      "● Checkpoint 01M4QMYG0STA2ZQR90286XF297",
+      "  session  01a12f3f-fde6-75e2-b63f-23c8f91f7b07",
+      "  created  2026-10-12 08:51:30",
+      "  tokens   6041.7k",
+      "  commits  8887e9b fix(agents): reuse company facts in delegated briefs",
+      "",
+      "$ entire checkpoint tokens 01M4QMYG0STA2ZQR90286XF297",
+      "Agent:      Codex",
+      "Total:  6041.7k tokens",
+      "  Input: 226.3k | Cache read: 5796.6k | Cache write: 0 | Output: 18.8k | API calls: 45",
+    ].join("\n"),
+    caption: "Real CLI output (email redacted). The repo is private, so these text captures are the public record.",
   },
   {
     id: "cfo",
     name: "cfo.ai",
     claims: [
-      "Each user links their own cfo.ai account over OAuth with PKCE.",
-      "CFO Bot reads live workspace data; every edit tool waits for approval.",
-      "The business plan evidence will be added when its link or screenshots are supplied.",
+      "Each user links their own cfo.ai account over OAuth with PKCE; the WorkOS consent step completes end to end in the app.",
+      "CFO Bot can read live cfo.ai workspace data; every edit tool waits for approval.",
+      "The captured hiring-expense answer used local company files (9 file tool calls, no cfo.ai tool calls), so it does not show live cfo.ai data.",
+      "A Bot Company business plan built in cfo.ai is still to do.",
     ],
-    link: todo("TODO: cfo.ai business plan link"),
-    linkLabel: "Read the business plan",
-    screenshot: todo("TODO: /img/cfo-plan.png"),
+    link: "/judges/#screenshots",
+    linkLabel: "See the cfo.ai captures",
+    screenshot: proofFile("29-cfoai-connected.png"),
+    caption: "Real capture, 12 Oct 2026: back in the app after consent, with the \"cfo.ai connected.\" toast.",
   },
 ];
 
@@ -253,19 +279,22 @@ export const posts: Maybe<Post[]> = todo("TODO: built-in-public posts (date, tit
 
 /* ================================================================ judges */
 
+/** Recounted from `git log` at HEAD on 2026-10-12 (see repo-checkpoints.txt). */
 export const repoFacts = {
   asOf: "2026-10-12",
-  ref: "24b0a60d5093c948eab49a1602540a039a4aa88f",
-  commits: 92,
+  ref: "e01aee1f6ece270ce53427f18df3dc687c021b21",
+  commits: 101,
   firstCommit: "2026-10-10",
   lastCommit: "2026-10-12",
-  checkpointTrailers: 75,
+  perDay: "17 on 10 Oct, 45 on 11 Oct, 39 on 12 Oct",
+  checkpointTrailers: 84,
+  checkpointRefs: 79,
 };
 
 export const bigNumbers = [
-  { id: "neatlogs", value: "6" as Maybe<string>, label: "finalized traces in the saved evidence export" },
-  { id: "entire", value: String(repoFacts.checkpointTrailers) as Maybe<string>, label: `commits with an Entire checkpoint (as of ${repoFacts.asOf})` },
-  { id: "cfo", value: todo("TODO: cfo.ai figure, e.g. months of runway") as Maybe<string>, label: "from the cfo.ai business plan" },
+  { id: "neatlogs", value: "−26.8%" as Maybe<string>, label: "tokens on the fixed run's trace vs the failed one (323,923 → 237,208), which now succeeds" },
+  { id: "entire", value: String(repoFacts.checkpointTrailers) as Maybe<string>, label: `of ${repoFacts.commits} commits carry an Entire checkpoint (as of ${repoFacts.asOf})` },
+  { id: "cfo", value: "20.4 → 18.5" as Maybe<string>, label: "months of runway before and after 4 planned hires, from CFO Bot's hiring-expense plan (fictional Lumen Labs data)" },
 ];
 
 export type Badge = "In repo" | "Public" | "Screenshots" | "Report";
@@ -275,36 +304,42 @@ export const evidence: {
   badge: Badge;
   proof: Maybe<string>;
   link: Maybe<string>;
+  linkLabel?: string;
 }[] = [
   {
     criterion: "Agent improved (run before and after, with numbers)",
     badge: "Screenshots",
-    proof: "Three runs before and three after: CFO file reads 29 → 10, total tokens 768,324 → 694,000, estimated cost $0.146359 → $0.141544. No latency gain.",
-    link: `${proofReport}#benchmark`,
+    proof: "Same Northwind question before and after commit 8887e9ba. Paired traces: the failed run (0ce0e491…, $0.0590, 323,923 tokens, 20 LLM calls) became a successful one (b0392391…, $0.0499, 237,208 tokens, 16 LLM calls). Over three runs each: CFO file reads 29 → 10, completed within caps 2/3 → 3/3, cost −3.3%, no latency gain.",
+    link: proofFile("12-neatbot-compare-before-after.png"),
+    linkLabel: "Open the comparison",
   },
   {
     criterion: "Used neatlogs (trace links or screenshots)",
-    badge: "Report",
-    proof: "Six finalized traces exported through neatlogs MCP, including capped runs and approved/denied continuations. Dashboard links may require project access.",
-    link: `${proofReport}#traces`,
+    badge: "Screenshots",
+    proof: "Real dashboard captures of a live turn: the capped trace bbb32395… ends in ERROR (\"Execution Failed\", 14 steps); its approved continuation 3c670bab… finishes normally (11 steps). Six more traces were exported via the neatlogs MCP. Trace links need project sign-in, so screenshots stand in.",
+    link: proofFile("17-neatlogs-capped-trace-error.png"),
+    linkLabel: "Open the dashboard capture",
   },
   {
     criterion: "Used Entire (checkpoints or entire-graph output)",
     badge: "In repo",
-    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer at snapshot ${repoFacts.ref.slice(0, 8)}. Export includes IDs; private coding sessions require access.`,
-    link: `${proofBase}/repo-checkpoints.txt`,
+    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer; ${repoFacts.checkpointRefs} Entire refs are on the private origin. The fix commit 8887e9ba maps to checkpoint 01M4QMYG…: Codex session, 6041.7k tokens, 45 API calls, one file changed. Published as CLI text captures.`,
+    link: proofFile("24-entire-checkpoint-8887e9ba.txt"),
+    linkLabel: "Read the checkpoint",
   },
   {
     criterion: "Used cfo.ai (business plan covering pricing, costs, revenue, runway)",
-    badge: "Report",
-    proof: todo("TODO: business plan summary"),
-    link: todo("TODO: cfo.ai business plan link"),
+    badge: "Screenshots",
+    proof: "Partly. The per-user cfo.ai OAuth connection completes end to end. CFO Bot then planned hiring costs: 4 open roles, about $447k loaded annual payroll, burn $295,061 → about $326k a month, runway 20.4 → about 18.5 months. That answer came from local fictional Lumen Labs files, not cfo.ai tools. The Bot Company business plan is still to do.",
+    link: proofFile("32-cfoai-hiring-expense-answer.png"),
+    linkLabel: "Open the answer",
   },
   {
     criterion: "Agent recovers from failures (a run where an action failed, then what it did next)",
     badge: "Screenshots",
-    proof: "A $0.02-capped run stopped at $0.020240. Approve resumed with a separate $0.04 budget and completed at $0.031799. Deny returned a one-step, tool-free answer marked Incomplete.",
-    link: `${proofReport}#recovery`,
+    proof: "Live turn on the public app: it hit the 300k token cap at 302k ($0.026 of $0.03). The card offered a one-time extension; after Approve the continuation finished within its $0.05 / 454k budget, using $0.034 and 167k tokens. In the Northwind check, Approve finished at $0.031799 and Deny returned a tool-free answer marked Incomplete.",
+    link: proofFile("21-live-cap-card-approved-continuing.png"),
+    linkLabel: "Open the cap card",
   },
   {
     criterion: "Built in public (posts tagged #neatHack)",
@@ -315,66 +350,168 @@ export const evidence: {
   {
     criterion: "Code written during the hackathon (dated commits)",
     badge: "In repo",
-    proof: `${repoFacts.commits} commits, all dated ${repoFacts.firstCommit} to ${repoFacts.lastCommit}.`,
-    link: `${proofBase}/repo-checkpoints.txt`,
+    proof: `${repoFacts.commits} commits, all dated ${repoFacts.firstCommit} to ${repoFacts.lastCommit} (${repoFacts.perDay}). The first commit is the README with the hackathon problem statement.`,
+    link: proofFile("repo-checkpoints.txt"),
+    linkLabel: "Open the commit list",
   },
 ];
 
 export const improvement = {
-  summary: "The Primary Bot now passes sourced company facts to specialists, which read only missing evidence and return compact briefs. Six Northwind runs on fictional local company data, recorded 12 October 2026; totals below compare three runs in each group." as Maybe<string>,
-  note: "CFO file reads fell 65.5% (29 → 10) and reply characters fell 74.1% (25,989 → 6,730). Completion within the default caps was 2/3 → 3/3. Total elapsed time increased from 497.2 to 522.2 seconds. This small observational sample does not establish guaranteed savings or fully correct answers; After 1's dashboard trace was unavailable.",
+  summary: "The fix (commit 8887e9ba) makes the Primary Bot pass the figures and file paths it has already read, so specialists stop re-reading them and reply with a compact brief. Six Northwind runs on fictional local company data, recorded 12 October 2026: three before, three after." as Maybe<string>,
+  note: "Totals over three runs each. CFO reply characters fell 74.1% (25,989 → 6,730). The failed before run and the matching after run were compared trace by trace with Neat Bot: 15.4% cheaper, 26.8% fewer tokens, 20 → 16 LLM calls. Total elapsed time rose from 497.2 to 522.2 seconds. A small sample, so no guaranteed savings; the CFO file-read count comes from app logs because neatlogs recorded no tool spans.",
   link: `${proofReport}#benchmark`,
   stats: [
-    { label: "Total estimated cost (3 runs)", v1: "$0.146359" as Maybe<string>, v2: "$0.141544" as Maybe<string> },
+    { label: "CFO file reads (3 runs)", v1: "29" as Maybe<string>, v2: "10" as Maybe<string> },
+    { label: "Finished within caps", v1: "2 of 3" as Maybe<string>, v2: "3 of 3" as Maybe<string> },
     { label: "Total tokens (3 runs)", v1: "768,324" as Maybe<string>, v2: "694,000" as Maybe<string> },
-    { label: "Total model steps (3 runs)", v1: "46" as Maybe<string>, v2: "45" as Maybe<string> },
+    { label: "Total estimated cost (3 runs)", v1: "$0.146359" as Maybe<string>, v2: "$0.141544" as Maybe<string> },
   ],
 };
 
-export const incident: { stage: string; text: Maybe<string>; link?: Maybe<string> }[] = [
-  { stage: "Failure", text: "The Northwind task exceeded its $0.02 cap. A separate empty-reply case also lost its pending extension card on reload.", link: `${proofReport}#recovery` },
-  { stage: "Recorded in neatlogs", text: "The capped root finalized as ERROR: $0.020240, 85,720 tokens, 6 model calls. The saved export records an Execution Failed detection.", link: traceUrl("444a39d312df7bd2220b074992c306f9") },
-  { stage: "Recovery and fix", text: "Approve grants a one-time $0.04 continuation. A fallback message now preserves the pending card after reload when no assistant text exists (commit 6a90ff93).", link: `${proofBase}/northwind-cap-escalation.md` },
-  { stage: "Verified", text: "Approved continuation finalized as SUCCESS at $0.031799 over 10 model calls. Deny produced one tool-free step at $0.003093. Execution passed; secondary answer errors remain documented.", link: `${proofReport}#recovery` },
+export const incident: { stage: string; text: Maybe<string>; link?: Maybe<string>; linkLabel?: string }[] = [
+  {
+    stage: "Failure",
+    text: "Northwind run before-2 hit the 300k token cap: 323,923 tokens, $0.05896, 20 LLM calls, 208 s, no final answer.",
+    link: proofFile("08-neatbot-diagnosis-verdict.png"),
+    linkLabel: "Verdict",
+  },
+  {
+    stage: "Detected in neatlogs",
+    text: "Trace 0ce0e491… finalized as ERROR with an Execution Failed detection. Given only that trace, Neat Bot found duplicated file reads and prompt tokens at 89.5% of the total, and ranked fixes.",
+    link: proofFile("11-neatbot-diagnosis-ranked-fixes.png"),
+    linkLabel: "Ranked fixes",
+  },
+  {
+    stage: "Fix",
+    text: "Commit 8887e9ba changes one file, src/mastra/prompts/index.ts: the Primary Bot passes the figures and file paths it already read, and specialists reply with a compact brief instead of re-reading. Its Entire checkpoint records the session.",
+    link: proofFile("24-entire-checkpoint-8887e9ba.txt"),
+    linkLabel: "Checkpoint",
+  },
+  {
+    stage: "Verified",
+    text: "The same question, after the fix: trace b0392391… succeeded at $0.0499, 237,208 tokens, 16 LLM calls. All three after runs finished within the caps.",
+    link: proofFile("12-neatbot-compare-before-after.png"),
+    linkLabel: "Before vs after",
+  },
 ];
 
-export type Shot = { src: string; alt: string };
+export type Shot = { src: string; thumb: string; alt: string };
+const shot = (file: string, alt: string): Shot => ({ src: proofFile(file), thumb: proofThumb(file), alt });
 
-/** Files go in site/public/img/. */
-export const galleries: { id: string; name: string; shots: Maybe<Shot[]> }[] = [
-  { id: "app", name: "Actual app captures · Northwind budget flow", shots: [
-    { src: `${proofBase}/01-northwind-budget-extension-pending-desktop.png`, alt: "Pending budget extension — desktop app capture" },
-    { src: `${proofBase}/02-northwind-empty-reply-reload-mobile.png`, alt: "Empty reply survives reload — mobile app capture" },
-    { src: `${proofBase}/04-northwind-incomplete-answer-desktop.png`, alt: "Incomplete answer after denial — desktop app capture" },
-  ] },
-  { id: "neatlogs", name: "Saved evidence reports · rendered from JSON, not dashboard captures", shots: [
-    { src: `${proofBase}/05-northwind-neatlogs-trace-results-report.png`, alt: "Six finalized neatlogs trace exports — rendered report" },
-    { src: `${proofBase}/06-northwind-before-after-benchmark-report.png`, alt: "Three-before / three-after benchmark — rendered report" },
-    { src: `${proofBase}/07-northwind-approve-deny-verification-report.png`, alt: "Approve / Deny verification — rendered report" },
-  ] },
-  { id: "entire", name: "Entire", shots: todo("TODO: Entire screenshots") },
-  { id: "cfo", name: "cfo.ai", shots: todo("TODO: cfo.ai screenshots") },
+export type Gallery = {
+  id: string;
+  name: string;
+  note?: string;
+  shots?: Maybe<Shot[]>;
+  files?: { href: string; label: string }[];
+};
+
+export const galleries: Gallery[] = [
+  {
+    id: "recovery",
+    name: "Live run · cap → Approve → continuation",
+    note: "Public app, 12 Oct 2026, 15:52 IST. Caps were $0.03 and 300k tokens. Not the Northwind question: the user asked about US expansion.",
+    shots: [
+      shot("19-live-us-expansion-question-running-cost-cap.png", "The question running: Research Bot and CFO Bot delegated, $0.017 / 138k used of $0.03 / 300k."),
+      shot("20-live-token-usage-approaching-cap.png", "Same turn at $0.024 and 254k tokens, still delegating."),
+      shot("15-live-capped-turn-usage-token-cap.png", "Stopped by the token cap: 302k / 300k while cost was $0.026 / $0.03."),
+      shot("21-live-cap-card-approved-continuing.png", "Cap card: \"Finishing needs about $0.05 more.\" Approved as a one-time extension."),
+      shot("22-live-approved-answer-us-situation-table.png", "The finished answer, with neatlogs' $0.034 / 167k beside the estimate. It says external research returned no sourced data."),
+      shot("23-live-approved-answer-recommendation-gaps.png", "Recommendation and a \"What I could not get\" section listing the missing evidence."),
+      shot("16-live-approved-answer-continuation-budget.png", "Continuation usage: $0.034 of $0.05 and 167k of 454k, matching neatlogs."),
+    ],
+  },
+  {
+    id: "neatlogs",
+    name: "neatlogs dashboard · the two traces of that turn",
+    note: "Real dashboard screenshots. The trace links need sign-in to the neatlogs project.",
+    shots: [
+      shot("17-neatlogs-capped-trace-error.png", "Capped trace: web.request ERROR, Execution Failed, 14 steps, 4m 27.5s. The CFO Bot span lasted 11 ms, blocked by the cap."),
+      shot("18-neatlogs-approved-continuation-trace.png", "Approved continuation: input names the capped trace and \"Decision: approved\"; 11 steps, 2m 11.3s, normal finish."),
+    ],
+  },
+  {
+    id: "neatbot",
+    name: "Neat Bot · diagnose → fix → verify",
+    note: "Captured after the fix. The diagnosis thread was given only the failed trace and no mention of the fix.",
+    shots: [
+      shot("08-neatbot-diagnosis-verdict.png", "Verdict: errored after 208.1 s with no final answer; 20 LLM calls, 323,923 tokens, $0.05896."),
+      shot("09-neatbot-diagnosis-cost-breakdown.png", "Where cost and time went: calls and LLM time per agent; specialists ran one after another."),
+      shot("10-neatbot-diagnosis-waste.png", "What looks wasteful: duplicated file reads, overlapping briefs, duplicate final generations."),
+      shot("11-neatbot-diagnosis-ranked-fixes.png", "Ranked changes. The shared fact sheet and short briefs match the fix; cutting fan-out and concurrency were not done."),
+      shot("12-neatbot-compare-before-after.png", "Before vs after: failed $0.0589567 / 323,923 tokens / 20 calls → succeeded $0.0498578 / 237,208 / 16."),
+      shot("13-neatbot-compare-budget-and-failure.png", "Which agent used the most time in each run, and the failing Sales Bot span in the before run."),
+      shot("14-neatbot-compare-what-changed.png", "The prompt change visible in span inputs: the CFO Bot is told not to re-read supplied figures."),
+    ],
+  },
+  {
+    id: "cfo",
+    name: "cfo.ai · connect, then a CFO Bot hiring-expense plan",
+    note: "12 Oct 2026, about 16:05–16:22 IST. The answer used local Lumen Labs files, not cfo.ai tools.",
+    shots: [
+      shot("27-cfoai-connect-banner.png", "CFO Bot before connecting, with the \"Connect your cfo.ai account\" banner."),
+      shot("28-cfoai-oauth-consent.png", "cfo.ai consent page: external MCP access, step 3 of 3, WorkOS handoff."),
+      shot("29-cfoai-connected.png", "Back in the app with the \"cfo.ai connected.\" toast."),
+      shot("30-cfoai-hiring-expense-question.png", "The question as typed: plan the expenses for the current hiring requirement."),
+      shot("31-cfoai-cfo-bot-working.png", "CFO Bot working: tool calls while it reads the company folder."),
+      shot("32-cfoai-hiring-expense-answer.png", "Answer: 4 open roles, about $447k loaded annual payroll, runway 20.4 → about 18.5 months."),
+      shot("33-cfoai-token-cap-approved.png", "Known issue: the token cap tripped at 349k after the answer was written, and Approve asked for about $0.38 more."),
+      shot("34-cfoai-continuation-sensitivity.png", "The near-duplicate continuation: comp, 2026 cash timing and runway sensitivity."),
+      shot("35-cfoai-continuation-actions.png", "End of the continuation: risks and recommended actions."),
+    ],
+  },
+  {
+    id: "northwind",
+    name: "Northwind budget flow · app captures",
+    note: "Isolated test server; a $0.02 cap forces the escalation.",
+    shots: [
+      shot("01-northwind-budget-extension-pending-desktop.png", "A $0.02-capped run offers Approve/Deny with a one-time $0.04 extension."),
+      shot("02-northwind-empty-reply-reload-mobile.png", "Mobile, 390 × 844: a capped run with no reply text keeps its card after reload (the bug fixed in 6a90ff93)."),
+      shot("04-northwind-incomplete-answer-desktop.png", "After Deny: the answer explains what evidence is missing."),
+    ],
+  },
+  {
+    id: "reports",
+    name: "Saved evidence reports · rendered from JSON, not dashboard captures",
+    shots: [
+      shot("05-northwind-neatlogs-trace-results-report.png", "Six finalized neatlogs MCP trace exports: capped roots ERROR, continuations SUCCESS."),
+      shot("06-northwind-before-after-benchmark-report.png", "Three-before / three-after benchmark totals."),
+      shot("07-northwind-approve-deny-verification-report.png", "Approve / Deny costs, reload persistence and restored caps."),
+    ],
+  },
+  {
+    id: "entire",
+    name: "Entire · CLI text captures",
+    note: "There are no Entire screenshots; these are saved CLI outputs with the email and local paths redacted.",
+    files: [
+      { href: proofFile("24-entire-checkpoint-8887e9ba.txt"), label: "Checkpoint for the fix commit 8887e9ba (assistant turns and token usage)" },
+      { href: proofFile("25-entire-checkpoints-key-commits.txt"), label: "Short explain for the six key Northwind commits" },
+      { href: proofFile("26-entire-checkpoint-trailers-and-refs.txt"), label: "Commit trailers and matching checkpoint refs on origin" },
+      { href: proofFile("repo-checkpoints.txt"), label: `Every commit with its date and checkpoint ID (${repoFacts.commits} commits)` },
+    ],
+  },
 ];
 
-/** Honest limits, taken from the README. */
+/** Honest limits, taken from the evidence README and the repo README. */
 export const knownLimits = [
-  "Northwind is fictional and uses local company files. This evidence does not establish live cfo.ai data access or a real credit being issued.",
-  "Saved runs verify execution and persistence. Some answers contain documented calculation and date errors; completion does not establish full answer correctness.",
-  "Deny declines the budget extension but still allows one tool-free model call, which incurs a small cost.",
+  "Northwind and Lumen Labs are fictional and use local company files. Nothing here shows a real customer credit being issued.",
+  "cfo.ai: the connection works, but the captured answer made 9 local file tool calls and no cfo.ai calls. The Bot Company business plan in cfo.ai is not done yet.",
+  "When the token cap trips after the answer is already written, Approve is still offered and produces a near-duplicate answer. Not fixed yet.",
+  "The improvement is three runs against three: cost fell only 3.3% and total time rose about 5%. Cutting the fan-out and running specialists concurrently are future work.",
+  "neatlogs recorded no tool spans, so the 29 → 10 CFO file-read count comes from app logs. The cap reason is not exposed through the neatlogs MCP, so Neat Bot blamed an empty Sales Bot delegation instead of the cap.",
+  "Some generated answers contain documented calculation and date errors, and their figures were not independently checked. This is not financial advice.",
+  "The public guest server runs with Crustdata disabled, so Research Bot returned no sourced market data in the live run. The answer says so.",
+  "The repo and its Entire checkpoints are private. Three of the six key checkpoints record 0 tokens, and one transcript does not parse.",
   "Customer Success, Legal, HR, Marketing and Sales have no tools yet. They work only from what you tell them.",
-  "CFO Bot shows formulas and assumptions, but no calculation tool verifies its maths.",
-  "Caps use our own cost estimate, which is usually higher than neatlogs' figure because neatlogs counts cache hits.",
-  "When a cap is hit, tools already requested by the last step still run before the turn stops.",
-  "neatlogs' cost for a reply arrives a few seconds after the reply, and can take up to about 45 seconds.",
-  "There are no in-place file edit tools, no command execution and no search index.",
-  "The Mastra dev playground can set any request context, so it is for local use only.",
+  "Caps use our own cost estimate. Usage is checked after model steps, so the last step can overshoot the cap.",
 ];
 
 export const reproduce = [
-  { label: "Clone and enter the repo", cmd: "git clone https://github.com/RK-625/nlhack.git && cd nlhack" },
-  { label: "First and last commit dates", cmd: `git log ${repoFacts.ref} --reverse --format='%ad %s' --date=iso | sed -n '1p;$p'` },
-  { label: "Commits per day", cmd: `git log ${repoFacts.ref} --format=%ad --date=short | sort | uniq -c` },
-  { label: "Count Entire checkpoint trailers", cmd: `git log ${repoFacts.ref} --format=%B | grep -c '^Entire-Checkpoint:'` },
+  { label: "With repo access (private), from the repo root", cmd: `git checkout ${repoFacts.ref.slice(0, 8)}` },
+  { label: "First and last commit dates", cmd: `git log ${repoFacts.ref.slice(0, 8)} --reverse --format='%ad %s' --date=iso | sed -n '1p;$p'` },
+  { label: "Commits per day", cmd: `git log ${repoFacts.ref.slice(0, 8)} --format=%ad --date=short | sort | uniq -c` },
+  { label: "Count Entire checkpoint trailers", cmd: `git log ${repoFacts.ref.slice(0, 8)} --format=%B | grep -c '^Entire-Checkpoint:'` },
+  { label: "Inspect the fix commit's checkpoint", cmd: "entire checkpoint explain 8887e9ba --short" },
   { label: "Check the TypeScript", cmd: "npm ci && npm run typecheck" },
 ];
 

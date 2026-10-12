@@ -9,7 +9,9 @@ import {
   caps,
   comparison,
   demo,
+  isTodo,
   partners,
+  proofThumb,
   posts,
   receiptExample,
   site,
@@ -230,7 +232,7 @@ function PoweredBy() {
     >
       <div className="grid gap-10 md:grid-cols-3">
         {partners.map((p) => (
-          <article key={p.id} className="flex flex-col">
+          <article key={p.id} className="flex min-w-0 flex-col">
             <h3 className="text-xl font-semibold tracking-[-0.02em]">{p.name}</h3>
             <ul className="mt-4 flex-1 space-y-3 text-[15px] leading-relaxed text-muted-fg">
               {p.claims.map((c) => (
@@ -240,8 +242,18 @@ function PoweredBy() {
                 </li>
               ))}
             </ul>
-            <ShotFrame src={p.screenshot} alt={`${p.name} screenshot`} className="mt-6" />
-            {p.id === "neatlogs" && <p className="mt-2 text-xs text-muted-fg">Rendered from saved neatlogs MCP exports; not a dashboard screenshot.</p>}
+            {p.excerpt ? (
+              <pre className="mt-6 aspect-[16/10] overflow-auto rounded-xl border border-line bg-muted p-3 font-mono text-[11px] leading-relaxed">
+                <code>{p.excerpt}</code>
+              </pre>
+            ) : p.screenshot && !isTodo(p.screenshot) ? (
+              <a href={p.screenshot} target="_blank" rel="noreferrer" className="mt-6 block transition-opacity hover:opacity-90" aria-label={`Open full size: ${p.caption}`}>
+                <ShotFrame src={proofThumb(p.screenshot.split("/").pop() ?? "")} alt={p.caption} />
+              </a>
+            ) : (
+              <ShotFrame src={p.screenshot ?? { todo: `${p.name} screenshot` }} alt={`${p.name} screenshot`} className="mt-6" />
+            )}
+            <p className="mt-2 text-xs text-muted-fg">{p.caption}</p>
             <p className="mt-4 text-sm">
               <ExtLink href={p.link}>{p.linkLabel}</ExtLink>
             </p>

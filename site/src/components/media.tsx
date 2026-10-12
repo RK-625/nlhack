@@ -109,7 +109,7 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
               className="block w-full overflow-hidden rounded-xl transition-opacity hover:opacity-90"
               aria-label={`Enlarge: ${s.alt}`}
             >
-              <ShotFrame src={s.src} alt={s.alt} />
+              <ShotFrame src={s.thumb} alt={s.alt} />
             </button>
             <p className="mt-2 text-xs leading-relaxed text-muted-fg">{s.alt}</p>
           </li>
@@ -127,7 +127,12 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
         {open && (
           <figure className="pop relative">
             <img src={open.src} alt={open.alt} className="max-h-[86vh] w-auto rounded-xl" />
-            <figcaption className="mt-2 text-center text-sm text-white/80">{open.alt}</figcaption>
+            <figcaption className="mt-2 text-center text-sm text-white/80">
+              {open.alt}{" "}
+              <a href={open.src} target="_blank" rel="noreferrer" className="whitespace-nowrap underline underline-offset-4">
+                Open full size
+              </a>
+            </figcaption>
             <button
               type="button"
               onClick={() => setOpen(null)}

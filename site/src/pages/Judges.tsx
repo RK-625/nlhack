@@ -102,7 +102,7 @@ function Evidence() {
   return (
     <Section id="evidence" title="Evidence for the seven criteria." className="border-t border-line">
       <div className="mb-8 rounded-2xl border border-line bg-muted p-5 text-sm leading-relaxed">
-        <p>Preserved evidence from 12 October 2026. Four images are actual app captures; three are reports rendered from saved exports. Northwind uses fictional local company data.</p>
+        <p>Preserved evidence from 12 October 2026: 28 unedited captures of the app, the neatlogs dashboard and cfo.ai, three reports rendered from saved JSON exports (labelled as such), and three Entire CLI text captures. Northwind and Lumen Labs are fictional local company data. The repo is private, so nothing links to source.</p>
         <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
           <ExtLink href={proofReport}>Read the evidence report</ExtLink>
           <ExtLink href={`${proofBase}/README.md`}>Image titles and provenance</ExtLink>
@@ -122,7 +122,7 @@ function Evidence() {
             <div className="flex items-center gap-3 sm:flex-col sm:items-end">
               <BadgePill badge={e.badge} />
               <ExtLink href={e.link} className="text-sm">
-                Open proof
+                {e.linkLabel ?? "Open proof"}
               </ExtLink>
             </div>
           </li>
@@ -140,7 +140,7 @@ function Improved() {
       intro={<Show value={improvement.summary} />}
       className="border-t border-line"
     >
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         {improvement.stats.map((s) => (
           <div key={s.label} className="rounded-3xl border border-line bg-card p-6">
             <p className="text-sm font-medium">{s.label}</p>
@@ -162,14 +162,22 @@ function Improved() {
         ))}
       </div>
       <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-fg">{improvement.note}</p>
-      <p className="mt-3 text-sm"><ExtLink href={improvement.link}>Read the benchmark and source data</ExtLink></p>
+      <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        <ExtLink href={improvement.link}>Read the benchmark and source data</ExtLink>
+        <ExtLink href={`${proofBase}/northwind-benchmark.json`}>Raw benchmark JSON</ExtLink>
+      </p>
     </Section>
   );
 }
 
 function Incident() {
   return (
-    <Section id="incident" title="When a run failed, this is what happened next." className="border-t border-line">
+    <Section
+      id="incident"
+      title="When a run failed, this is what happened next."
+      intro="The Northwind run that failed, how neatlogs showed it, the commit that fixed it and the run that proved it. Neat Bot's diagnosis was captured after the fix, from the failed trace alone."
+      className="border-t border-line"
+    >
       <ol className="grid gap-4 md:grid-cols-4">
         {incident.map((s, i) => (
           <li key={s.stage} className="relative rounded-3xl border border-line bg-card p-6">
@@ -182,7 +190,7 @@ function Incident() {
             </p>
             {s.link && !isTodo(s.text) && (
               <p className="mt-3 text-sm">
-                <ExtLink href={s.link}>Open</ExtLink>
+                <ExtLink href={s.link}>{s.linkLabel ?? "Open"}</ExtLink>
               </p>
             )}
           </li>
@@ -194,12 +202,30 @@ function Incident() {
 
 function Screenshots() {
   return (
-    <Section id="screenshots" title="App screenshots and saved evidence reports." intro="Select an image to enlarge it. Reports are labeled separately from actual app captures." className="border-t border-line">
+    <Section
+      id="screenshots"
+      title="Screenshots, grouped by story."
+      intro="Select an image to enlarge it, then open the full-size PNG. Reports rendered from JSON are labelled separately from real captures."
+      className="border-t border-line"
+    >
       <div className="space-y-12">
         {galleries.map((g) => (
           <div key={g.id}>
-            <h3 className="mb-4 text-lg font-semibold">{g.name}</h3>
-            <Gallery name={g.name} shots={g.shots} />
+            <h3 className="text-lg font-semibold">{g.name}</h3>
+            {g.note && <p className="mt-1 max-w-3xl text-sm text-muted-fg">{g.note}</p>}
+            <div className="mt-4">
+              {g.files ? (
+                <ul className="grid gap-2 sm:grid-cols-2">
+                  {g.files.map((f) => (
+                    <li key={f.href} className="rounded-xl border border-line bg-card px-4 py-3 text-sm">
+                      <ExtLink href={f.href}>{f.label}</ExtLink>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Gallery name={g.name} shots={g.shots ?? []} />
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -266,7 +292,7 @@ function Limits() {
     <Section
       id="limits"
       title="What doesn't work yet."
-      intro="Taken from the repo README. We would rather you hear it from us."
+      intro="Taken from the evidence README and the repo README. We would rather you hear it from us."
       className="border-t border-line"
     >
       <ul className="grid gap-3 md:grid-cols-2">
@@ -288,8 +314,9 @@ function Reproduce() {
       title="Run the checks yourself."
       intro={
         <>
-          With repository access, check snapshot {repoFacts.ref.slice(0, 8)}. As of {repoFacts.asOf} it contains {repoFacts.commits} commits from{" "}
-          {repoFacts.firstCommit} to {repoFacts.lastCommit}, {repoFacts.checkpointTrailers} with an Entire checkpoint.
+          The repo is private, so these need repository access. Snapshot {repoFacts.ref.slice(0, 8)} ({repoFacts.asOf}) has {repoFacts.commits} commits from{" "}
+          {repoFacts.firstCommit} to {repoFacts.lastCommit} ({repoFacts.perDay}), {repoFacts.checkpointTrailers} with an Entire checkpoint. Without access, use the{" "}
+          <ExtLink href={`${proofBase}/repo-checkpoints.txt`}>exported commit list</ExtLink>.
         </>
       }
       className="border-t border-line"
