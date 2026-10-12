@@ -3,6 +3,7 @@ import { memory } from "../memory";
 import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { SALES_INSTRUCTIONS } from "../prompts";
+import { companyTools } from "../tools/company";
 
 export const salesAgent = wrapMastra(new Agent({
   id: "sales",
@@ -14,5 +15,7 @@ export const salesAgent = wrapMastra(new Agent({
   memory,
   // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
   ...turnCapProcessors,
+  // Shared read-only company knowledge folder (src/mastra/tools/company.ts).
+  tools: companyTools,
   defaultOptions: { maxSteps: 12 },
 }));

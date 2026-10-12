@@ -4,6 +4,7 @@ import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { CFO_INSTRUCTIONS } from "../prompts";
 import { getCfoTools } from "../tools/cfo";
+import { companyTools } from "../tools/company";
 
 /**
  * Chatted with directly in the web app, and delegated to by the Primary Bot. Uses the signed-in
@@ -21,6 +22,6 @@ export const cfoAgent = wrapMastra(new Agent({
   // Per-turn cost and token caps (src/usage), counted across delegated sub-agents too.
   ...turnCapProcessors,
   // Resolved per request: each user gets their own cfo.ai connection, or only the status tool.
-  tools: ({ requestContext }) => getCfoTools({ requestContext }),
+  tools: async ({ requestContext }) => ({ ...(await getCfoTools({ requestContext })), ...companyTools }),
   defaultOptions: { maxSteps: 12 },
 }));

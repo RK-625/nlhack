@@ -3,6 +3,7 @@ import { memory } from "../memory";
 import { turnCapProcessors } from "../../usage/turn-budget";
 import { wrapMastra } from "neatlogs/mastra";
 import { ASSISTANT_INSTRUCTIONS } from "../prompts";
+import { companyTools } from "../tools/company";
 import { marketResearcher } from "./market-researcher";
 import { cfoAgent } from "./cfo";
 import { githubAgent } from "./github";
@@ -28,6 +29,8 @@ export const assistant = wrapMastra(new Agent({
   // tool name and arguments), and approving or denying it resumes the sub-agent from there.
   // The keys match the registered agents so the web UI's "agent-<key>" labels resolve.
   agents: { marketResearcher, cfoAgent, githubAgent, neatlogsAgent, customerSuccessAgent, legalAgent, hrAgent, marketingAgent, salesAgent },
+  // Shared read-only company knowledge folder (src/mastra/tools/company.ts).
+  tools: companyTools,
   defaultOptions: {
     maxSteps: 6,
     delegation: {
