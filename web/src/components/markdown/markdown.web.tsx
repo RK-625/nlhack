@@ -457,7 +457,7 @@ export const ChatMarkdown = memo(function ChatMarkdown({
           <MarkdownTableSourceContext.Provider value={source}>
             <ReactMarkdown
               components={components}
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
               rehypePlugins={[preserveSkippedTableText]}
               skipHtml
               // MarkdownImage decides what an image source may do, so it receives the source as written.
