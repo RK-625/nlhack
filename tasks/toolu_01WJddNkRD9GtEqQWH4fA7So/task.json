@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01WJddNkRD9GtEqQWH4fA7So",
+  "agent_id": "a4436124cbbfd1f18",
+  "subagent_type": "Explore",
+  "task_description": "Assess Docker/hosting readiness",
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 58906,
+    "cache_read_tokens": 194939,
+    "output_tokens": 79,
+    "api_call_count": 5
+  },
+  "started_at": "2026-10-12T10:12:57.78969+05:30",
+  "completed_at": "2026-10-12T10:13:33.304578+05:30"
+}

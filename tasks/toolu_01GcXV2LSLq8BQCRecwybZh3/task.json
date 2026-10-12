@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01GcXV2LSLq8BQCRecwybZh3",
+  "agent_id": "a4c7f76c97297dc1b",
+  "subagent_type": "general-purpose",
+  "task_description": "Rebrand to Bot Company, trim notices",
+  "token_usage": {
+    "input_tokens": 8,
+    "cache_creation_tokens": 66724,
+    "cache_read_tokens": 182142,
+    "output_tokens": 46,
+    "api_call_count": 4
+  },
+  "started_at": "2026-10-12T11:46:55.995628+05:30",
+  "completed_at": "2026-10-12T11:47:32.205038+05:30"
+}

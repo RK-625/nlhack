@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01QPbG1xbTf27h8EFADgHRLj",
+  "agent_id": "a134b0d71c84bf4ff",
+  "subagent_type": "general-purpose",
+  "task_description": "Make seed script sync users",
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 78458,
+    "cache_read_tokens": 817703,
+    "output_tokens": 142,
+    "api_call_count": 13
+  },
+  "started_at": "2026-10-12T11:24:51.450142+05:30",
+  "completed_at": "2026-10-12T11:26:33.672618+05:30"
+}

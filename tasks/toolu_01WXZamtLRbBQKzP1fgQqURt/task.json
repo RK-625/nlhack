@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01WXZamtLRbBQKzP1fgQqURt",
+  "agent_id": "a294c9c36d5b72dd0",
+  "subagent_type": "general-purpose",
+  "task_description": "Search Gmail for neatHack emails",
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 131484,
+    "cache_read_tokens": 321554,
+    "output_tokens": 358,
+    "api_call_count": 5
+  },
+  "started_at": "2026-10-12T10:12:57.787487+05:30",
+  "completed_at": "2026-10-12T10:13:42.154832+05:30"
+}

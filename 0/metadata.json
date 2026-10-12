@@ -1,0 +1,212 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QCAJP370TNADQ0D42PED98",
+  "session_id": "b91df2cd-090e-405e-b518-70639290d90c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T06:20:46.449456Z",
+  "branch": "main",
+  "checkpoints_count": 28,
+  "save_step_count": 13,
+  "files_touched": [
+    "src/auth/seed.ts",
+    "web/LICENSE",
+    "web/LICENSE.rakazo"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "turn_id": "c29479477ff4",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 134,
+    "cache_creation_tokens": 193119,
+    "cache_read_tokens": 8569627,
+    "output_tokens": 47961,
+    "api_call_count": 63,
+    "subagent_tokens": {
+      "input_tokens": 62,
+      "cache_creation_tokens": 401880,
+      "cache_read_tokens": 1695639,
+      "output_tokens": 659,
+      "api_call_count": 31
+    }
+  },
+  "session_metrics": {
+    "turn_count": 28
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T06:20:46.29033Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 88,
+    "human_modified": 186,
+    "human_removed": 0,
+    "total_committed": 88,
+    "total_lines_changed": 274,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 49,
+      "user_lines_removed": 3,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".dockerignore": 11,
+        "Dockerfile": 16,
+        "docker-compose.yml": 19,
+        "package.json": 3
+      },
+      "user_removed_per_file": {
+        "package.json": 3
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 33,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 98,
+      "user_lines_removed": 8,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "README.md": 2,
+        "src/auth/seed.ts": 96
+      },
+      "user_removed_per_file": {
+        "src/auth/seed.ts": 8
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 99,
+      "agent_lines_removed": 8
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 99,
+      "agent_lines_removed": 8
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 99,
+      "agent_lines_removed": 8
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 99,
+      "agent_lines_removed": 8
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 99,
+      "agent_lines_removed": 8
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 219,
+      "user_lines_removed": 259,
+      "agent_lines_added": 100,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        "README.md": 7,
+        "package-lock.json": 2,
+        "package.json": 1,
+        "src/auth/index.ts": 1,
+        "src/cfo/register.ts": 1,
+        "src/mastra/workspace.ts": 2,
+        "src/telemetry.ts": 1,
+        "src/usage/turn-budget.ts": 1,
+        "web/LICENSE": 178,
+        "web/NOTICE": 7,
+        "web/index.html": 3,
+        "web/package-lock.json": 2,
+        "web/package.json": 1,
+        "web/src/App.tsx": 1,
+        "web/src/auth/LoginPage.tsx": 1,
+        "web/src/components/avatar/bot-avatar.tsx": 1,
+        "web/src/components/chat/ToolActivityDisclosure.tsx": 2,
+        "web/src/lib/sidebar.ts": 3,
+        "web/src/lib/tokens.ts": 1,
+        "web/src/shell/SidebarPanels.tsx": 1,
+        "web/src/styles.css": 1,
+        "web/src/styles/shadcn.css": 1
+      },
+      "user_removed_per_file": {
+        "README.md": 2,
+        "package-lock.json": 2,
+        "package.json": 2,
+        "src/auth/index.ts": 1,
+        "src/cfo/register.ts": 1,
+        "src/mastra/workspace.ts": 2,
+        "src/telemetry.ts": 1,
+        "src/usage/turn-budget.ts": 1,
+        "web/LICENSE.rakazo": 178,
+        "web/NOTICE": 51,
+        "web/index.html": 3,
+        "web/package-lock.json": 2,
+        "web/package.json": 1,
+        "web/src/App.tsx": 1,
+        "web/src/auth/LoginPage.tsx": 1,
+        "web/src/components/avatar/bot-avatar.tsx": 1,
+        "web/src/components/chat/ToolActivityDisclosure.tsx": 2,
+        "web/src/lib/sidebar.ts": 3,
+        "web/src/lib/tokens.ts": 1,
+        "web/src/shell/SidebarPanels.tsx": 1,
+        "web/src/styles.css": 1,
+        "web/src/styles/shadcn.css": 1
+      }
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 318,
+      "agent_lines_removed": 266
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 313,
+      "agent_lines_removed": 266
+    }
+  ]
+}
