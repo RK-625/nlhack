@@ -34,11 +34,12 @@ function Hero() {
             Built for {site.hackathon}
           </p>
           <h1 className="text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.045em] text-balance sm:text-6xl lg:text-[4.4rem]">
-            A company of AI agents that asks before it acts.
+            {site.tagline}
           </h1>
           <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-muted-fg text-pretty">
             Ask one bot. It hands the work to specialists for research, finance, GitHub and observability. Every
-            change waits for your approval, every turn has a spending cap, and every run is traced with neatlogs.
+            change waits for your approval, every turn has a spending cap, and every run is traced with{" "}
+            <strong className="font-bold text-fg">NEATLOGS</strong>.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Button href="#video" icon={<Play aria-hidden className="size-4 fill-current" />}>
