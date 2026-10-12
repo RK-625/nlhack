@@ -1,5 +1,6 @@
 import type { RequestContext } from "@mastra/core/request-context";
 import type { ProcessInputStepArgs, ProcessOutputStepArgs, Processor } from "@mastra/core/processors";
+import type { Continuation, EscalationOffer } from "../chat-escalation";
 import type { TurnCaps } from "./caps";
 import { estimateCostUsd } from "./pricing";
 
@@ -29,6 +30,12 @@ export type TurnUsage = {
   final: boolean;
   /** The turn's Neatlogs trace id (set by src/chat-api.ts on what it streams and saves). */
   traceId?: string;
+  /** Id of the agent whose model step went over the cap (a sub-agent when it was delegated work). */
+  trippedBy?: string | null;
+  /** On a capped turn's final usage: the offered one-time budget extension (src/chat-escalation.ts). */
+  escalation?: EscalationOffer;
+  /** On a turn run by deciding an escalation: which capped turn it continues, and the decision. */
+  continuation?: Continuation;
 };
 
 type StepUsage = { inputTokens?: number; outputTokens?: number; totalTokens?: number; cachedInputTokens?: number };
@@ -96,6 +103,7 @@ export class TurnBudget {
       capTokens: this.caps.tokenCap,
       capped: this.capped,
       reason: this.reason,
+      trippedBy: this.trippedBy?.agentId ?? null,
       final,
     };
   }
