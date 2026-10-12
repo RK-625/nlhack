@@ -1,6 +1,7 @@
 import { Chat } from "@ai-sdk/react";
-import { DefaultChatTransport, lastAssistantMessageIsCompleteWithApprovalResponses, type UIMessage } from "ai";
+import { DefaultChatTransport, isToolUIPart, type UIMessage } from "ai";
 import { handleUnauthorized, onSessionReset } from "@/lib/auth";
+import { restorePendingApprovals, shouldResumeToolApprovals } from "@/lib/chat-approvals";
 
 /**
  * One AI SDK `Chat` per agent, kept for the whole session. useChat({ chat }) renders whichever
@@ -56,8 +57,9 @@ export function getChat(agentKey: string): Chat<UIMessage> {
       },
     }),
     // Once every tool approval in the last reply is answered, send the decisions to resume the run.
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
+    sendAutomaticallyWhen: shouldResumeToolApprovals,
     onFinish: ({ isAbort, isError }) => {
+      if (!isAbort && !isError) void refreshPendingApprovals(agentKey, created);
       if (!isAbort && !isError && activeKey !== agentKey) {
         unread.add(agentKey);
         notify();
@@ -77,6 +79,29 @@ export function getChat(agentKey: string): Chat<UIMessage> {
 }
 
 const historyUrl = (agentKey: string) => `/api/chat/${encodeURIComponent(agentKey)}/history`;
+
+async function refreshPendingApprovals(agentKey: string, chat: Chat<UIMessage>) {
+  const message = chat.messages.at(-1);
+  if (!message?.parts.some((part) => isToolUIPart(part) && part.state === "input-available")) return;
+  const mine = epoch;
+  try {
+    const res = await fetch(historyUrl(agentKey));
+    if (mine !== epoch || chat.messages.at(-1) !== message || chat.status !== "ready") return;
+    if (res.status === 401) return handleUnauthorized();
+    if (!res.ok) throw new Error(`Couldn't restore pending approvals (${res.status}).`);
+    const data = (await res.json()) as { messages?: UIMessage[] };
+    if (mine !== epoch || chat.messages.at(-1) !== message || chat.status !== "ready") return;
+    const saved = data.messages?.find((item) => item.id === message.id);
+    if (!saved) return;
+    const restored = restorePendingApprovals(message, saved);
+    if (restored !== message) chat.messages = [...chat.messages.slice(0, -1), restored];
+  } catch (error) {
+    if (mine === epoch && chat.messages.at(-1) === message) {
+      historyErrors.set(agentKey, error instanceof Error ? error : new Error(String(error)));
+      notify();
+    }
+  }
+}
 
 /** Seeds the Chat from the saved thread. Resolves before anything can be sent (the composer waits on `loading`). */
 async function loadHistory(agentKey: string, chat: Chat<UIMessage>) {
