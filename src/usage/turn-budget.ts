@@ -18,6 +18,8 @@ export type TurnUsage = {
   tokens: number;
   inputTokens: number;
   outputTokens: number;
+  /** Input tokens served from the provider's prompt cache (part of inputTokens), when reported. */
+  cachedInputTokens?: number;
   steps: number;
   capCostUsd: number;
   capTokens: number;
@@ -29,12 +31,13 @@ export type TurnUsage = {
   traceId?: string;
 };
 
-type StepUsage = { inputTokens?: number; outputTokens?: number; totalTokens?: number };
+type StepUsage = { inputTokens?: number; outputTokens?: number; totalTokens?: number; cachedInputTokens?: number };
 
 /** Usage and caps of one chat turn: every model step of the agent and of any agent it delegates to. */
 export class TurnBudget {
   inputTokens = 0;
   outputTokens = 0;
+  cachedInputTokens = 0;
   costUsd = 0;
   steps = 0;
   reason: CapReason | null = null;
@@ -58,8 +61,10 @@ export class TurnBudget {
     // difference is counted as output so nothing goes uncounted.
     const output = Math.max(safeCount(usage?.outputTokens), safeCount(usage?.totalTokens) - input);
     this.inputTokens += input;
+    const cached = Math.min(safeCount(usage?.cachedInputTokens), input);
     this.outputTokens += output;
-    this.costUsd += estimateCostUsd(modelId, input, output);
+    this.cachedInputTokens += cached;
+    this.costUsd += estimateCostUsd(modelId, input, output, cached);
     this.steps += 1;
     if (!this.reason) {
       if (this.costUsd > this.caps.costCapUsd) this.reason = "cost";
@@ -74,6 +79,7 @@ export class TurnBudget {
       tokens: this.tokens,
       inputTokens: this.inputTokens,
       outputTokens: this.outputTokens,
+      cachedInputTokens: this.cachedInputTokens,
       steps: this.steps,
       capCostUsd: this.caps.costCapUsd,
       capTokens: this.caps.tokenCap,

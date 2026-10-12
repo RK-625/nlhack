@@ -10,6 +10,8 @@ export type TurnUsage = {
   tokens: number;
   inputTokens: number;
   outputTokens: number;
+  /** Input tokens served from the provider's prompt cache (part of inputTokens), when reported. */
+  cachedInputTokens?: number;
   steps: number;
   capCostUsd: number;
   capTokens: number;

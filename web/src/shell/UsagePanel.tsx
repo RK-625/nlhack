@@ -29,17 +29,19 @@ function UsageBar({
   cap,
   capped,
   format,
+  hint,
 }: {
   label: string;
   used: number;
   cap: number;
   capped: boolean;
   format: (value: number) => string;
+  hint?: string;
 }) {
   const level = usageLevel(used, cap, capped);
   const percent = Math.round(usageFraction(used, cap) * 100);
   return (
-    <div className="flex min-w-0 flex-1 flex-col gap-1">
+    <div className="flex min-w-0 flex-1 flex-col gap-1" title={hint}>
       <div className="flex items-baseline justify-between gap-2 text-[12.5px]">
         <span className="text-muted-foreground">{label}</span>
         <span className={cn("tabular-nums", level === "capped" ? "text-destructive" : "text-foreground/85")}>
@@ -136,6 +138,7 @@ export function UsagePanel({
           cap={current.tokenCap}
           capped={usage?.reason === "tokens"}
           format={formatTokens}
+          hint={usage?.cachedInputTokens ? `${formatTokens(usage.cachedInputTokens)} cached` : undefined}
         />
       </div>
       {usage && neatlogs ? <NeatlogsLine usage={usage} neatlogs={neatlogs} /> : null}
