@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01VPh627679bBMfy3jo78oKH",
+  "agent_id": "a54b72c731e986dd4",
+  "subagent_type": "general-purpose",
+  "task_description": "Prepare Entire checkpoint demo",
+  "token_usage": {
+    "input_tokens": 32,
+    "cache_creation_tokens": 59650,
+    "cache_read_tokens": 1162922,
+    "output_tokens": 1783,
+    "api_call_count": 16
+  },
+  "started_at": "2026-10-12T16:00:32.974322+05:30",
+  "completed_at": "2026-10-12T16:03:45.665388+05:30"
+}
