@@ -1,0 +1,13 @@
+does the current ui here match the screenshot of the evidences here tell me and i would like to see the screenshot here too btw remvoe the explicit evidenece the and evidences but have these 7 sections here with the screenshots
+
+---
+
+<task-notification>
+<task-id>a78695977c1f422dd</task-id>
+<tool-use-id>toolu_01LWS2wzF5fSbn2jZC7Ayvp5</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-apple-Open-nlhack/9ef57287-da2b-49a5-9594-772ac4cb2676/tasks/a78695977c1f422dd.output</output-file>
+<status>failed</status>
+<summary>Agent "Fill site with real evidence" failed: Agent terminated early due to an API error: You've hit your session limit · resets 7:40pm (Asia/Calcutta) (error type rate_limit, HTTP 429, request id REDACTED, model sent to the API: claude-opus-5-5)</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Now replace the evidence + galleries blocks with the per-criterion structure.</result>
+</task-notification>
