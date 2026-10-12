@@ -1,0 +1,15 @@
+{
+  "tool_use_id": "toolu_01DCUBSQzjoPfyLDWQmVLABH",
+  "agent_id": "af60186cf0edd17a1",
+  "subagent_type": "general-purpose",
+  "task_description": "Add Approve run evidence",
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 101090,
+    "cache_read_tokens": 833537,
+    "output_tokens": 1535,
+    "api_call_count": 11
+  },
+  "started_at": "2026-10-12T15:57:21.681228+05:30",
+  "completed_at": "2026-10-12T15:59:07.035274+05:30"
+}
