@@ -73,7 +73,7 @@ export function ApprovalCard({ compact = false }: { compact?: boolean }) {
 }
 
 function money(n: number) {
-  return `$${n < 0.01 ? n.toFixed(4) : n.toFixed(2)}`;
+  return `$${n < 0.1 ? n.toFixed(6) : n.toFixed(2)}`;
 }
 
 /** Mock of the per-turn usage receipt. */
@@ -123,7 +123,7 @@ export function Receipt() {
         </dd>
       </dl>
       <div className="mt-4 flex items-center justify-between border-t border-line pt-3 text-xs text-muted-fg">
-        <span>Cost and token figures from the example in the README.</span>
+        <span>Northwind After 2 · saved run, 12 Oct 2026. Trace may require sign-in.</span>
         <ExtLink href={r.traceUrl}>Trace</ExtLink>
       </div>
     </div>

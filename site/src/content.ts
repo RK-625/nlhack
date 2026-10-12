@@ -14,6 +14,12 @@ export const todo = (note: string): Todo => ({ todo: note });
 export const isTodo = <T,>(v: Maybe<T>): v is Todo =>
   typeof v === "object" && v !== null && "todo" in (v as object);
 
+/** Preserved evidence supplied for publication; trace dashboards may require sign-in. */
+export const proofBase = "/evidence/2026-10-12";
+export const proofReport = `${proofBase}/northwind-verified-evidence.html`;
+export const traceUrl = (id: string) =>
+  `https://app.neatlogs.com/traces/${id}?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3`;
+
 /* ------------------------------------------------------------------ site */
 
 export const site = {
@@ -23,7 +29,7 @@ export const site = {
   description:
     "Bot Company is a multi-agent company copilot built on Mastra. A Primary Bot delegates to specialists for research, finance, GitHub and observability. Every write waits for your approval, every turn has a cost cap, and every run is traced with neatlogs.",
   /** Public URL of this site, used for OG tags. */
-  url: todo("TODO: public site URL") as Maybe<string>,
+  url: "https://bot-company.onrender.com" as Maybe<string>,
   repoUrl: todo("TODO: public repo link") as Maybe<string>,
   credits:
     "Inspired by Grok bot. The UI was built with help from looking at Grok's UI and design.",
@@ -144,14 +150,14 @@ export const caps = {
   tokenCap: 300_000,
 };
 
-/** Turn receipt. Values come from the example in the repo README. */
+/** Completed After 2 benchmark run; app estimate and saved neatlogs export. */
 export const receiptExample = {
-  estCostUsd: 0.0022 as Maybe<number>,
-  estTokens: "7.3k" as Maybe<string>,
-  steps: todo("TODO: steps for a real turn") as Maybe<number>,
-  neatlogsCostUsd: 0.0001 as Maybe<number>,
-  neatlogsTokens: "7.3k" as Maybe<string>,
-  traceUrl: todo("TODO: neatlogs trace link") as Maybe<string>,
+  estCostUsd: 0.049858 as Maybe<number>,
+  estTokens: "237,208" as Maybe<string>,
+  steps: 16 as Maybe<number>,
+  neatlogsCostUsd: 0.04985785 as Maybe<number>,
+  neatlogsTokens: "237,208" as Maybe<string>,
+  traceUrl: traceUrl("b0392391b4829a49a483b6c101ee336b") as Maybe<string>,
 };
 
 /* ------------------------------------------------------------------ demo */
@@ -188,9 +194,9 @@ export const partners: Partner[] = [
       "Each reply shows neatlogs' own cost and tokens beside our estimate, linked to the trace.",
       "Neat Bot reads traces through the neatlogs MCP server; employees see only their own.",
     ],
-    link: todo("TODO: neatlogs trace link"),
-    linkLabel: "Open a trace",
-    screenshot: todo("TODO: /img/neatlogs-trace.png"),
+    link: `${proofReport}#traces`,
+    linkLabel: "Read the saved trace report",
+    screenshot: `${proofBase}/05-northwind-neatlogs-trace-results-report.png`,
   },
   {
     id: "entire",
@@ -198,9 +204,9 @@ export const partners: Partner[] = [
     claims: [
       "Entire checkpoints were enabled on day one of the hackathon.",
       "Commits carry an Entire-Checkpoint trailer that links code to its coding session.",
-      "Anyone can count the trailers with one git command.",
+      "A dated commit and checkpoint index is published here; source access is needed to inspect private code and sessions.",
     ],
-    link: todo("TODO: Entire checkpoints link"),
+    link: `${proofBase}/repo-checkpoints.txt`,
     linkLabel: "See checkpoints",
     screenshot: todo("TODO: /img/entire-graph.png"),
   },
@@ -210,7 +216,7 @@ export const partners: Partner[] = [
     claims: [
       "Each user links their own cfo.ai account over OAuth with PKCE.",
       "CFO Bot reads live workspace data; every edit tool waits for approval.",
-      "We also used cfo.ai to build Bot Company's own business plan.",
+      "The business plan evidence will be added when its link or screenshots are supplied.",
     ],
     link: todo("TODO: cfo.ai business plan link"),
     linkLabel: "Read the business plan",
@@ -249,19 +255,20 @@ export const posts: Maybe<Post[]> = todo("TODO: built-in-public posts (date, tit
 
 export const repoFacts = {
   asOf: "2026-10-12",
-  commits: 81,
+  ref: "24b0a60d5093c948eab49a1602540a039a4aa88f",
+  commits: 92,
   firstCommit: "2026-10-10",
   lastCommit: "2026-10-12",
-  checkpointTrailers: 64,
+  checkpointTrailers: 75,
 };
 
 export const bigNumbers = [
-  { id: "neatlogs", value: todo("TODO: number of traced runs") as Maybe<string>, label: "runs traced in neatlogs" },
+  { id: "neatlogs", value: "6" as Maybe<string>, label: "finalized traces in the saved evidence export" },
   { id: "entire", value: String(repoFacts.checkpointTrailers) as Maybe<string>, label: `commits with an Entire checkpoint (as of ${repoFacts.asOf})` },
   { id: "cfo", value: todo("TODO: cfo.ai figure, e.g. months of runway") as Maybe<string>, label: "from the cfo.ai business plan" },
 ];
 
-export type Badge = "In repo" | "Public" | "Screenshots";
+export type Badge = "In repo" | "Public" | "Screenshots" | "Report";
 
 export const evidence: {
   criterion: string;
@@ -272,32 +279,32 @@ export const evidence: {
   {
     criterion: "Agent improved (run before and after, with numbers)",
     badge: "Screenshots",
-    proof: todo("TODO: before/after run summary"),
-    link: todo("TODO: before/after traces"),
+    proof: "Three runs before and three after: CFO file reads 29 → 10, total tokens 768,324 → 694,000, estimated cost $0.146359 → $0.141544. No latency gain.",
+    link: `${proofReport}#benchmark`,
   },
   {
     criterion: "Used neatlogs (trace links or screenshots)",
-    badge: "Public",
-    proof: "All ten agents are traced; each reply links to its own neatlogs trace.",
-    link: todo("TODO: neatlogs trace link"),
+    badge: "Report",
+    proof: "Six finalized traces exported through neatlogs MCP, including capped runs and approved/denied continuations. Dashboard links may require project access.",
+    link: `${proofReport}#traces`,
   },
   {
     criterion: "Used Entire (checkpoints or entire-graph output)",
     badge: "In repo",
-    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer (as of ${repoFacts.asOf}).`,
-    link: todo("TODO: public repo link"),
+    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer at snapshot ${repoFacts.ref.slice(0, 8)}. Export includes IDs; private coding sessions require access.`,
+    link: `${proofBase}/repo-checkpoints.txt`,
   },
   {
     criterion: "Used cfo.ai (business plan covering pricing, costs, revenue, runway)",
-    badge: "Public",
+    badge: "Report",
     proof: todo("TODO: business plan summary"),
     link: todo("TODO: cfo.ai business plan link"),
   },
   {
     criterion: "Agent recovers from failures (a run where an action failed, then what it did next)",
     badge: "Screenshots",
-    proof: todo("TODO: failure and recovery run"),
-    link: todo("TODO: trace of the failed run"),
+    proof: "A $0.02-capped run stopped at $0.020240. Approve resumed with a separate $0.04 budget and completed at $0.031799. Deny returned a one-step, tool-free answer marked Incomplete.",
+    link: `${proofReport}#recovery`,
   },
   {
     criterion: "Built in public (posts tagged #neatHack)",
@@ -309,37 +316,52 @@ export const evidence: {
     criterion: "Code written during the hackathon (dated commits)",
     badge: "In repo",
     proof: `${repoFacts.commits} commits, all dated ${repoFacts.firstCommit} to ${repoFacts.lastCommit}.`,
-    link: todo("TODO: public repo link"),
+    link: `${proofBase}/repo-checkpoints.txt`,
   },
 ];
 
 export const improvement = {
-  summary: todo("TODO: what changed between v1 and v2") as Maybe<string>,
+  summary: "The Primary Bot now passes sourced company facts to specialists, which read only missing evidence and return compact briefs. Six Northwind runs on fictional local company data, recorded 12 October 2026; totals below compare three runs in each group." as Maybe<string>,
+  note: "CFO file reads fell 65.5% (29 → 10) and reply characters fell 74.1% (25,989 → 6,730). Completion within the default caps was 2/3 → 3/3. Total elapsed time increased from 497.2 to 522.2 seconds. This small observational sample does not establish guaranteed savings or fully correct answers; After 1's dashboard trace was unavailable.",
+  link: `${proofReport}#benchmark`,
   stats: [
-    { label: "Cost per turn", v1: todo("TODO") as Maybe<string>, v2: todo("TODO") as Maybe<string> },
-    { label: "Tokens per turn", v1: todo("TODO") as Maybe<string>, v2: todo("TODO") as Maybe<string> },
-    { label: "Steps per turn", v1: todo("TODO") as Maybe<string>, v2: todo("TODO") as Maybe<string> },
+    { label: "Total estimated cost (3 runs)", v1: "$0.146359" as Maybe<string>, v2: "$0.141544" as Maybe<string> },
+    { label: "Total tokens (3 runs)", v1: "768,324" as Maybe<string>, v2: "694,000" as Maybe<string> },
+    { label: "Total model steps (3 runs)", v1: "46" as Maybe<string>, v2: "45" as Maybe<string> },
   ],
 };
 
 export const incident: { stage: string; text: Maybe<string>; link?: Maybe<string> }[] = [
-  { stage: "Failure", text: todo("TODO: what failed") },
-  { stage: "Detected in neatlogs", text: todo("TODO: how it showed up"), link: todo("TODO: trace link") },
-  { stage: "Fix", text: todo("TODO: the fix"), link: todo("TODO: commit link") },
-  { stage: "Verified", text: todo("TODO: the verifying run"), link: todo("TODO: trace link") },
+  { stage: "Failure", text: "The Northwind task exceeded its $0.02 cap. A separate empty-reply case also lost its pending extension card on reload.", link: `${proofReport}#recovery` },
+  { stage: "Recorded in neatlogs", text: "The capped root finalized as ERROR: $0.020240, 85,720 tokens, 6 model calls. The saved export records an Execution Failed detection.", link: traceUrl("444a39d312df7bd2220b074992c306f9") },
+  { stage: "Recovery and fix", text: "Approve grants a one-time $0.04 continuation. A fallback message now preserves the pending card after reload when no assistant text exists (commit 6a90ff93).", link: `${proofBase}/northwind-cap-escalation.md` },
+  { stage: "Verified", text: "Approved continuation finalized as SUCCESS at $0.031799 over 10 model calls. Deny produced one tool-free step at $0.003093. Execution passed; secondary answer errors remain documented.", link: `${proofReport}#recovery` },
 ];
 
 export type Shot = { src: string; alt: string };
 
 /** Files go in site/public/img/. */
 export const galleries: { id: string; name: string; shots: Maybe<Shot[]> }[] = [
-  { id: "neatlogs", name: "neatlogs", shots: todo("TODO: neatlogs screenshots") },
+  { id: "app", name: "Actual app captures · Northwind budget flow", shots: [
+    { src: `${proofBase}/01-northwind-budget-extension-pending-desktop.png`, alt: "Pending budget extension — desktop app capture" },
+    { src: `${proofBase}/02-northwind-empty-reply-reload-mobile.png`, alt: "Empty reply survives reload — mobile app capture" },
+    { src: `${proofBase}/03-northwind-extension-denied-desktop.png`, alt: "Denied extension after reload — desktop app capture" },
+    { src: `${proofBase}/04-northwind-incomplete-answer-desktop.png`, alt: "Incomplete answer after denial — desktop app capture" },
+  ] },
+  { id: "neatlogs", name: "Saved evidence reports · rendered from JSON, not dashboard captures", shots: [
+    { src: `${proofBase}/05-northwind-neatlogs-trace-results-report.png`, alt: "Six finalized neatlogs trace exports — rendered report" },
+    { src: `${proofBase}/06-northwind-before-after-benchmark-report.png`, alt: "Three-before / three-after benchmark — rendered report" },
+    { src: `${proofBase}/07-northwind-approve-deny-verification-report.png`, alt: "Approve / Deny verification — rendered report" },
+  ] },
   { id: "entire", name: "Entire", shots: todo("TODO: Entire screenshots") },
   { id: "cfo", name: "cfo.ai", shots: todo("TODO: cfo.ai screenshots") },
 ];
 
 /** Honest limits, taken from the README. */
 export const knownLimits = [
+  "Northwind is fictional and uses local company files. This evidence does not establish live cfo.ai data access or a real credit being issued.",
+  "Saved runs verify execution and persistence. Some answers contain documented calculation and date errors; completion does not establish full answer correctness.",
+  "Deny declines the budget extension but still allows one tool-free model call, which incurs a small cost.",
   "Customer Success, Legal, HR, Marketing and Sales have no tools yet. They work only from what you tell them.",
   "CFO Bot shows formulas and assumptions, but no calculation tool verifies its maths.",
   "Caps use our own cost estimate, which is usually higher than neatlogs' figure because neatlogs counts cache hits.",
@@ -350,10 +372,10 @@ export const knownLimits = [
 ];
 
 export const reproduce = [
-  { label: "Clone and enter the repo", cmd: "git clone <repo-url> && cd nlhack" },
-  { label: "First and last commit dates", cmd: "git log --reverse --format='%ad %s' --date=iso | sed -n '1p;$p'" },
-  { label: "Commits per day", cmd: "git log --format=%ad --date=short | sort | uniq -c" },
-  { label: "Count Entire checkpoint trailers", cmd: "git log --format=%B | grep -c '^Entire-Checkpoint:'" },
+  { label: "Clone and enter the repo", cmd: "git clone https://github.com/RK-625/nlhack.git && cd nlhack" },
+  { label: "First and last commit dates", cmd: `git log ${repoFacts.ref} --reverse --format='%ad %s' --date=iso | sed -n '1p;$p'` },
+  { label: "Commits per day", cmd: `git log ${repoFacts.ref} --format=%ad --date=short | sort | uniq -c` },
+  { label: "Count Entire checkpoint trailers", cmd: `git log ${repoFacts.ref} --format=%B | grep -c '^Entire-Checkpoint:'` },
   { label: "Check the TypeScript", cmd: "npm ci && npm run typecheck" },
 ];
 

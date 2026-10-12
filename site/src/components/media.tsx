@@ -111,6 +111,7 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
             >
               <ShotFrame src={s.src} alt={s.alt} />
             </button>
+            <p className="mt-2 text-xs leading-relaxed text-muted-fg">{s.alt}</p>
           </li>
         ))}
       </ul>
@@ -154,7 +155,7 @@ export function CopyCommand({ label, cmd }: { label: string; cmd: string }) {
     }
   };
   return (
-    <div className="rounded-xl border border-line bg-card">
+    <div className="min-w-0 rounded-xl border border-line bg-card">
       <div className="flex items-center justify-between gap-3 px-4 pt-3 text-sm text-muted-fg">
         <span>{label}</span>
         <button

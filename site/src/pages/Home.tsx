@@ -201,7 +201,7 @@ function Trust() {
               Each turn is capped per user and per agent: ${caps.costCapUsd.toFixed(2)} and{" "}
               {caps.tokenCap.toLocaleString("en-US")} tokens by default, and you can change both.
             </li>
-            <li>The cap is checked before every model call, so a runaway turn stops early.</li>
+            <li>Usage is checked after model steps, so the last step can overshoot. At a cap, Approve grants a one-time extension; Deny returns a short, tool-free incomplete answer.</li>
             <li>neatlogs' own figure appears next to ours, linked to the trace.</li>
           </ul>
         </div>
@@ -241,6 +241,7 @@ function PoweredBy() {
               ))}
             </ul>
             <ShotFrame src={p.screenshot} alt={`${p.name} screenshot`} className="mt-6" />
+            {p.id === "neatlogs" && <p className="mt-2 text-xs text-muted-fg">Rendered from saved neatlogs MCP exports; not a dashboard screenshot.</p>}
             <p className="mt-4 text-sm">
               <ExtLink href={p.link}>{p.linkLabel}</ExtLink>
             </p>

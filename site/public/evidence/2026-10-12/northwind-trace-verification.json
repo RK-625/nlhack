@@ -1,0 +1,77 @@
+{
+  "checkedAt": "2026-10-12T08:51:04.740Z",
+  "summaries": [
+    {
+      "traceId": "0ce0e491e0e1bdc3cf89d00ca4dfb65d",
+      "status": "error",
+      "finalizationStatus": "finalized",
+      "costUsd": 0.05895665000000001,
+      "tokens": 323923,
+      "llmCalls": 20,
+      "rootStatus": "ERROR",
+      "detections": [
+        "Slow LLM Response",
+        "Execution Failed"
+      ]
+    },
+    {
+      "traceId": "b0392391b4829a49a483b6c101ee336b",
+      "status": "success",
+      "finalizationStatus": "finalized",
+      "costUsd": 0.049857849999999995,
+      "tokens": 237208,
+      "llmCalls": 16,
+      "rootStatus": "SUCCESS",
+      "detections": [
+        "Slow LLM Response"
+      ]
+    },
+    {
+      "traceId": "444a39d312df7bd2220b074992c306f9",
+      "status": "error",
+      "finalizationStatus": "finalized",
+      "costUsd": 0.02023992,
+      "tokens": 85720,
+      "llmCalls": 6,
+      "rootStatus": "ERROR",
+      "detections": [
+        "Execution Failed"
+      ]
+    },
+    {
+      "traceId": "c9c19ae1783c43f8ec075f82a8c653a5",
+      "status": "success",
+      "finalizationStatus": "finalized",
+      "costUsd": 0.03179908,
+      "tokens": 138393,
+      "llmCalls": 10,
+      "rootStatus": "SUCCESS",
+      "detections": [
+        "Slow LLM Response"
+      ]
+    },
+    {
+      "traceId": "2dee2c0c875b79cd60358411987bbb7e",
+      "status": "error",
+      "finalizationStatus": "finalized",
+      "costUsd": 0.02618181,
+      "tokens": 120632,
+      "llmCalls": 8,
+      "rootStatus": "ERROR",
+      "detections": [
+        "Execution Failed",
+        "Slow LLM Response"
+      ]
+    },
+    {
+      "traceId": "4b0f1fefe0390d5695b5fffca8770cc1",
+      "status": "success",
+      "finalizationStatus": "finalized",
+      "costUsd": 0.00309322,
+      "tokens": 6209,
+      "llmCalls": 1,
+      "rootStatus": "SUCCESS",
+      "detections": []
+    }
+  ]
+}

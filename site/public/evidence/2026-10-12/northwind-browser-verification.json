@@ -1,0 +1,99 @@
+{
+  "checkedAt": "2026-10-12T08:50:49.863Z",
+  "instance": "http://localhost:3001 (copied databases)",
+  "browserChecks": [
+    "Approve after reload completes with a one-time $0.04 budget",
+    "Empty assistant output preserves fallback text and escalation after reload",
+    "Deny on mobile produces one tool-free model step marked Incomplete",
+    "Repeated decision returns HTTP 409",
+    "Saved caps remain $0.02 during continuation; reset to defaults afterwards",
+    "Usage panel shows actual continuation budget"
+  ],
+  "approved": [
+    {
+      "costUsd": 0.02024,
+      "tokens": 85720,
+      "inputTokens": 74452,
+      "outputTokens": 11268,
+      "cachedInputTokens": 53120,
+      "steps": 6,
+      "capCostUsd": 0.02,
+      "capTokens": 300000,
+      "capped": true,
+      "reason": "cost",
+      "trippedBy": "cfo",
+      "final": true,
+      "traceId": "444a39d312df7bd2220b074992c306f9",
+      "escalation": {
+        "id": "444a39d312df7bd2220b074992c306f9",
+        "extraCostUsd": 0.04,
+        "extraTokens": 450000,
+        "status": "approved"
+      }
+    },
+    {
+      "costUsd": 0.031799,
+      "tokens": 138393,
+      "inputTokens": 120675,
+      "outputTokens": 17718,
+      "cachedInputTokens": 87296,
+      "steps": 10,
+      "capCostUsd": 0.04,
+      "capTokens": 450000,
+      "capped": false,
+      "reason": null,
+      "trippedBy": null,
+      "final": true,
+      "traceId": "c9c19ae1783c43f8ec075f82a8c653a5",
+      "continuation": {
+        "from": "444a39d312df7bd2220b074992c306f9",
+        "decision": "approved"
+      }
+    }
+  ],
+  "denied": [
+    {
+      "costUsd": 0.026182,
+      "tokens": 120632,
+      "inputTokens": 106162,
+      "outputTokens": 14470,
+      "cachedInputTokens": 78336,
+      "steps": 8,
+      "capCostUsd": 0.02,
+      "capTokens": 300000,
+      "capped": true,
+      "reason": "cost",
+      "trippedBy": "customer-success",
+      "final": true,
+      "traceId": "2dee2c0c875b79cd60358411987bbb7e",
+      "escalation": {
+        "id": "2dee2c0c875b79cd60358411987bbb7e",
+        "extraCostUsd": 0.04,
+        "extraTokens": 450000,
+        "status": "denied"
+      }
+    },
+    {
+      "costUsd": 0.003093,
+      "tokens": 6209,
+      "inputTokens": 4340,
+      "outputTokens": 1869,
+      "cachedInputTokens": 1536,
+      "steps": 1,
+      "capCostUsd": 0.01,
+      "capTokens": 150000,
+      "capped": false,
+      "reason": null,
+      "trippedBy": null,
+      "final": true,
+      "traceId": "4b0f1fefe0390d5695b5fffca8770cc1",
+      "continuation": {
+        "from": "2dee2c0c875b79cd60358411987bbb7e",
+        "decision": "denied"
+      }
+    }
+  ],
+  "limitations": [
+    "Answers are model-generated and contain documented factual/calculation errors; this verifies execution and core figures, not complete answer correctness."
+  ]
+}

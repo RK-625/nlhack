@@ -13,6 +13,8 @@ import {
   isTodo,
   knownLimits,
   partners,
+  proofBase,
+  proofReport,
   repoFacts,
   reproduce,
   type Badge,
@@ -33,6 +35,7 @@ const badgeTone: Record<Badge, string> = {
   "In repo": "var(--bot-violet)",
   Public: "var(--bot-blue)",
   Screenshots: "var(--bot-teal)",
+  Report: "var(--bot-teal)",
 };
 
 function BadgePill({ badge }: { badge: Badge }) {
@@ -97,7 +100,15 @@ function Header() {
 
 function Evidence() {
   return (
-    <Section id="evidence" title="The seven official evidence rows." className="border-t border-line">
+    <Section id="evidence" title="Evidence for the seven criteria." className="border-t border-line">
+      <div className="mb-8 rounded-2xl border border-line bg-muted p-5 text-sm leading-relaxed">
+        <p>Preserved evidence from 12 October 2026. Four images are actual app captures; three are reports rendered from saved exports. Northwind uses fictional local company data.</p>
+        <p className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+          <ExtLink href={proofReport}>Read the evidence report</ExtLink>
+          <ExtLink href={`${proofBase}/README.md`}>Image titles and provenance</ExtLink>
+          <ExtLink href={`${proofBase}/SHA256SUMS.txt`}>Published file checksums</ExtLink>
+        </p>
+      </div>
       <ol className="divide-y divide-line border-y border-line">
         {evidence.map((e, i) => (
           <li key={e.criterion} className="grid gap-3 py-6 sm:grid-cols-[3rem_1fr_auto] sm:items-start sm:gap-6">
@@ -150,6 +161,8 @@ function Improved() {
           </div>
         ))}
       </div>
+      <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-fg">{improvement.note}</p>
+      <p className="mt-3 text-sm"><ExtLink href={improvement.link}>Read the benchmark and source data</ExtLink></p>
     </Section>
   );
 }
@@ -181,7 +194,7 @@ function Incident() {
 
 function Screenshots() {
   return (
-    <Section id="screenshots" title="Screenshots from each tool." intro="Select an image to enlarge it." className="border-t border-line">
+    <Section id="screenshots" title="App screenshots and saved evidence reports." intro="Select an image to enlarge it. Reports are labeled separately from actual app captures." className="border-t border-line">
       <div className="space-y-12">
         {galleries.map((g) => (
           <div key={g.id}>
@@ -275,7 +288,7 @@ function Reproduce() {
       title="Run the checks yourself."
       intro={
         <>
-          From a clone of the repo. As of {repoFacts.asOf} these show {repoFacts.commits} commits from{" "}
+          With repository access, check snapshot {repoFacts.ref.slice(0, 8)}. As of {repoFacts.asOf} it contains {repoFacts.commits} commits from{" "}
           {repoFacts.firstCommit} to {repoFacts.lastCommit}, {repoFacts.checkpointTrailers} with an Entire checkpoint.
         </>
       }

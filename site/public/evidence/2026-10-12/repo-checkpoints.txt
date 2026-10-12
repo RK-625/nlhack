@@ -1,0 +1,452 @@
+Bot Company repository evidence snapshot
+As of: 2026-10-12
+Repository: RK-625/nlhack (private; source access required)
+Snapshot: 24b0a60d5093c948eab49a1602540a039a4aa88f
+Commits: 92
+Commits with Entire-Checkpoint trailers: 75
+Date range: 2026-10-10 to 2026-10-12
+
+Exported from local git history. Trailers demonstrate recorded checkpoint IDs; this export does not include Entire session contents.
+
+Commit: 4123f712bf0515541bd42b5a4a1436ba166f8af2
+Date: 2026-10-10T14:05:40+05:30
+Subject: docs: initialize README with NeatLogs hackathon problem statement
+
+Commit: ab61c76b6f6bbdc3b2eca9fc088ee7236e94f2f4
+Date: 2026-10-10T15:31:47+05:30
+Subject: docs: add empty CLAUDE.md
+Entire-Checkpoint: 01M4JM5XPHV0YVN0ZHV2X1N7A8
+
+Commit: a53137a5f3c559a3d8a80140e9f6187cb6efb616
+Date: 2026-10-10T15:33:34+05:30
+Subject: chore: enable Entire checkpoints for Claude Code
+Entire-Checkpoint: 01M4JM95MF8J93PYAVAG6SV2QE
+
+Commit: 0e64c1f53564937d308a04910a67cf5eb5d29e2d
+Date: 2026-10-10T16:08:11+05:30
+Subject: chore: add Mastra, neatlogs, Chat SDK WhatsApp deps and gitignore
+Entire-Checkpoint: 01M4JP8HQEZNFGMQPS7JQ8K0YQ
+
+Commit: 61c0d775f821c7056af6587033a9a9b8e345ea3b
+Date: 2026-10-10T17:13:12+05:30
+Subject: feat: set up basic Mastra agent with TypeScript tooling
+Entire-Checkpoint: 01M4JSZKSP72ZHV1S1TDMMTPHV
+
+Commit: f339a68aa65282eb5522a03fa559733dc9e555eb
+Date: 2026-10-10T17:18:34+05:30
+Subject: ``` chore(config): set up orchestrator role and project standards
+Entire-Checkpoint: 01M4JT9EE9E1807AGV3NPKQ5QG
+
+Commit: b80eb18c6460bf11ae725c43a8dac90b91035565
+Date: 2026-10-10T17:24:25+05:30
+Subject: refactor(assistant): switch model provider to deepseek
+
+Commit: d74580bb9873df4f302272a8fabfa4731868d073
+Date: 2026-10-10T17:51:40+05:30
+Subject: feat(market-researcher): add market research agent with crustdata tools
+Entire-Checkpoint: 01M4JW61KMH1WQD8D45TVKCDBQ
+
+Commit: 56ee430536929a25b790061602eef76302785a9d
+Date: 2026-10-10T18:04:36+05:30
+Subject: refactor(crustdata): remove trim helper from tool outputs
+Entire-Checkpoint: 01M4JWXQN9ZNJWSMX4YV2P97HT
+
+Commit: 9bbcfd85b11f2213ea2b0c6eb5d8cacb36fdf432
+Date: 2026-10-10T18:19:27+05:30
+Subject: refactor(agents): extract agent instructions into prompts module
+
+Commit: bce0990ead4d68e000181924b5b13a2510535ed9
+Date: 2026-10-10T19:06:56+05:30
+Subject: feat(bot): add whatsapp direct message handler with mastra agent
+
+Commit: 1e32794e43047b36c16e3fd5898fd2c4423e4f31
+Date: 2026-10-10T19:07:03+05:30
+Subject: feat(server): add native http server for whatsapp webhooks
+Entire-Checkpoint: 01M4K0G2CZ9JP6DS2H0JH4925A
+
+Commit: b25d33a97e6ac1d49cf246673963eb38e8735533
+Date: 2026-10-10T20:05:29+05:30
+Subject: ``` feat(agents): wire assistant orchestration and WhatsApp setup ```
+
+Commit: aa542b120bb73802510a7180d424c5b43bb2513b
+Date: 2026-10-10T21:15:51+05:30
+Subject: feat(whatsapp): pass cached conversation history to assistant
+
+Commit: 11825a116fa2b8044f46cd6503564b2c8762b578
+Date: 2026-10-10T22:09:22+05:30
+Subject: feat(tunnel): add fixed localtunnel script for WhatsApp webhooks
+
+Commit: 15a082ad14b7cc1cfb6d5ca472c847842fcced20
+Date: 2026-10-10T22:14:17+05:30
+Subject: chore(entire): add Codex and Antigravity session hooks
+Entire-Checkpoint: 01M4KB6X6Q5T263M88N4N8EF6S
+
+Commit: 333de7d4cace1deb400d0b00a6f155bcf9920eb7
+Date: 2026-10-10T22:50:57+05:30
+Subject: `feat(cfo): add cfo agent with assistant delegation`
+Entire-Checkpoint: 01M4KDA1SBFSE425T9PTTXESAQ
+
+Commit: 41151d3a336cf867e1c7bdc6ec82d69a153cde39
+Date: 2026-10-11T01:07:35+05:30
+Subject: feat(bot): add privacy pages and stable ngrok tunnel
+Entire-Checkpoint: 01M4KN47Z3QTS93YYJCGM4PP2N
+
+Commit: 4a82e4e16316e21fb029a226fa8ebce4996d5ac8
+Date: 2026-10-11T01:10:48+05:30
+Subject: feat(telemetry): integrate neatlogs tracing for agents
+Entire-Checkpoint: 01M4KNA4HTXYAK1SSXZ4KZMW22
+
+Commit: 25296c1b82c3b421b0d26071fbbbb5e304c33a7e
+Date: 2026-10-11T01:14:08+05:30
+Subject: ``` feat(server): Add health check and privacy policy routes
+Entire-Checkpoint: 01M4KNG7R3FJEBKFCF48JCK9MV
+
+Commit: e0eab75fcffa9f4610d3d87340699cbba77fa20c
+Date: 2026-10-11T02:04:32+05:30
+Subject: feat(web): scaffold lean web UI from rakazo components
+
+Commit: 6bf9a95e9f4eefcdcef2494142319c1150348a2c
+Date: 2026-10-11T02:22:51+05:30
+Subject: feat(server): add web chat api and serve web ui from one process
+Entire-Checkpoint: 01M4KSE1Z0Z3W11SHEX88W7S1T
+
+Commit: d0030cd45fa2abf892580f6c69318561334541bb
+Date: 2026-10-11T02:42:06+05:30
+Subject: feat(web): add grok-style chat shell with agent sidebar
+
+Commit: 05113c0394fc3b4b06f9c00a0efd1220e1a6a190
+Date: 2026-10-11T02:52:47+05:30
+Subject: feat(web): stream real agent replies via ai sdk usechat
+
+Commit: 8ba766a0956cbf9c6e1f7b976ba1f168bdd93060
+Date: 2026-10-11T03:21:02+05:30
+Subject: fix(tools): cap crustdata payloads with api-side field filters
+
+Commit: b74d693fe3f05a8b67c5288f5699924f5948f16e
+Date: 2026-10-11T03:52:06+05:30
+Subject: feat(web): add symmetric motion transitions across the shell
+Entire-Checkpoint: 01M4KYHF1JES511D77RSX4RGJP
+
+Commit: d336d046ef0bce2e80fa67cac6350d5ff43cdeae
+Date: 2026-10-11T03:55:49+05:30
+Subject: refactor(web): drop preview line from sidebar agent rows
+Entire-Checkpoint: 01M4KYR9C2REXBVBB1YAV320PK
+
+Commit: d3cd4a06d18d31a1777a6239e9fa32fc5251db7c
+Date: 2026-10-11T03:59:28+05:30
+Subject: style(web): narrow sidebar from 316px to 284px
+Entire-Checkpoint: 01M4KYYZ1SXJZS9XBNH1SRVJJB
+
+Commit: 91331d535767de2a3e98bb1c1e29dae9971b1fde
+Date: 2026-10-11T11:19:46+05:30
+Subject: feat(telemetry): add Neatlogs tracing for request flows
+
+Commit: 29e1a10e518739f123c7726bb945b15ad0b790b9
+Date: 2026-10-11T11:32:19+05:30
+Subject: feat(web): grok-style resizable sidebar with compact rail
+Entire-Checkpoint: 01M4MRW5E3NYENVHP4N5BB25BK
+
+Commit: 6bc222bcc9062fb81a9628d8285e9239bd2f0eaf
+Date: 2026-10-11T11:42:32+05:30
+Subject: fix(web): center featured agent tile in sidebar
+Entire-Checkpoint: 01M4MSEVHRCGM78RB4V5494EMV
+
+Commit: 2fb40d6256ef83139d75ee1041549620623a0b28
+Date: 2026-10-11T12:00:49+05:30
+Subject: chore(deps): Add better-auth and better-sqlite3 dependencies
+
+Commit: cec7b6e0dbe94020e1ccd3fd36f76fd1a6c5b14a
+Date: 2026-10-11T12:04:15+05:30
+Subject: chore(deps): add better-sqlite3 types and auth env vars
+
+Commit: 406482bb92597aa828e1dc4ac44345e9763deba1
+Date: 2026-10-11T12:11:05+05:30
+Subject: feat(auth): configure better-auth with sqlite, username and roles
+Entire-Checkpoint: 01M4MV34SSAS8KK9P86K4M3WR2
+
+Commit: c2475918dc57d1630408584928a6f6d64b88720b
+Date: 2026-10-11T12:14:28+05:30
+Subject: feat(auth): add idempotent seed script for users and schema
+Entire-Checkpoint: 01M4MV9B971D5YXETQRTG3MJE8
+
+Commit: 9e0919e2c6914d46503f4554d9c970ee7d9d3497
+Date: 2026-10-11T12:19:33+05:30
+Subject: feat(auth): mount better-auth routes and add /api/me
+
+Commit: ea4ec06bd6deba147d9298a1fc5012cb116602e9
+Date: 2026-10-11T12:22:59+05:30
+Subject: feat(auth): require a session for agents and chat APIs
+Entire-Checkpoint: 01M4MVRY34X8QCBXS3JKP9DWC8
+
+Commit: 239c03a8b42101fe446ac2efb0a029fa6e48e358
+Date: 2026-10-11T13:17:41+05:30
+Subject: feat(web): add better-auth client with username and admin plugins
+Entire-Checkpoint: 01M4MYX2YK6D2ACRMA7SR7CW8Y
+
+Commit: f8859754f12dd14d20b840fe2b375f706e68b1c3
+Date: 2026-10-11T13:22:45+05:30
+Subject: feat(web): add username/password login page
+Entire-Checkpoint: 01M4MZ6BN1P90ESH53VNNR1HV1
+
+Commit: 721f71cd3e012e4a427294cf67ee78e53ccc5f2d
+Date: 2026-10-11T13:27:02+05:30
+Subject: feat(web): gate the app shell behind a session
+Entire-Checkpoint: 01M4MZE6WQPBN5HW8J4ZZKYSJ3
+
+Commit: 7d04f2c00e6c6273c7708200793952b9c7ee37ce
+Date: 2026-10-11T13:36:07+05:30
+Subject: feat(web): add sidebar user menu and sign out on 401
+Entire-Checkpoint: 01M4MZYTPX6QR4K82KT68PHVRR
+
+Commit: 3125e8f0502ac9af2392000d4bf82ca1956ede2a
+Date: 2026-10-11T13:39:34+05:30
+Subject: refactor(web): pin sidebar panel geometry for morphing
+
+Commit: 5fb76e3a9671e0e459bd876d56ba4b3e748891be
+Date: 2026-10-11T13:39:47+05:30
+Subject: feat(auth): add role-based agent access policy
+Entire-Checkpoint: 01M4N05HNT6Y8D7WNMXZ26KVA9
+
+Commit: 4101bf37878c1b93daa843f32522613a3640731d
+Date: 2026-10-11T16:24:43+05:30
+Subject: feat(web): morph sidebar avatars between rail and expanded
+Entire-Checkpoint: 01M4N9KHYBHT518YGHDRNEW9E5
+
+Commit: d0af5e8e7fe4b9d4bba1a060ae893a85b77205d9
+Date: 2026-10-11T16:28:22+05:30
+Subject: feat(web): morph selection highlight, badges and tooltips across layouts
+
+Commit: 6c52d63197f48d3decdef40a64f528c050fea547
+Date: 2026-10-11T17:02:36+05:30
+Subject: fix(web): morph sidebar controls between layouts and slow label fades
+Entire-Checkpoint: 01M4NBRXF56ZYGYZHPDTAKFEVQ
+
+Commit: 91ece10d45b907b786bd5b2e4a222e40feb8382c
+Date: 2026-10-11T17:17:14+05:30
+Subject: fix(web): cross-fade new chat button instead of travelling
+Entire-Checkpoint: 01M4NCKQ4QF0NBEV6MCP13ZHDH
+
+Commit: e77f341348c5dc0e1247356202ca559f3c2840e5
+Date: 2026-10-11T17:19:41+05:30
+Subject: feat(web): uniform ease-in-out slide for sidebar open and close
+Entire-Checkpoint: 01M4NCR6Y14EFX8FST08XAEGTH
+
+Commit: 45d563109b5b3b1affc590274e837b161b1a9af5
+Date: 2026-10-11T17:50:13+05:30
+Subject: feat(auth): enforce agent access on agents and chat APIs
+Entire-Checkpoint: 01M4NEG3ZREQ6YJ63BYF1EKPW5
+
+Commit: 2767ff5e37bf1781c851b981b24cb307d8f96e24
+Date: 2026-10-11T17:54:54+05:30
+Subject: feat(web): add useCurrentUser hook and friendly 403 message
+Entire-Checkpoint: 01M4NERPDWSDWWBPD6MJ0PXY1E
+
+Commit: ff8eda5f37cbbd2c2ec774e2166115010c148c81
+Date: 2026-10-11T17:58:28+05:30
+Subject: feat(mastra): add libsql storage and shared memory to agents
+Entire-Checkpoint: 01M4NEZ70DHNHXZKZHV5NGS3D2
+
+Commit: 4441b23ac5a4e4620e2e5af99a7ac489b7b9129d
+Date: 2026-10-11T18:06:29+05:30
+Subject: feat(chat): persist web chats per user and agent via mastra memory
+Entire-Checkpoint: 01M4NFDXEZPREMHDDYD5Y3NKW1
+
+Commit: a4f63be50d9ff5cbf02049afe0ec3ba3d9a1dac5
+Date: 2026-10-11T18:38:58+05:30
+Subject: feat(chat): add per-user chat history GET/DELETE endpoints
+Entire-Checkpoint: 01M4NH9BS153CSXS2BXAB746M7
+
+Commit: 44d939b911492aa7838a971a38e08b3e3bc4c71b
+Date: 2026-10-11T18:44:53+05:30
+Subject: feat(web): load and clear persisted chat history per agent
+Entire-Checkpoint: 01M4NHM6K1C4TR13YZGF0TDRXY
+
+Commit: 5aee8216890a8230988779681a46497a01021c46
+Date: 2026-10-11T19:25:34+05:30
+Subject: feat(telemetry): trace whatsapp bot requests
+Entire-Checkpoint: 01M4NKYQ0JT9Y4DHN3Z3AJ5636
+
+Commit: b4149c8f6e7b5d2e5148ef6d7a26f3eddee6675e
+Date: 2026-10-11T19:46:50+05:30
+Subject: chore(merge): merge web-ui-scaffold sidebar rework into main
+Entire-Checkpoint: 01M4NN5MQR00E9B87K4HZM4WNZ
+
+Commit: 251cf8f60dec9faea2abf2cab2f38912b6abba5c
+Date: 2026-10-11T19:47:01+05:30
+Subject: fix(web): stop 401 loop after sign out
+Entire-Checkpoint: 01M4NN5YZM97B3E938SJ4CH47S
+
+Commit: b9eb19f74353e740b75c36dd1810fb80ea64cb27
+Date: 2026-10-11T20:37:20+05:30
+Subject: feat(agents): add read-only github agent via MCP
+Entire-Checkpoint: 01M4NR23V0G4D6W8CW58W14HXQ
+
+Commit: 50414d46439716ae4fd4bccbd73793aa1c17af20
+Date: 2026-10-11T22:03:05+05:30
+Subject: feat(github): require approval for github write tools
+Entire-Checkpoint: 01M4NWZ3R52TD4F6EGAX2CDHTX
+
+Commit: 28312dda82e7b78830c3d8a2fde7c0a036684449
+Date: 2026-10-11T22:31:46+05:30
+Subject: feat(chat): drop unanswered approvals on new user message
+Entire-Checkpoint: 01M4NYKN5DQYGH01CTEG517VWH
+
+Commit: 5b24272c969f5b69783bf6c050cb414b971db9bd
+Date: 2026-10-11T23:34:17+05:30
+Subject: docs(readme): document github agent and GITHUB_PAT
+Entire-Checkpoint: 01M4P263RM2G0B0DNJBRHJMB3S
+
+Commit: 97186ad3aba52aac36214f5b7c1a4b41e09eea5a
+Date: 2026-10-11T23:41:15+05:30
+Subject: feat(agents): add neatlogs agent via MCP with triage approval
+Entire-Checkpoint: 01M4P2JVVM7SGWF2FBRQWFJQP5
+
+Commit: cb95dc9ca6dd0a2db53474b3f4a2f0cd8b678ffa
+Date: 2026-10-12T00:07:55+05:30
+Subject: chore(bot): remove whatsapp bot and chat sdk
+Entire-Checkpoint: 01M4P43PDKN2JQCNTJ38KYTPGC
+
+Commit: 73504aa66452853f79d1c7cb1383408658755bba
+Date: 2026-10-12T00:14:05+05:30
+Subject: refactor(agents): delegate writes through assistant with nested approvals
+Entire-Checkpoint: 01M4P4EZFFWQ34FMA9VEKXRWXM
+
+Commit: cd1e22e238f471935c0ddf3fa1cc249b0d8b2e7c
+Date: 2026-10-12T01:29:19+05:30
+Subject: `feat(agents): Add five business specialist agents`
+Entire-Checkpoint: 01M4P8RQXXBKP67KCHH3T29H50
+
+Commit: 37ded62a850671e2f1283aff0217f2557ae9da17
+Date: 2026-10-12T01:42:04+05:30
+Subject: feat(workspace): add private per-user file workspace for all agents
+Entire-Checkpoint: 01M4P9G376487STP4M1ZHCTCT9
+
+Commit: 51b347453e7bb7a6cb581b45e7075ba387498da1
+Date: 2026-10-12T01:52:10+05:30
+Subject: feat(telemetry): trace web chats with user, session and department tags
+Entire-Checkpoint: 01M4PA2K3M4ZP5DK9ZYF69SCD3
+
+Commit: 26ca46bac1856ef40a5d682524306a549d85958e
+Date: 2026-10-12T02:19:05+05:30
+Subject: feat(cfo): connect cfo.ai per user and give the CFO agent its MCP tools
+Entire-Checkpoint: 01M4PBKW1HM4WBV48C698N5W3Q
+
+Commit: a3ad139f72cb16bdb0b0a539722ef0e07e41fc14
+Date: 2026-10-12T02:22:02+05:30
+Subject: feat(web): add connect cfo.ai button and status
+Entire-Checkpoint: 01M4PBS9DKGMNJ15TRE30TTM61
+
+Commit: 7cb7fc36cbe3abab8f38ec2a49ba0553b27f72c0
+Date: 2026-10-12T02:23:17+05:30
+Subject: refactor(agents): rename agent display names to bots
+Entire-Checkpoint: 01M4PBVHRBEBBSXSBGP0P4F2QZ
+
+Commit: 5ca328c6e7fd8edf16f75e2a78e60ba8e77de2a1
+Date: 2026-10-12T02:27:54+05:30
+Subject: refactor(agents): rename Success Bot to Customer Success Bot
+Entire-Checkpoint: 01M4PC40N0K14EVHZAVV5GNKRF
+
+Commit: d6daf92b13d8c9505378cb73a144a401a581f51e
+Date: 2026-10-12T02:28:59+05:30
+Subject: feat(cfo): exclude risky cfo.ai tools from the CFO bot
+Entire-Checkpoint: 01M4PC60MKEN0BK5NTKDNZ3D68
+
+Commit: 168be343978e16346547500c466b7fffde20a578
+Date: 2026-10-12T03:22:51+05:30
+Subject: feat(neatlogs): scope neat bot traces to the user for non-admins
+Entire-Checkpoint: 01M4PF8KYB80282EEQY25FJSP7
+
+Commit: ab646317d8a99213e65bb1d10b16d490f928af94
+Date: 2026-10-12T04:15:24+05:30
+Subject: feat(usage): enforce per-turn cost and token caps per user and agent
+Entire-Checkpoint: 01M4PJ8VV04W3JGBEW1TGFBQJ9
+
+Commit: 9ac6da501b6f976552a716a9f0efc159057a3104
+Date: 2026-10-12T04:19:29+05:30
+Subject: feat(web): show per-turn usage and caps under the bot pill
+Entire-Checkpoint: 01M4PJGB4DT4RE7RS87DS3R6C8
+
+Commit: 9fcc381e451756df1b98ab02b6f263ef7f6f7c43
+Date: 2026-10-12T04:55:07+05:30
+Subject: feat(usage): show neatlogs cost for each turn next to our estimate
+Entire-Checkpoint: 01M4PMHJEPJPG3C23750J312QW
+
+Commit: 1884456ad41cb4dcb04b56afb01b563f67c07ea9
+Date: 2026-10-12T10:05:26+05:30
+Subject: feat(usage): price cached input tokens at deepseek's cache-hit rate
+Entire-Checkpoint: 01M4Q69RYSS3PGKN5Z7WJHV717
+
+Commit: c1ddc78731c2cd21e9d497ac7850f0868f8e804e
+Date: 2026-10-12T10:43:18+05:30
+Subject: feat(web): link neatlogs usage to the turn's trace page
+Entire-Checkpoint: 01M4Q8F3VZEYYGMW3KA00XM6A6
+
+Commit: 3d8974d7712ee09d9c545a83126c046f7b8e97ac
+Date: 2026-10-12T11:50:43+05:30
+Subject: feat(auth): sync users with seed-users.json
+Entire-Checkpoint: 01M4QCAJP370TNADQ0D42PED98
+
+Commit: e74d4d6a9a1890cff73cabf4fb9509c7d4a93d04
+Date: 2026-10-12T11:50:46+05:30
+Subject: fix(web): allow ngrok hosts in the vite dev server
+Entire-Checkpoint: 01M4QCANAMH1ZQCW26G8Y6J2GS
+
+Commit: 452ef5761cc98bea90c361ff0c149e766c18ac17
+Date: 2026-10-12T11:50:48+05:30
+Subject: chore(brand): rename the app to Bot Company and trim notices
+Entire-Checkpoint: 01M4QCAPY4QA99NPKVM8N7Z3SX
+
+Commit: 1f8504cbab7c8d0ed515a428d3411832eac36e35
+Date: 2026-10-12T12:08:31+05:30
+Subject: feat(site): add Bot Company landing and judges pages
+Entire-Checkpoint: 01M4QDB5P4TKW7TJ279WYXNE60
+
+Commit: 44225e92c509f0a59d149b436daaf1733aec4871
+Date: 2026-10-12T12:29:55+05:30
+Subject: feat(demo): add lumen labs mock company dataset
+Entire-Checkpoint: 01M4QEJB28HTP0SXDQZQTD8831
+
+Commit: 9d8f92927f7fa37a78de05cf1a5fcd74fa2f7173
+Date: 2026-10-12T12:50:28+05:30
+Subject: feat(agents): add read-only shared company context tools
+Entire-Checkpoint: 01M4QFQYRAN2TESTNDVPHH0R5A
+
+Commit: a114929be8aa03c18a7a34afb0c4e5ff27e91111
+Date: 2026-10-12T12:57:35+05:30
+Subject: feat(agents): ground specialists in company records
+Entire-Checkpoint: 01M4QG509QMG2AKQ3KJSQ0JZAQ
+
+Commit: 030a0a75026ba18d11492ffcad90e62325260273
+Date: 2026-10-12T13:21:52+05:30
+Subject: feat(usage): mark capped turns as errors in neatlogs traces
+Entire-Checkpoint: 01M4QHHF20ZKNXDC7W1S1K58S6
+
+Commit: 729df669ae1b23c294286bc33eeb3be763ce0233
+Date: 2026-10-12T13:37:16+05:30
+Subject: feat(usage): offer a one-time budget extension when a turn is capped
+Entire-Checkpoint: 01M4QJDNMAYES40487HGRGPDMZ
+
+Commit: f3f783d7252dc6f0170774856008f2204cd39008
+Date: 2026-10-12T13:37:18+05:30
+Subject: feat(web): show an Approve/Deny escalation card on capped replies
+Entire-Checkpoint: 01M4QJDQ5AX3B2A2GM7R0CR8CK
+
+Commit: 8887e9ba75daabceb339b35193ccd7c66c518ec1
+Date: 2026-10-12T14:21:25+05:30
+Subject: fix(agents): reuse company facts in delegated briefs
+Entire-Checkpoint: 01M4QMYG0STA2ZQR90286XF297
+
+Commit: 6a90ff9359a7fcb83ad2491d395a629be48e00f1
+Date: 2026-10-12T14:22:10+05:30
+Subject: fix(usage): preserve empty capped replies and show continuation budgets
+Entire-Checkpoint: 01M4QMZVXWXKFYB8569FRC5FH4
+
+Commit: 88bc67c5aaa14a6299ee5115ebff9bc8ec1ab633
+Date: 2026-10-12T14:22:23+05:30
+Subject: docs(demo): record Northwind benchmarks and recovery verification
+Entire-Checkpoint: 01M4QN0989R1KA8M2ZSBDSX7H5
+
+Commit: 24b0a60d5093c948eab49a1602540a039a4aa88f
+Date: 2026-10-12T14:32:03+05:30
+Subject: docs(demo): preserve titled Northwind proof screenshots
+Entire-Checkpoint: 01M4QNHZBBACCMDZGYF6S8TQ80
