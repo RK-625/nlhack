@@ -3,8 +3,21 @@
   "checkpoint_id": "01M4QTS67DGT91JTM6B5QCH3KS",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
-  "files_touched": null,
+  "checkpoints_count": 4,
+  "files_touched": [
+    "docs/demo/entire-checkpoints.md",
+    "docs/demo/evidence/2026-10-12/24-entire-checkpoint-8887e9ba.txt",
+    "docs/demo/evidence/2026-10-12/25-entire-checkpoints-key-commits.txt",
+    "docs/demo/evidence/2026-10-12/26-entire-checkpoint-trailers-and-refs.txt",
+    "docs/demo/evidence/2026-10-12/README.md",
+    "docs/demo/evidence/2026-10-12/SHA256SUMS.txt",
+    "docs/demo/northwind-cap-escalation.md",
+    "site/public/evidence/2026-10-12/24-entire-checkpoint-8887e9ba.txt",
+    "site/public/evidence/2026-10-12/25-entire-checkpoints-key-commits.txt",
+    "site/public/evidence/2026-10-12/26-entire-checkpoint-trailers-and-refs.txt",
+    "site/public/evidence/2026-10-12/README.md",
+    "site/public/evidence/2026-10-12/SHA256SUMS.txt"
+  ],
   "sessions": [
     {
       "metadata": "/0/metadata.json",
@@ -12,6 +25,13 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": ""
     }
   ],
   "token_usage": {
