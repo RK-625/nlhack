@@ -342,3 +342,17 @@ export async function getTraceMetrics(traceId: string): Promise<TraceMetrics | n
     outputTokens,
   };
 }
+
+/** The Neatlogs org and project the API key belongs to (from the MCP `whoami` tool), or null. */
+export async function getNeatlogsProject(): Promise<{ orgId: string; projectId: string } | null> {
+  const tool = (await getAllNeatlogsTools())[`${TOOL_KEY_PREFIX}whoami`];
+  if (!tool?.execute) return null;
+  try {
+    const parsed = parseResult(await tool.execute({} as never, {} as ExecuteContext));
+    if (!isRecord(parsed)) return null;
+    const { org_id: orgId, project_id: projectId } = parsed;
+    return typeof orgId === "string" && orgId && typeof projectId === "string" && projectId ? { orgId, projectId } : null;
+  } catch {
+    return null;
+  }
+}

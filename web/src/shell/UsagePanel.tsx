@@ -1,10 +1,12 @@
 // Per-turn usage row under the chat header pill: the latest turn's cost and tokens against the
 // user's caps for this agent (our estimate, which the caps use), Neatlogs' own numbers for the
 // turn's trace once they arrive, and an inline editor for the caps.
-import { useId, useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { type ReactNode, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { AgentCaps } from "@/hooks/useAgentCaps";
+import { useTraceLink } from "@/hooks/useTraceLink";
 import { cn } from "@/lib/utils";
 import {
   formatTokens,
@@ -74,20 +76,37 @@ function UsageBar({
  * "checking Neatlogs…" while the server waits for the trace, then the numbers, or "not available
  * yet" when Neatlogs had no finalized trace in time.
  */
+/** Opens the trace in a new tab; plain text when no link template is configured. */
+function TraceLink({ href, children }: { href: string | null; children: ReactNode }) {
+  if (!href) return <>{children}</>;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 rounded-sm underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {children}
+      <ExternalLink aria-hidden className="size-3 shrink-0" />
+    </a>
+  );
+}
+
 function NeatlogsLine({ usage, neatlogs }: { usage: TurnUsage; neatlogs: NeatlogsUsage }) {
   const title = `Neatlogs trace ${neatlogs.traceId}`;
+  const href = useTraceLink(neatlogs.traceId);
   if (neatlogs.status === "pending") {
     return (
       <div data-testid="neatlogs-usage" data-status="pending" title={title} className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
         <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60" style={{ animation: "rkPulse 1.2s ease-in-out infinite" }} />
-        <span>Checking Neatlogs…</span>
+        <TraceLink href={href}>Checking Neatlogs…</TraceLink>
       </div>
     );
   }
   if (neatlogs.status === "unavailable" || neatlogs.costUsd === undefined || neatlogs.tokens === undefined) {
     return (
       <div data-testid="neatlogs-usage" data-status="unavailable" title={title} className="text-[12px] text-muted-foreground">
-        Neatlogs: not available yet
+        <TraceLink href={href}>Neatlogs: not available yet</TraceLink>
       </div>
     );
   }
@@ -102,7 +121,9 @@ function NeatlogsLine({ usage, neatlogs }: { usage: TurnUsage; neatlogs: Neatlog
         Est. {formatUsd(usage.costUsd)} · {formatTokens(usage.tokens)}
       </span>
       <span className="tabular-nums text-foreground/85">
-        Neatlogs {formatUsd(neatlogs.costUsd)} · {formatTokens(neatlogs.tokens)} tokens
+        <TraceLink href={href}>
+          Neatlogs {formatUsd(neatlogs.costUsd)} · {formatTokens(neatlogs.tokens)} tokens
+        </TraceLink>
       </span>
     </div>
   );

@@ -5,6 +5,7 @@ import { requireUser } from "./auth/session";
 import { cfoConfigError } from "./cfo/oauth";
 import { handleCfoCallback, handleCfoConnect, handleCfoDisconnect, handleCfoStatus } from "./cfo/routes";
 import { cfoDb } from "./cfo/store";
+import { getTraceUrlTemplate } from "./neatlogs/trace-link";
 import { handleChat, handleChatHistory, handleNeatlogsUsage, listAgents, sendJson } from "./chat-api";
 import { capsDb } from "./usage/caps";
 import { handleAgentCaps } from "./usage/routes";
@@ -49,6 +50,18 @@ const server = http.createServer(async (req, res) => {
     const user = await requireUser(req, res);
     if (!user) return;
     sendJson(res, 200, { user });
+    return;
+  }
+
+  // URL template for opening a turn's Neatlogs trace (no secrets)
+  if (url.pathname === "/api/neatlogs/trace-link") {
+    if (req.method !== "GET") {
+      res.writeHead(405, { allow: "GET" }).end();
+      return;
+    }
+    const user = await requireUser(req, res);
+    if (!user) return;
+    sendJson(res, 200, { template: await getTraceUrlTemplate() });
     return;
   }
 
