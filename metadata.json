@@ -1,0 +1,38 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4RCS2Y5950KAH93NGXA9KHG",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "video/.gitignore",
+    "video/package.json",
+    "video/scripts/render-stills.mjs",
+    "video/src/Main.tsx",
+    "video/src/Root.tsx",
+    "video/src/audio/Soundtrack.tsx",
+    "video/src/components/BlurInText.tsx",
+    "video/src/components/Mascot.tsx",
+    "video/src/components/ScenePlaceholder.tsx",
+    "video/src/data/evidence.ts",
+    "video/src/lib/expressions.ts",
+    "video/src/scenes/Scene05Guardrails.tsx",
+    "video/src/timeline.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 576882,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 26537600,
+    "output_tokens": 63703,
+    "api_call_count": 188
+  }
+}
