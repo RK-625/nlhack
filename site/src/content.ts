@@ -319,8 +319,24 @@ export const comparison: {
 
 export type Post = { date: string; title: string; url: string };
 
-/** Posts tagged #neatHack. */
-export const posts: Maybe<Post[]> = todo("TODO: built-in-public posts (date, title, url)");
+/** Posts from @rk625dev during the hackathon. The tags on the posts are #neatlogs and #neathacks. */
+export const posts: Post[] = [
+  {
+    date: "2026-10-10",
+    title: "Locked the stack with neatlogs and Entire",
+    url: "https://x.com/rk625dev/status/2108870591029850518",
+  },
+  {
+    date: "2026-10-10",
+    title: "Cooking with neatlogs",
+    url: "https://x.com/rk625dev/status/2109049238357426319",
+  },
+  {
+    date: "2026-10-11",
+    title: "An agent team for startups, plus Neat Bot",
+    url: "https://x.com/rk625dev/status/2109396835257467109",
+  },
+];
 
 /* ================================================================ judges */
 
@@ -443,8 +459,8 @@ export const evidence: Criterion[] = [
     short: "Built in public",
     criterion: "Built in public (posts tagged #neatHack)",
     badge: "Public",
-    proof: todo("TODO: number of posts"),
-    links: [{ href: todo("TODO: link to posts"), label: "Posts" }],
+    proof: "Three posts on X from @rk625dev on 10 and 11 October 2026. The tags on the posts are #neatlogs and #neathacks. They lock the stack with neatlogs and Entire, show the work in progress, and describe the startup agent team with Neat Bot reading the other bots' traces and cost.",
+    links: posts.map((post) => ({ href: post.url, label: post.title })),
   },
   {
     id: "commits",

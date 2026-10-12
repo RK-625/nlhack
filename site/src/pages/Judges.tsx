@@ -133,7 +133,6 @@ function CriterionSection({ item }: { item: Criterion }) {
       {item.id === "improved" && <ImprovementStats />}
       {item.id === "entire" && <EntireCheckpoint />}
       {item.id === "commits" && <CommitHistory />}
-      {item.id === "public" && <Show value={item.proof} />}
       {item.shots && <Gallery name={titles[item.id] ?? item.short} shots={item.shots} />}
       {item.links && (
         <p className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
