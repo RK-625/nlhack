@@ -9,13 +9,13 @@ import { dataDir } from "../data-dir";
  * never from client input. Delegated sub-agents receive a copy of the caller's RequestContext, so
  * they resolve the same folder.
  */
-export const WORKSPACE_USER_KEY = "nlhack.workspaceUserId";
+export const WORKSPACE_USER_KEY = "botcompany.workspaceUserId";
 
 /**
  * RequestContext key holding the signed-in user's role ("admin" | "employee"). Set only by the
  * server (src/chat-api.ts) next to WORKSPACE_USER_KEY, never from client input; absent for the CLI.
  */
-export const USER_ROLE_KEY = "nlhack.userRole";
+export const USER_ROLE_KEY = "botcompany.userRole";
 
 /** Folder used when no user is in the RequestContext: the CLI (`npm start`) and `mastra dev`. */
 const LOCAL_FOLDER = "local";

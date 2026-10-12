@@ -14,7 +14,7 @@ const res = await fetch(authServer.registration_endpoint, {
   method: "POST",
   headers: { "content-type": "application/json", accept: "application/json" },
   body: JSON.stringify({
-    client_name: "nlhack CFO Bot",
+    client_name: "Bot Company CFO Bot",
     redirect_uris: [redirectUri],
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],

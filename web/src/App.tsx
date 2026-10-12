@@ -16,7 +16,7 @@ import { ChatPane } from "@/shell/ChatPane";
 import { CfoReturnNotice } from "@/shell/CfoConnect";
 import { Sidebar, type SidebarSearch } from "@/shell/Sidebar";
 
-const ACTIVE_KEY = "nlhack.activeAgent";
+const ACTIVE_KEY = "botcompany.activeAgent";
 
 function readPref(key: string): string | null {
   try {

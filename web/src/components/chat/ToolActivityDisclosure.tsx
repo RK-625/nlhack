@@ -10,7 +10,7 @@ import { formatToolActivityDuration, toolStepCount } from "@/lib/tool-activity-v
 /** Step rows slide in as tools start and out when the live window moves past them. */
 const stepRow = symmetric({ y: DISTANCE.sm }, DURATION.fast);
 
-/** `status` overrides the currentIndex-based icon (nlhack: per-step state from AI SDK tool parts). */
+/** `status` overrides the currentIndex-based icon (Bot Company: per-step state from AI SDK tool parts). */
 export type ToolStep = { label: string; count: number; status?: "running" | "done" | "error" | "denied" };
 
 /** A run's tool steps (rakazo's `steps` message block shape). */
@@ -91,7 +91,7 @@ export function ToolSteps({
 
 /**
  * The tool-activity card. It starts open while the run is live and folds when the run
- * ends (nlhack: a height-auto Collapse replaces rakazo's <details> so opening and closing
+ * ends (Bot Company: a height-auto Collapse replaces rakazo's <details> so opening and closing
  * animate symmetrically). A manual toggle during the run holds until `live` changes.
  */
 export function ToolActivityDisclosure({

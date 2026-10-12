@@ -47,7 +47,7 @@ export function LoginPage({ onSignedIn }: { onSignedIn?: () => void }) {
         animate="visible"
         className="w-full max-w-[360px] rounded-2xl border border-border bg-card p-6 text-card-foreground"
       >
-        <h1 className="text-[17px] font-semibold tracking-tight text-foreground">nlhack</h1>
+        <h1 className="text-[17px] font-semibold tracking-tight text-foreground">Bot Company</h1>
         <p className="mt-1 text-[13px] text-muted-foreground">Sign in to continue.</p>
 
         <form onSubmit={submit} className="mt-6 flex flex-col gap-4">

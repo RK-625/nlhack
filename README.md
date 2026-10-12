@@ -1,6 +1,6 @@
-# NeatLogs Hackathon Project
+# Bot Company
 
-This project is being developed for the **NeatLogs Hackathon**.
+Built for neatHack 2026 (neatlogs, Entire, cfo.ai).
 
 ## Problem Statement
 
@@ -32,6 +32,8 @@ Copy `.env.example` to `.env` and fill in the provider and integration credentia
 - `npm run serve` — start the web UI and API server (port 3000 by default). `GET /health` returns `{ "status": "ok" }`.
 - `npm run dev` — open the Mastra development environment.
 - `npm run typecheck` — check TypeScript.
+- `npm run seed` — sync users with `seed-users.json` (copy `seed-users.example.json`). Listed users that do not exist are created; existing ones are kept untouched (password, chats, files and caps are never changed).
+  Users in the database but not in the file are listed and removed only after you confirm (`Remove these N user(s) and all their data? [y/N]`), together with their sessions, chats, file folder, usage caps, cfo.ai connection and trace ownership. Without a terminal, removal needs `npm run seed -- --yes`; `--dry-run` only prints what would be created, kept and removed. Removal is refused if the file has no `admin` user.
 
 ## cfo.ai connection
 
@@ -70,3 +72,7 @@ Set `NEATLOGS_API_KEY` in `.env` to your Neatlogs project ingest key, then resta
 Open https://app.neatlogs.com and select the project matching your key. Open its traces view and find the `cli.request` run. The terminal prints the exact `traceId` for each request; use it to identify the run. Expand the agent/model/tool spans to inspect each step. Agent/model/tool tracing captures conversation content and tool results.
 
 `npx neatlogs doctor --local --json` validates the local SDK pipeline without credentials or network calls. `node --env-file=.env node_modules/neatlogs/dist/cli.mjs doctor --probe --json` sends generated diagnostic spans to your configured project and checks their persisted trace. It does not call an LLM. CLI requests explicitly flush at shutdown; the long-running server uses SDK batching and signal shutdown handlers.
+
+## Credits
+
+The look and feel is inspired by Grok bot, and the UI was built with help from looking at Grok's UI and design.

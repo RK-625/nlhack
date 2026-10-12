@@ -6,7 +6,7 @@ import { dataDir } from "../data-dir";
 import { roles } from "./roles";
 
 export const auth = betterAuth({
-  appName: "nlhack",
+  appName: "Bot Company",
   secret: process.env.BETTER_AUTH_SECRET,
   baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
   database: new Database(resolve(dataDir(), "auth.db")),

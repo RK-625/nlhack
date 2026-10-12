@@ -2,7 +2,7 @@ import { init, log, trace } from "neatlogs";
 import { recordTraceOwners } from "./neatlogs/trace-owners";
 
 export const telemetryReady = init({
-  workflowName: "nlhack",
+  workflowName: "bot-company",
   apiKey: process.env.NEATLOGS_API_KEY,
   captureLogs: true,
   debug: process.env.NEATLOGS_DEBUG === "true",

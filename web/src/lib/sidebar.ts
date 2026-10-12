@@ -35,10 +35,10 @@ export function groupAgents(agents: AgentSummary[]): { primary: AgentSummary[]; 
   };
 }
 
-const WIDTH_KEY = "nlhack.sidebarWidth";
-const COMPACT_KEY = "nlhack.sidebarCompact";
+const WIDTH_KEY = "botcompany.sidebarWidth";
+const COMPACT_KEY = "botcompany.sidebarCompact";
 /** Pre-rail preference ("hidden" sidebar); now maps to the compact rail. */
-const LEGACY_COLLAPSED_KEY = "nlhack.sidebarCollapsed";
+const LEGACY_COLLAPSED_KEY = "botcompany.sidebarCollapsed";
 
 function read(key: string): string | null {
   try {

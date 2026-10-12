@@ -622,7 +622,7 @@
 }
 
 /*
- * nlhack: symmetric Base UI overlay motion. Popups get data-open / data-closed; tw-animate's
+ * Bot Company: symmetric Base UI overlay motion. Popups get data-open / data-closed; tw-animate's
  * `enter` keyframe starts from the --tw-enter-* offsets and `exit` ends at the --tw-exit-*
  * offsets. Fade and zoom were already paired (fade-in-0/fade-out-0, zoom-in-95/zoom-out-95),
  * but only the enter had the per-side slide (data-[side=*]:slide-in-from-*), so closes skipped

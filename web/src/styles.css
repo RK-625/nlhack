@@ -5,7 +5,7 @@
 
 
 /*
- * nlhack motion tokens; keep in sync with src/lib/motion.ts. --ease-exit is the exact
+ * Bot Company motion tokens; keep in sync with src/lib/motion.ts. --ease-exit is the exact
  * time-reverse of --ease-enter, so an exit replays its enter backwards; --ease-standard
  * mirrors itself, for two-way CSS state changes (hover, focus).
  */

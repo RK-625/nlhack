@@ -8,7 +8,7 @@ import { estimateCostUsd } from "./pricing";
  * (src/chat-api.ts). Delegated sub-agents get a shallow copy of the caller's RequestContext, so
  * they see the same TurnBudget object and their model calls count toward the same turn.
  */
-export const TURN_BUDGET_KEY = "nlhack.turnBudget";
+export const TURN_BUDGET_KEY = "botcompany.turnBudget";
 
 export type CapReason = "cost" | "tokens";
 

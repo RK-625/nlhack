@@ -275,7 +275,7 @@ export function ExpandedPanel({ agents, rows, activeKey, onSelect, onNewChat, se
                 exit="hidden"
                 className="min-w-0 flex-1 truncate ps-1.5 text-[15px] font-semibold tracking-tight text-foreground"
               >
-                nlhack
+                Bot Company
               </m.span>
             )}
           </AnimatePresence>

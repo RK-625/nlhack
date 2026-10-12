@@ -5,7 +5,7 @@ export type AppearancePreference = (typeof APPEARANCE_PREFERENCES)[number];
 
 export type ResolvedAppearance = "light" | "dark";
 
-export const UI_APPEARANCE_STORAGE_KEY = "nlhack.uiAppearance";
+export const UI_APPEARANCE_STORAGE_KEY = "botcompany.uiAppearance";
 
 /**
  * Semantic palette shared by web, Electron, and Expo. Names follow the shadcn
