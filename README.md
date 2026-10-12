@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/982c7046-d67e-4c19-b1da-8071a247ad00
+
 # Bot Company
 
 An AI startup team: a Primary Bot that delegates to specialist agents, with an approval for every change. Built for neatHack 2026.
