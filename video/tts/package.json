@@ -1,0 +1,15 @@
+{
+  "name": "bot-company-vo-tts",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Local Kokoro-82M voiceover generator for the Bot Company launch video",
+  "scripts": {
+    "generate": "node generate.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "3.8.1",
+    "kokoro-js": "1.2.1",
+    "phonemizer": "1.2.1"
+  }
+}
