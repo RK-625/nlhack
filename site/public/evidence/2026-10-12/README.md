@@ -18,8 +18,49 @@ real customer credit being issued.
 
 Screenshots 01-04 are actual app captures. Screenshots 05-07 are explicitly
 labeled reports rendered from saved JSON, **not Neatlogs dashboard screenshots**.
-The dashboard required sign-in in the capture browser. No dashboard screenshot
-or live approved-answer screenshot has been fabricated or reconstructed.
+Real Neatlogs dashboard screenshots (17, 18) and the live approved answer (16)
+are in the "Live run" section below; nothing has been fabricated or reconstructed.
+
+## Live run: cap → Approve (public app, 15:52 IST)
+
+Real captures from the public app on 12 October 2026, plus real Neatlogs
+dashboard screenshots of the two resulting traces. This is **not** the Northwind
+renewal question: the user asked the Primary Bot (typed as written) "can make a
+check the coo bot with these data about can expand the business here and what is
+the current business situation in us". The Primary Bot noted there is no COO bot,
+read it as US expansion plus the current US picture, and delegated to the
+Research Bot and CFO Bot. The per-message caps were $0.03 and 300k tokens.
+
+| File | Title | What it proves |
+|---|---|---|
+| [15-live-capped-turn-usage-token-cap.png](15-live-capped-turn-usage-token-cap.png) | Live: Capped Turn Usage | Cost $0.026 / $0.03 but tokens 302k / 300k (red): the **token** cap, not the cost cap, stopped the turn. "Neatlogs: not available yet" means the trace was not finalized when the app checked, not that it was missing. Tooltip trace `bbb3239517e0bcbe0ff9eed8e9309a5d`. |
+| [16-live-approved-answer-continuation-budget.png](16-live-approved-answer-continuation-budget.png) | Live: Approved Answer and Continuation Budget | After Approve the answer completed. Usage $0.034 / $0.05 and 167k / 454k (the one-time continuation budget); the Neatlogs link reads $0.034 and 167k tokens, matching the app's estimate. Trace `3c670bab3ed85e64a42acdc15513ca20`. |
+| [17-neatlogs-capped-trace-error.png](17-neatlogs-capped-trace-error.png) | Neatlogs: Capped Trace | Real dashboard: `web.request` ERROR, "Execution Failed", 14 steps, 4m 27.5s. The Research Bot made 7 LLM calls, then the CFO Bot span lasted 11 ms (blocked by the cap before its first model call). "Ended with error". |
+| [18-neatlogs-approved-continuation-trace.png](18-neatlogs-approved-continuation-trace.png) | Neatlogs: Approved Continuation | Real dashboard: input "Continuation: From: bbb3239517e0bcbe0ff9eed8e9309a5d, Decision: approved"; 11 steps, 2m 11.3s, normal finish with the answer as output. |
+| [19-live-us-expansion-question-running-cost-cap.png](19-live-us-expansion-question-running-cost-cap.png) | Live: Question Running | The question above, the Research Bot and CFO Bot delegations in progress, and the $0.03 / 300k caps in the popover ($0.017 / 138k at this point). |
+| [20-live-token-usage-approaching-cap.png](20-live-token-usage-approaching-cap.png) | Live: Tokens Approaching Cap | Same turn at $0.024 / $0.03 and 254k / 300k, still delegating. |
+| [21-live-cap-card-approved-continuing.png](21-live-cap-card-approved-continuing.png) | Live: Cap Card Approved | "This reply hit its 300k token limit after 302k. Finishing needs about $0.05 more." with "Approved: one-time extension granted", and the Primary Bot thinking again. |
+| [22-live-approved-answer-us-situation-table.png](22-live-approved-answer-us-situation-table.png) | Live: Approved Answer, US Situation | Top of the completed answer with the Neatlogs link ($0.034, 167k) beside the estimate. It states the external market research returned no sourced data and marks what is supported by company records. |
+| [23-live-approved-answer-recommendation-gaps.png](23-live-approved-answer-recommendation-gaps.png) | Live: Approved Answer, Recommendation and Gaps | The recommendation and a "What I could not get" section listing missing external US market evidence and internal data gaps. |
+
+Trace links (may require access to the Neatlogs project):
+
+- [Capped turn `bbb3239517e0bcbe0ff9eed8e9309a5d`](https://app.neatlogs.com/traces/bbb3239517e0bcbe0ff9eed8e9309a5d?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
+- [Approved continuation `3c670bab3ed85e64a42acdc15513ca20`](https://app.neatlogs.com/traces/3c670bab3ed85e64a42acdc15513ca20?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
+
+Notes:
+
+- The capped turn was stopped by the token cap (302k / 300k) while cost was
+  $0.026 of $0.03. Approve granted a one-time continuation budget ($0.05 /
+  454k tokens); the continuation used $0.034 / 167k, and Neatlogs' cost and
+  tokens matched the app's estimate.
+- The guest-safe server runs with Crustdata disabled, so the Research Bot
+  returned no sourced external data, and the answer says so. This is an
+  environment limit, not a bug.
+- The answer's figures are not independently verified.
+- Screenshots 15-23 are unedited captures (PNG conversions of the originals);
+  other screenshots from the same session that showed the earlier Northwind
+  turn, or duplicated 17, were left out.
 
 ## Neat Bot: diagnose → fix → verify
 
@@ -86,7 +127,9 @@ node docs/demo/build-evidence.mjs
 
 ## Evidence Limits
 
-The browser checks establish execution and persistence. Some generated answers
+Real Neatlogs dashboard screenshots (17, 18) and a live approved-answer
+screenshot (16) now exist for the 15:52 IST run; they cover that run only, not
+the Northwind scenario. The browser checks establish execution and persistence. Some generated answers
 contain documented calculation and date errors, so they are not fully verified
 financial advice. Costs vary with routing and cache hits. After 1's dashboard
 trace was unavailable; its local SSE metrics are retained but not represented as

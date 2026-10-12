@@ -94,6 +94,8 @@ in the submission alongside the links.
 - [After 2: zero CFO file rereads](https://app.neatlogs.com/traces/b0392391b4829a49a483b6c101ee336b?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
 - [Browser verification: capped turn](https://app.neatlogs.com/traces/444a39d312df7bd2220b074992c306f9?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
 - [Browser verification: approved continuation](https://app.neatlogs.com/traces/c9c19ae1783c43f8ec075f82a8c653a5?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
+- [Live US-expansion run: capped turn (token cap)](https://app.neatlogs.com/traces/bbb3239517e0bcbe0ff9eed8e9309a5d?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
+- [Live US-expansion run: approved continuation](https://app.neatlogs.com/traces/3c670bab3ed85e64a42acdc15513ca20?orgId=43303629-c7cb-4d5f-89c8-732d78cf1761&projectId=3fa20372-340e-40a3-bed9-841c1a90c3e3)
 
 After 1's trace (`af34fd5b5156a22e441921fbf1db7602`) returned "Trace not found"
 when checked through MCP. Its local SSE evidence survives, but do not use that
