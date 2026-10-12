@@ -30,7 +30,7 @@ You chat with the Primary Bot (web UI or CLI), or directly with any specialist. 
 ## Partner tools
 
 - **neatlogs**: every agent is traced through `neatlogs/mastra`. Each reply shows a neatlogs cost and token line that links to its trace. Neat Bot reads traces through the neatlogs MCP. It diagnosed the failed Northwind run, and the fix cut tokens 26.8% (323,923 to 237,208); the run now succeeds. Neat Bot also analyzed cost across recent traces. Evidence: [neatlogs](https://bot-company.onrender.com/judges/#neatlogs), [Neat Bot](https://bot-company.onrender.com/judges/#neatbot).
-- **Entire**: coding sessions are recorded as checkpoints, and commits carry `Entire-Checkpoint:` trailers. 116 of 133 commits (as of 2026-10-13). Example: commit `8887e9ba` links to checkpoint `01M4QMYG0STA2ZQR90286XF297`. Evidence: [Entire](https://bot-company.onrender.com/judges/#entire), [checkpoint notes](docs/demo/entire-checkpoints.md).
+- **Entire**: coding sessions are recorded as checkpoints, and commits carry `Entire-Checkpoint:` trailers. 113 of 130 commits made during the hackathon (10–12 Oct 2026). Example: commit `8887e9ba` links to checkpoint `01M4QMYG0STA2ZQR90286XF297`. Evidence: [Entire](https://bot-company.onrender.com/judges/#entire), [checkpoint notes](docs/demo/entire-checkpoints.md).
 - **cfo.ai**: each user connects their own account over OAuth (PKCE). CFO Bot reads live workspace data, and edits need approval. After approval it wrote the Lumen Labs 12-month plan as a cfo.ai page. Evidence: [cfo.ai](https://bot-company.onrender.com/judges/#cfo).
 
 ## Run locally

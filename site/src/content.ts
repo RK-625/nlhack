@@ -261,7 +261,7 @@ export const partners: Partner[] = [
     name: "Entire",
     claims: [
       "Entire was enabled on day one; git hooks add an Entire-Checkpoint trailer to commits made in a recorded coding session.",
-      `84 of 101 commits carry a trailer (as of 2026-10-12). 79 Entire refs are pushed to the repository.`,
+      `113 of 130 commits carry a trailer (as of 2026-10-12). 107 of those checkpoints are pushed as Entire refs.`,
       "Checkpoint 01M4QMYG… for the fix commit 8887e9ba records the agent (Codex), the one file changed and its verification of the benchmark.",
     ],
     link: `${site.repoUrl}/commit/8887e9ba75daabceb339b35193ccd7c66c518ec1`,
@@ -373,16 +373,16 @@ export const posts: Post[] = [
 
 /* ================================================================ judges */
 
-/** Recounted from `git log` at HEAD on 2026-10-12 (see repo-checkpoints.txt). */
+/** Recounted from `git log` at the last commit of 12 Oct 2026, the end of the hackathon (dates in IST). */
 export const repoFacts = {
   asOf: "2026-10-12",
-  ref: "e01aee1f6ece270ce53427f18df3dc687c021b21",
-  commits: 101,
+  ref: "d751673a2a737e08c0ab8f947da096808e761391",
+  commits: 130,
   firstCommit: "2026-10-10",
   lastCommit: "2026-10-12",
-  perDay: "17 on 10 Oct, 45 on 11 Oct, 39 on 12 Oct",
-  checkpointTrailers: 84,
-  checkpointRefs: 79,
+  perDay: "17 on 10 Oct, 45 on 11 Oct, 68 on 12 Oct",
+  checkpointTrailers: 113,
+  checkpointRefs: 107,
 };
 
 export const bigNumbers = [
@@ -580,7 +580,7 @@ export const evidence: Criterion[] = [
 export const commitsPerDay = [
   { date: "2026-10-10", commits: 17 },
   { date: "2026-10-11", commits: 45 },
-  { date: "2026-10-12", commits: 39 },
+  { date: "2026-10-12", commits: 68 },
 ];
 
 /** Excerpts of the saved Entire CLI captures 24-26, unedited apart from line selection. */
