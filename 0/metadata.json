@@ -1,0 +1,108 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4Q8F3VZEYYGMW3KA00XM6A6",
+  "session_id": "b0a7dfca-cc13-4a47-a69a-5f56236eb1b9",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-12T05:13:20.038808Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".env.example",
+    "README.md",
+    "src/mastra/tools/neatlogs.ts",
+    "src/neatlogs/trace-link.ts",
+    "src/server.ts",
+    "web/src/hooks/useTraceLink.ts",
+    "web/src/shell/UsagePanel.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "2a11bdd31133",
+  "checkpoint_transcript_start": 985,
+  "transcript_lines_at_start": 985,
+  "compact_transcript_start": 218,
+  "token_usage": {
+    "input_tokens": 12,
+    "cache_creation_tokens": 14386,
+    "cache_read_tokens": 1964255,
+    "output_tokens": 3606,
+    "api_call_count": 6,
+    "subagent_tokens": {
+      "input_tokens": 10,
+      "cache_creation_tokens": 83471,
+      "cache_read_tokens": 292651,
+      "output_tokens": 89,
+      "api_call_count": 5
+    }
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01MuFVcd3qC2MQ9niLBDABWc",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "anthropic-skills:computer-use"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "14cb39fb2358",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 599,
+        "end": 600,
+        "entry_ids": [
+          "cced5f6f-7391-4b3a-8618-e3c27bfbe255"
+        ],
+        "tool_use_id": "toolu_01MuFVcd3qC2MQ9niLBDABWc"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01MuFVcd3qC2MQ9niLBDABWc"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: anthropic-skills:computer-use",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-12T05:13:19.900242Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 4,
+    "total_committed": 0,
+    "total_lines_changed": 4,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 116,
+      "user_lines_removed": 4,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".env.example": 2,
+        "README.md": 1,
+        "src/mastra/tools/neatlogs.ts": 14,
+        "src/neatlogs/trace-link.ts": 24,
+        "src/server.ts": 13,
+        "web/src/hooks/useTraceLink.ts": 37,
+        "web/src/shell/UsagePanel.tsx": 25
+      },
+      "user_removed_per_file": {
+        "web/src/shell/UsagePanel.tsx": 4
+      }
+    }
+  ]
+}

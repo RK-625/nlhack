@@ -1,0 +1,24 @@
+{
+  "tool_use_id": "toolu_01JJyqyaStC7qfgk48ZQGDuJ",
+  "agent_id": "a15373efe52f92654",
+  "subagent_type": "general-purpose",
+  "task_description": "Link Neatlogs usage to trace page",
+  "files": [
+    ".env.example",
+    "README.md",
+    "src/mastra/tools/neatlogs.ts",
+    "src/neatlogs/trace-link.ts",
+    "src/server.ts",
+    "web/src/hooks/useTraceLink.ts",
+    "web/src/shell/UsagePanel.tsx"
+  ],
+  "token_usage": {
+    "input_tokens": 10,
+    "cache_creation_tokens": 83471,
+    "cache_read_tokens": 292651,
+    "output_tokens": 89,
+    "api_call_count": 5
+  },
+  "started_at": "2026-10-12T10:43:10.530815+05:30",
+  "completed_at": "2026-10-12T10:43:10.531181+05:30"
+}
