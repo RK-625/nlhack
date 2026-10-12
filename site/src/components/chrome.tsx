@@ -1,6 +1,7 @@
 import { site } from "../content";
 import { BotAvatar } from "./avatar";
-import { Container, ExtLink, cx } from "./ui";
+import { GitHubLink } from "./github";
+import { Container, cx } from "./ui";
 
 export function Wordmark() {
   return (
@@ -41,6 +42,7 @@ export function Nav({ page }: { page: "home" | "judges" }) {
               </li>
             ))}
           </ul>
+          <GitHubLink className="size-9 justify-center rounded-full text-muted-fg transition-colors hover:bg-accent hover:text-fg" />
           <a
             href="/judges/"
             aria-current={page === "judges" ? "page" : undefined}
@@ -70,11 +72,11 @@ export function Footer() {
         </div>
         <ul className="flex flex-col gap-2 sm:items-end">
           <li>
-            Source code: <ExtLink href={site.repoUrl}>GitHub repo</ExtLink>
+            <GitHubLink className="text-fg">Source on GitHub</GitHubLink>
           </li>
           <li>
             <a href="/judges/" className="text-fg underline-offset-4 hover:underline">
-              Evidence for judges
+              For judges
             </a>
           </li>
         </ul>

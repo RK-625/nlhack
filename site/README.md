@@ -13,11 +13,11 @@ Its 31 PNGs and three JSON exports match the supplied files in
 `docs/demo/`; the report and Markdown links are adapted for public hosting.
 The folder includes a fresh SHA-256 manifest. Checkpoint counts are pinned to
 the commit stored in `repoFacts.ref`, so later commits do not invalidate them.
-The export lists checkpoint IDs, not private Entire session contents.
+The export lists checkpoint IDs; the public repository includes source code and commit trailers.
 
 The judges page presents the seven criteria as separate sections with inline
 screenshots. Entire uses saved CLI output; built-in-public awaits post links.
 Home uses the app avatar shapes, usage popover, approval and cap-card layouts.
 
 Still needed: demo video/chapters, the cfo.ai business plan, and #neatHack posts.
-The repository remains private.
+Source: [RK-625/nlhack](https://github.com/RK-625/nlhack).

@@ -1,5 +1,6 @@
 import { ArrowDown } from "lucide-react";
 import { Footer, Nav } from "../components/chrome";
+import { GitHubLink } from "../components/github";
 import { CopyCommand, Gallery } from "../components/media";
 import { Container, ExtLink, Section, Show } from "../components/ui";
 import {
@@ -16,6 +17,7 @@ import {
   proofReport,
   repoFacts,
   reproduce,
+  site,
   type Criterion,
 } from "../content";
 
@@ -112,7 +114,7 @@ function CommitHistory() {
           </div>
         ))}
       </div>
-      <p className="mb-4 text-sm text-muted-fg">Counts are pinned to snapshot {repoFacts.ref.slice(0, 8)}. These commands need access to the private repository.</p>
+      <p className="mb-4 text-sm text-muted-fg">Counts are pinned to snapshot <ExtLink href={`${site.repoUrl}/commit/${repoFacts.ref}`}>{repoFacts.ref.slice(0, 8)}</ExtLink>. Clone the public repository to run these checks.</p>
       <div className="grid gap-3 lg:grid-cols-2">
         {reproduce.map((command) => <CopyCommand key={command.label} {...command} />)}
       </div>
@@ -135,7 +137,9 @@ function CriterionSection({ item }: { item: Criterion }) {
       {item.shots && <Gallery name={titles[item.id] ?? item.short} shots={item.shots} />}
       {item.links && (
         <p className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
-          {item.links.map((link) => <ExtLink key={link.label} href={link.href}>{link.label}</ExtLink>)}
+          {item.links.map((link) => !isTodo(link.href) && link.href.startsWith(`${site.repoUrl}/`)
+            ? <GitHubLink key={link.label} href={link.href} className="text-link">{link.label}</GitHubLink>
+            : <ExtLink key={link.label} href={link.href}>{link.label}</ExtLink>)}
         </p>
       )}
     </Section>
@@ -158,7 +162,7 @@ function SupportingDetails() {
             {architecture.map((part) => (
               <div key={part.part} className="min-w-0">
                 <dt>{part.part}</dt>
-                <dd className="mt-1 break-words font-mono text-xs text-muted-fg">{part.file}</dd>
+                <dd className="mt-1 break-words font-mono text-xs text-muted-fg"><GitHubLink href={`${site.repoUrl}/blob/main/${part.file}`} className="max-w-full text-link"><span className="min-w-0 break-all">{part.file}</span></GitHubLink></dd>
               </div>
             ))}
           </dl>

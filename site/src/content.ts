@@ -35,7 +35,7 @@ export const site = {
     "Bot Company is a multi-agent company copilot built on Mastra. A Primary Bot delegates to specialists for research, finance, GitHub and observability. Every write waits for your approval, every turn has a cost cap, and every run is traced with neatlogs.",
   /** Public URL of this site, used for OG tags. */
   url: "https://bot-company.onrender.com" as Maybe<string>,
-  repoUrl: todo("Repo is private for now; public link when it opens") as Maybe<string>,
+  repoUrl: "https://github.com/RK-625/nlhack",
   credits:
     "Inspired by Grok bot. The UI was built with help from looking at Grok's UI and design.",
 };
@@ -257,11 +257,11 @@ export const partners: Partner[] = [
     name: "Entire",
     claims: [
       "Entire was enabled on day one; git hooks add an Entire-Checkpoint trailer to commits made in a recorded coding session.",
-      `84 of 101 commits carry a trailer (as of 2026-10-12). 79 Entire refs are pushed to the private origin.`,
+      `84 of 101 commits carry a trailer (as of 2026-10-12). 79 Entire refs are pushed to the repository.`,
       "Checkpoint 01M4QMYG… for the fix commit 8887e9ba records the agent (Codex), the one file changed and its verification of the benchmark.",
     ],
-    link: proofFile("24-entire-checkpoint-8887e9ba.txt"),
-    linkLabel: "Read the 8887e9ba checkpoint",
+    link: `${site.repoUrl}/commit/8887e9ba75daabceb339b35193ccd7c66c518ec1`,
+    linkLabel: "View the fix and checkpoint trailer on GitHub",
     excerpt: [
       "$ entire checkpoint explain --short 8887e9ba",
       "● Checkpoint 01M4QMYG0STA2ZQR90286XF297",
@@ -275,7 +275,7 @@ export const partners: Partner[] = [
       "Total:  6041.7k tokens",
       "  Input: 226.3k | Cache read: 5796.6k | Cache write: 0 | Output: 18.8k | API calls: 45",
     ].join("\n"),
-    caption: "Real CLI output (email redacted). The repo is private, so these text captures are the public record.",
+    caption: "Saved CLI output (email redacted). The source and commit trailers are also available on GitHub.",
   },
   {
     id: "cfo",
@@ -370,6 +370,7 @@ export const evidence: Criterion[] = [
       shot("06-northwind-before-after-benchmark-report.png", "Report rendered from the saved benchmark JSON (not a dashboard capture): three runs before, three after."),
     ],
     links: [
+      { href: `${site.repoUrl}/commit/8887e9ba75daabceb339b35193ccd7c66c518ec1`, label: "Prompt fix on GitHub" },
       { href: `${proofReport}#benchmark`, label: "Benchmark report" },
       { href: proofFile("northwind-benchmark.json"), label: "Raw benchmark JSON" },
     ],
@@ -397,8 +398,9 @@ export const evidence: Criterion[] = [
     short: "Entire",
     criterion: "Used Entire (checkpoints or entire-graph output)",
     badge: "In repo",
-    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer; ${repoFacts.checkpointRefs} Entire refs are on the private origin. The fix commit 8887e9ba maps to checkpoint 01M4QMYG…: Codex session, 6041.7k tokens, 45 API calls, one file changed. There are no Entire screenshots; below is saved CLI output (email redacted).`,
+    proof: `${repoFacts.checkpointTrailers} of ${repoFacts.commits} commits carry an Entire-Checkpoint trailer; ${repoFacts.checkpointRefs} Entire refs are pushed to the repository. The fix commit 8887e9ba maps to checkpoint 01M4QMYG…: Codex session, 6041.7k tokens, 45 API calls, one file changed. Inspect the commit on GitHub or read the saved CLI output below (email redacted).`,
     links: [
+      { href: `${site.repoUrl}/commit/8887e9ba75daabceb339b35193ccd7c66c518ec1`, label: "Commit and checkpoint trailer" },
       { href: proofFile("24-entire-checkpoint-8887e9ba.txt"), label: "8887e9ba checkpoint" },
       { href: proofFile("25-entire-checkpoints-key-commits.txt"), label: "Six key checkpoints" },
       { href: proofFile("26-entire-checkpoint-trailers-and-refs.txt"), label: "Trailers and refs" },
@@ -444,8 +446,11 @@ export const evidence: Criterion[] = [
     short: "Dated commits",
     criterion: "Code written during the hackathon (dated commits)",
     badge: "In repo",
-    proof: `${repoFacts.commits} commits, all dated ${repoFacts.firstCommit} to ${repoFacts.lastCommit}. The first commit is the README with the hackathon problem statement. The repo is private, so the full commit list with dates and checkpoint IDs is published as text.`,
-    links: [{ href: proofFile("repo-checkpoints.txt"), label: "Commit list with dates" }],
+    proof: `${repoFacts.commits} commits at the recorded snapshot, all dated ${repoFacts.firstCommit} to ${repoFacts.lastCommit}. The first commit is the README with the hackathon problem statement. Browse the public GitHub history or read the saved commit list with dates and checkpoint IDs.`,
+    links: [
+      { href: `${site.repoUrl}/commits/${repoFacts.ref}`, label: "Commit history on GitHub" },
+      { href: proofFile("repo-checkpoints.txt"), label: "Saved commit list with dates" },
+    ],
   },
 ];
 
@@ -528,13 +533,14 @@ export const knownLimits = [
   "neatlogs recorded no tool spans, so the 29 → 10 CFO file-read count comes from app logs. The cap reason is not exposed through the neatlogs MCP, so Neat Bot blamed an empty Sales Bot delegation instead of the cap.",
   "Some generated answers contain documented calculation and date errors, and their figures were not independently checked. This is not financial advice.",
   "The public guest server runs with Crustdata disabled, so Research Bot returned no sourced market data in the live run. The answer says so.",
-  "The repo and its Entire checkpoints are private. Three of the six key checkpoints record 0 tokens, and one transcript does not parse.",
+  "Three of the six key Entire checkpoints record 0 tokens, and one transcript does not parse.",
   "Customer Success, Legal, HR, Marketing and Sales have no tools yet. They work only from what you tell them.",
   "Caps use our own cost estimate. Usage is checked after model steps, so the last step can overshoot the cap.",
 ];
 
 export const reproduce = [
-  { label: "With repo access (private), from the repo root", cmd: `git checkout ${repoFacts.ref.slice(0, 8)}` },
+  { label: "Clone the public repository", cmd: `git clone ${site.repoUrl}.git\ncd nlhack` },
+  { label: "Check out the recorded snapshot", cmd: `git checkout ${repoFacts.ref.slice(0, 8)}` },
   { label: "First and last commit dates", cmd: `git log ${repoFacts.ref.slice(0, 8)} --reverse --format='%ad %s' --date=iso | sed -n '1p;$p'` },
   { label: "Commits per day", cmd: `git log ${repoFacts.ref.slice(0, 8)} --format=%ad --date=short | sort | uniq -c` },
   { label: "Count Entire checkpoint trailers", cmd: `git log ${repoFacts.ref.slice(0, 8)} --format=%B | grep -c '^Entire-Checkpoint:'` },
