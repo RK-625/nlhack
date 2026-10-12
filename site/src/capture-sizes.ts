@@ -139,5 +139,13 @@ export const captureSizes: Record<string, { width: number; height: number }> = {
   "39-cfoai-business-plan-collapsed.png": {
     "width": 1925,
     "height": 1250
-  }
+  },
+  "40-cfo-disconnected-existing-draft.png": {"width": 3020, "height": 1746},
+  "41-cfo-disconnected-existing-summary.png": {"width": 3024, "height": 1738},
+  "42-cfo-disconnected-existing-method.png": {"width": 3022, "height": 1740},
+  "43-cfo-disconnected-fresh-prompt.png": {"width": 3024, "height": 1740},
+  "44-cfo-disconnected-fresh-summary.png": {"width": 3024, "height": 1746},
+  "45-cfo-disconnected-fresh-scenarios.png": {"width": 3024, "height": 1738},
+  "46-cfo-disconnected-fresh-cash-hiring.png": {"width": 3024, "height": 1728},
+  "47-cfo-disconnected-fresh-actions.png": {"width": 3024, "height": 1734},
 };

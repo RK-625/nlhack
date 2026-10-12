@@ -21,3 +21,5 @@ Home uses the app avatar shapes, usage popover, approval and cap-card layouts.
 
 The home page plays `public/video/launch.mp4` (160 seconds / 2:40, 1920×1080, 30 fps). The 24-second opener demonstrates missing trace history, uncapped spend and duplicate retries in a labelled illustrative workflow. Primary Bot, Research, GitHub and CFO demonstrations follow, then Neat Bot role-aware investigation, measured results and Entire. The video URL is versioned to refresh browser caches. The MP4 is optimized for streaming with its metadata at the beginning. Built in public links four posts from @rk625dev. A YouTube upload remains optional.
 Source: [RK-625/nlhack](https://github.com/RK-625/nlhack).
+
+CFO evidence on `/judges/#cfo` compares the fresh disconnected file-based run (43–47) with the earlier approved cfo.ai MCP write (36–38). Interactive proof highlights retain the original captures. All eight new attachments (40–47) are archived with checksums; 40–42 are excluded from the featured baseline. See `../JUDGE.md`. No financial accuracy or speed advantage is claimed.

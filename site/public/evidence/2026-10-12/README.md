@@ -213,3 +213,24 @@ cfo.ai workspace with the plan text.
 The three requested scenarios (base case, Northwind churns, R-104 deferred)
 are not visible there. Shot 36 shows two finished `Cfo edit scenarios` calls
 without their result names.
+
+## CFO workflow comparison: fresh disconnected baseline and connected MCP write
+
+The latest baseline is 43–47. The user reports deleting the prior local draft before this run; deletion itself is not captured. Both the connect banner and the answer say cfo.ai is not connected. The answer saves `lumen-labs-12-month-plan.md`, shows company-file citations and assumptions, and exposes collapsed groups of 20 tools / 1m 27s and 1 tool / 19s. Tool identities are not independently visible in those collapsed groups.
+
+The earlier connected run is 36–38: named cfo.ai page/scenario tools, approval of `cfo_edit_pages`, and the resulting page #140 under Main Scenario. The page body cites company files; these captures do not independently establish that all numbers came from live financial models.
+
+This is a workflow comparison, not a controlled numerical-accuracy or latency benchmark: the connected prompt explicitly requested saving in cfo.ai and scenarios, while the latest prompt asks for a general plan. No accuracy winner is established. The fresh disconnected response claims $60,480 annual gross profit equals 2.4 months of burn; at about $300k monthly burn this is about 0.2 months. Preserve the erroneous output as evidence, not as a verified financial claim. The three requested cfo.ai scenario names remain unverified.
+
+Screenshots 40–42 preserve the earlier disconnected run that reused an existing draft. They are archived context, excluded from the featured comparison. All eight new PNGs are byte-for-byte copies of user attachments, with original dimensions; website highlights are HTML overlays and do not alter the originals.
+
+| Capture | Role |
+|---|---|
+| [40-cfo-disconnected-existing-draft.png](40-cfo-disconnected-existing-draft.png) | Archived existing-draft run |
+| [41-cfo-disconnected-existing-summary.png](41-cfo-disconnected-existing-summary.png) | Archived existing-draft run |
+| [42-cfo-disconnected-existing-method.png](42-cfo-disconnected-existing-method.png) | Archived existing-draft run |
+| [43-cfo-disconnected-fresh-prompt.png](43-cfo-disconnected-fresh-prompt.png) | Fresh disconnected prompt |
+| [44-cfo-disconnected-fresh-summary.png](44-cfo-disconnected-fresh-summary.png) | Fresh disconnected summary / connection disclosure |
+| [45-cfo-disconnected-fresh-scenarios.png](45-cfo-disconnected-fresh-scenarios.png) | Local scenario assumptions |
+| [46-cfo-disconnected-fresh-cash-hiring.png](46-cfo-disconnected-fresh-cash-hiring.png) | Local cash flow / hiring |
+| [47-cfo-disconnected-fresh-actions.png](47-cfo-disconnected-fresh-actions.png) | Actions / limitations / erroneous burn claim |

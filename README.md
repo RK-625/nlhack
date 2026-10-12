@@ -78,3 +78,7 @@ Open https://app.neatlogs.com and select the project matching your key. Open its
 ## Credits
 
 The look and feel is inspired by Grok bot, and the UI was built with help from looking at Grok's UI and design.
+
+## Judge evidence
+
+See [JUDGE.md](JUDGE.md) for the live judge site, the CFO disconnected/connected workflow comparison and screenshot provenance.

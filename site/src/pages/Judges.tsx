@@ -1,3 +1,4 @@
+import { CfoProof } from "../components/cfo-proof";
 import { ArrowDown } from "lucide-react";
 import { Footer, Nav } from "../components/chrome";
 import { GitHubLink } from "../components/github";
@@ -26,7 +27,7 @@ const titles: Record<string, string> = {
   improved: "Reducing agent cost and repeated work",
   neatlogs: "Tracing a failed run with neatlogs",
   entire: "Recording the code changes with Entire",
-  cfo: "Writing a business plan in cfo.ai",
+  cfo: "CFO Bot: without and with cfo.ai",
   recovery: "Finishing a capped run with user approval",
   public: "Sharing the build in public",
   commits: "Verifying when the hackathon code was written",
@@ -155,6 +156,7 @@ function CriterionSection({ item }: { item: Criterion }) {
       className="border-t border-line"
     >
       {item.id === "improved" && <ImprovementStats />}
+      {item.id === "cfo" && <CfoProof />}
       {item.steps && <ProcessSteps steps={item.steps} />}
       {item.id === "entire" && <EntireCheckpoint />}
       {item.id === "commits" && <CommitHistory />}
