@@ -3,19 +3,29 @@
   "checkpoint_id": "01M4RCS2Y5950KAH93NGXA9KHG",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     "video/.gitignore",
     "video/package.json",
+    "video/public/evidence/01-northwind-budget-extension-pending-desktop.png",
+    "video/public/evidence/19-live-us-expansion-question-running-cost-cap.png",
+    "video/public/evidence/20-live-token-usage-approaching-cap.png",
+    "video/public/evidence/21-live-cap-card-approved-continuing.png",
     "video/scripts/render-stills.mjs",
     "video/src/Main.tsx",
     "video/src/Root.tsx",
     "video/src/audio/Soundtrack.tsx",
     "video/src/components/BlurInText.tsx",
+    "video/src/components/Chip.tsx",
+    "video/src/components/Cursor.tsx",
+    "video/src/components/Headline.tsx",
     "video/src/components/Mascot.tsx",
     "video/src/components/ScenePlaceholder.tsx",
+    "video/src/components/UICard.tsx",
     "video/src/data/evidence.ts",
     "video/src/lib/expressions.ts",
+    "video/src/lib/usage-format.ts",
+    "video/src/scenes/Scene03Team.tsx",
     "video/src/scenes/Scene04RealWork.tsx",
     "video/src/scenes/Scene05Guardrails.tsx",
     "video/src/scenes/Scene08Diagnosis.tsx",
@@ -38,13 +48,20 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1321325,
-    "cache_creation_tokens": 0,
-    "cache_read_tokens": 46096512,
-    "output_tokens": 139091,
-    "api_call_count": 350
+    "input_tokens": 1321445,
+    "cache_creation_tokens": 281254,
+    "cache_read_tokens": 52899717,
+    "output_tokens": 184375,
+    "api_call_count": 404
   }
 }
