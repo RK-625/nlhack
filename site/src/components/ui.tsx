@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactNode } from "react";
-import { isTodo, type BotColor, type Maybe } from "../content";
+import type { ReactNode } from "react";
+import { isTodo, type Maybe } from "../content";
 
 export function cx(...parts: (string | false | null | undefined)[]) {
   return parts.filter(Boolean).join(" ");
@@ -54,44 +54,6 @@ export function ExtLink({
     >
       {children}
     </a>
-  );
-}
-
-/** A simple bot face: colored circle with two eyes. */
-export function BotFace({
-  color,
-  size = 40,
-  className,
-}: {
-  color: BotColor;
-  size?: number;
-  className?: string;
-}) {
-  const style = { width: size, height: size, background: `var(--bot-${color})` } as CSSProperties;
-  const eye = Math.max(4, Math.round(size * 0.2));
-  const pupil = Math.max(2, Math.round(eye * 0.45));
-  return (
-    <span
-      aria-hidden
-      style={style}
-      className={cx(
-        "relative inline-flex shrink-0 items-center justify-center gap-[14%] rounded-full shadow-[inset_0_-3px_0_rgb(0_0_0/0.15)]",
-        className,
-      )}
-    >
-      {[0, 1].map((i) => (
-        <span
-          key={i}
-          className="eye flex items-center justify-center rounded-full bg-white"
-          style={{ width: eye, height: eye, marginTop: -size * 0.06 }}
-        >
-          <span
-            className="rounded-full bg-[#0b0c0e]"
-            style={{ width: pupil, height: pupil, transform: "translate(15%, 10%)" }}
-          />
-        </span>
-      ))}
-    </span>
   );
 }
 

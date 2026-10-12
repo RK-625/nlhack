@@ -1,10 +1,11 @@
 import { site } from "../content";
-import { BotFace, Container, ExtLink, cx } from "./ui";
+import { BotAvatar } from "./avatar";
+import { Container, ExtLink, cx } from "./ui";
 
 export function Wordmark() {
   return (
     <a href="/" className="flex items-center gap-2.5 rounded-full" aria-label={`${site.name} home`}>
-      <BotFace color="orange" size={28} />
+      <BotAvatar agent="assistant" size={28} />
       <span className="text-[17px] font-semibold tracking-[-0.02em]">{site.name}</span>
     </a>
   );

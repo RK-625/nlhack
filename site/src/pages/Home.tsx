@@ -1,19 +1,19 @@
 import { Check, Minus, Play, X } from "lucide-react";
-import { ApprovalCard, Receipt } from "../components/cards";
+import { BotAvatar } from "../components/avatar";
+import { ApprovalCard, BotPill, CapCard, ToolActivity, UsagePopover } from "../components/cards";
 import { Footer, Nav } from "../components/chrome";
 import { ShotFrame, VideoEmbed } from "../components/media";
-import { BotFace, Button, Container, ExtLink, Section, Show, cx } from "../components/ui";
+import { Button, Container, ExtLink, Section, Show, cx } from "../components/ui";
 import {
-  approvalExample,
   bots,
   caps,
   comparison,
   demo,
   isTodo,
   partners,
-  proofThumb,
   posts,
-  receiptExample,
+  proofFile,
+  proofThumb,
   site,
   steps,
   type Mark,
@@ -25,9 +25,9 @@ function Hero() {
       <Container className="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
         <div>
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-sm text-muted-fg">
-            <span className="flex -space-x-1.5">
-              {(["orange", "blue", "green", "violet", "teal"] as const).map((c) => (
-                <BotFace key={c} color={c} size={18} className="ring-2 ring-bg" />
+            <span className="flex -space-x-1">
+              {(["assistant", "market-researcher", "cfo", "github", "neatlogs"] as const).map((a) => (
+                <BotAvatar key={a} agent={a} size={18} />
               ))}
             </span>
             Built for {site.hackathon}
@@ -54,45 +54,47 @@ function Hero() {
   );
 }
 
+/** A real turn from the public app (capture 21), rebuilt with the app's own bubble styles. */
 function HeroTranscript() {
-  const a = approvalExample;
   return (
-    <figure className="relative">
-      <div className="rounded-[1.75rem] border border-line bg-card/60 p-3 sm:p-4">
-        <ol className="seq space-y-3" aria-label="Example chat turn">
-          <li className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-accent px-4 py-3 text-[15px]">
-            Research Retool's competitors, then open an issue to track their pricing.
-          </li>
-          <li className="flex gap-3 px-1">
-            <BotFace color="orange" size={30} />
-            <div className="pt-1 text-[15px]">
-              <p className="font-medium">Primary Bot</p>
-              <p className="mt-1 text-muted-fg">
-                Sending the research to Research Bot and the issue to GitHub Bot.
-              </p>
-            </div>
-          </li>
-          <li className="flex items-center gap-3 rounded-xl bg-muted px-3 py-2.5 text-sm">
-            <BotFace color="blue" size={22} />
-            <span>Research Bot ran Crustdata company search and web search</span>
-            <Check aria-hidden className="ml-auto size-4 shrink-0 text-ok" />
+    <figure className="relative min-w-0">
+      <div className="rounded-[1.75rem] border border-line bg-bg p-3 shadow-[0_1px_0_rgb(0_0_0/0.03)] sm:p-4">
+        <div className="mb-3 flex justify-center">
+          <BotPill agent="assistant" name="Primary Bot" dot="working" />
+        </div>
+        <ol className="seq flex flex-col gap-2" aria-label="A real chat turn, abridged">
+          <li className="flex justify-end">
+            <p className="max-w-[84%] rounded-[20px] bg-chat-user px-[18px] py-3 text-[15px] leading-[1.45]">
+              can make a check the coo bot with these data about can expand the business here and what is the current
+              business situation in us
+            </p>
           </li>
           <li>
-            <ApprovalCard compact />
+            <p className="max-w-[92%] rounded-[20px] bg-muted px-[18px] py-3 text-[15px] leading-[1.5] text-fg/90">
+              Quick flag first: there's no "COO bot" in this workspace. The two that cover this are the{" "}
+              <strong>Research Bot</strong> (external/market view) and the <strong>CFO Bot</strong> (internal economics
+              of expansion).
+            </p>
           </li>
-          <li className="flex flex-wrap items-center gap-x-4 gap-y-1 px-1 text-xs text-muted-fg">
-            <span className="num">
-              Est. <Show value={receiptExample.estCostUsd}>{(n) => `$${n}`}</Show> for{" "}
-              <Show value={receiptExample.estTokens} /> tokens
-            </span>
-            <span className="num">Cap ${caps.costCapUsd.toFixed(2)}</span>
-            <span>Traced in neatlogs</span>
+          <li>
+            <ToolActivity summary="Done · 2 tools · 4m 09s" steps={["Delegated to Research Bot", "Delegated to CFO Bot"]} />
+          </li>
+          <li>
+            <CapCard />
           </li>
         </ol>
       </div>
       <figcaption className="mt-3 text-center text-xs text-muted-fg">
-        Illustration of one turn. {a.agent} pauses on <span className="font-medium">{a.tool}</span> until you
-        choose.
+        A real turn from the public app on 12 Oct 2026, abridged and rebuilt in HTML.{" "}
+        <a
+          href={proofFile("21-live-cap-card-approved-continuing.png")}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium text-link underline-offset-4 hover:underline"
+        >
+          See the capture
+        </a>
+        . Try the buttons.
       </figcaption>
     </figure>
   );
@@ -106,18 +108,18 @@ function Team() {
     <Section
       id="team"
       title="Ten bots. You only talk to one."
-      intro="The Primary Bot plans and delegates. Specialists own the tools. You can also open a chat with any of them directly."
+      intro="The Primary Bot plans and delegates. Specialists own the tools. You can also open a chat with any of them directly. Avatars are the ones the app shows."
     >
       <div className="grid gap-4 lg:grid-cols-3">
         {primary && (
-          <article className="flex flex-col justify-between rounded-3xl bg-[var(--bot-orange)] p-6 text-[#1a1208] sm:p-8 lg:row-span-2">
-            <BotFace color="orange" size={64} className="ring-4 ring-white/40" />
+          <article className="flex flex-col justify-between rounded-3xl bg-gradient-to-br from-[#A97EFE] to-[#7C3AED] p-6 text-white sm:p-8 lg:row-span-2">
+            <BotAvatar agent={primary.agent} size={64} />
             <div className="mt-10">
               <h3 className="text-2xl font-semibold tracking-[-0.02em]">{primary.name}</h3>
-              <p className="mt-2 max-w-[40ch] text-[15px] leading-relaxed opacity-85">{primary.role}</p>
+              <p className="mt-2 max-w-[40ch] text-[15px] leading-relaxed opacity-90">{primary.role}</p>
               <ul className="mt-5 flex flex-wrap gap-2 text-sm">
                 {primary.tools.map((t) => (
-                  <li key={t} className="rounded-full bg-black/10 px-3 py-1">
+                  <li key={t} className="rounded-full bg-white/15 px-3 py-1">
                     {t}
                   </li>
                 ))}
@@ -128,7 +130,7 @@ function Team() {
         {tooled.map((b) => (
           <article key={b.name} className="rounded-3xl border border-line bg-card p-6">
             <div className="flex items-center gap-3">
-              <BotFace color={b.color} size={40} />
+              <BotAvatar agent={b.agent} size={40} />
               <h3 className="text-lg font-semibold tracking-[-0.01em]">{b.name}</h3>
             </div>
             <p className="mt-4 text-[15px] leading-relaxed text-muted-fg">{b.role}</p>
@@ -148,7 +150,7 @@ function Team() {
         <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {plain.map((b) => (
             <li key={b.name} className="flex gap-3">
-              <BotFace color={b.color} size={30} />
+              <BotAvatar agent={b.agent} size={30} />
               <div className="text-sm">
                 <p className="font-medium">{b.name}</p>
                 <p className="mt-0.5 text-muted-fg">{b.role}</p>
@@ -179,6 +181,12 @@ function HowItWorks() {
   );
 }
 
+const trustShots = [
+  { file: "21-live-cap-card-approved-continuing.png", caption: "Cap card, approved as a one-time extension." },
+  { file: "16-live-approved-answer-continuation-budget.png", caption: "Finished answer: $0.034 / 167k, matching neatlogs." },
+  { file: "17-neatlogs-capped-trace-error.png", caption: "The capped turn in the neatlogs dashboard: ERROR." },
+];
+
 function Trust() {
   return (
     <Section
@@ -188,26 +196,48 @@ function Trust() {
       className="border-t border-line"
     >
       <div className="grid gap-10 lg:grid-cols-2">
-        <div>
+        <div className="min-w-0">
           <ApprovalCard />
+          <p className="mt-3 text-xs text-muted-fg">
+            Illustration of the app's approval card. The tool and arguments are an example. Try the buttons.
+          </p>
           <ul className="mt-6 space-y-3 text-[15px] leading-relaxed">
             <li>The card names the agent, the tool and the exact arguments.</li>
             <li>Deny, and the call never runs. Send a new message, and any open request is dropped.</li>
             <li>Reads run straight away, so research stays fast.</li>
           </ul>
         </div>
-        <div>
-          <Receipt />
+        <div className="min-w-0">
+          <UsagePopover />
           <ul className="mt-6 space-y-3 text-[15px] leading-relaxed">
             <li>
-              Each turn is capped per user and per agent: ${caps.costCapUsd.toFixed(2)} and{" "}
-              {caps.tokenCap.toLocaleString("en-US")} tokens by default, and you can change both.
+              Tap the bot name to see this turn's usage. Each bot has per-message caps: ${caps.costCapUsd.toFixed(2)} and{" "}
+              {caps.tokenCap.toLocaleString("en-US")} tokens by default, and you can edit both.
             </li>
             <li>Usage is checked after model steps, so the last step can overshoot. At a cap, Approve grants a one-time extension; Deny returns a short, tool-free incomplete answer.</li>
-            <li>neatlogs' own figure appears next to ours, linked to the trace.</li>
+            <li>neatlogs' own figure appears next to our estimate, linked to the trace.</li>
           </ul>
         </div>
       </div>
+      <ul className="mt-12 grid gap-4 sm:grid-cols-3">
+        {trustShots.map((t) => (
+          <li key={t.file}>
+            <a
+              href={proofFile(t.file)}
+              target="_blank"
+              rel="noreferrer"
+              className="block transition-opacity hover:opacity-90"
+              aria-label={`Open full size: ${t.caption}`}
+            >
+              <ShotFrame src={proofThumb(t.file)} alt={t.caption} />
+            </a>
+            <p className="mt-2 text-xs leading-relaxed text-muted-fg">{t.caption}</p>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-4 text-sm">
+        <ExtLink href="/judges/#recovery">More screenshots on the judges page</ExtLink>
+      </p>
     </Section>
   );
 }

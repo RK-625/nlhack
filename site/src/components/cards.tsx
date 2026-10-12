@@ -1,131 +1,240 @@
-import { Check, ShieldQuestion, X } from "lucide-react";
-import { useState } from "react";
-import { approvalExample, caps, isTodo, receiptExample } from "../content";
-import { BotFace, ExtLink, Show, cx } from "./ui";
+/**
+ * Replicas of three pieces of the Bot Company app UI, matched to its source and the 12 Oct 2026
+ * captures: the tool-approval card and the cap card (web/src/shell/MessageBubble.tsx) and the
+ * usage popover under the bot name (web/src/shell/UsagePanel.tsx).
+ */
+import { Check, ChevronDown, ChevronRight, ExternalLink, OctagonAlert, ShieldAlert, X } from "lucide-react";
+import { type ReactNode, useState } from "react";
+import { approvalExample, capCardExample, proofFile, traceUrl, usageSnapshots, type UsageBarView } from "../content";
+import { BotAvatar, type AgentId } from "./avatar";
+import { cx } from "./ui";
 
-/** Interactive mock of the inline Approve/Deny card. */
-export function ApprovalCard({ compact = false }: { compact?: boolean }) {
-  const [state, setState] = useState<"pending" | "approved" | "denied">("pending");
-  const a = approvalExample;
+/** The app's small Approve / Deny buttons (shadcn Button size="sm"). */
+function DecisionButtons({ onDecide }: { onDecide: (approved: boolean) => void }) {
   return (
-    <div className="rounded-2xl border border-line bg-card p-4 shadow-[0_1px_0_rgb(0_0_0/0.03)] sm:p-5">
-      <div className="flex items-center gap-3">
-        <BotFace color="violet" size={30} />
-        <div className="min-w-0 text-sm leading-tight">
-          <p className="font-medium">{a.agent} wants to run a tool</p>
-          <p className="text-muted-fg">Asked by {a.via}</p>
-        </div>
-        <ShieldQuestion aria-hidden className="ml-auto size-5 shrink-0 text-warn" />
-      </div>
-      <div className="mt-4 overflow-x-auto rounded-xl bg-muted px-3.5 py-3 text-[13px] leading-relaxed">
-        <p className="font-semibold">{a.tool}</p>
-        <dl className="mt-1 grid grid-cols-[auto_1fr] gap-x-3">
-          {Object.entries(a.args).map(([k, v]) => (
-            <div key={k} className="contents">
-              <dt className="text-muted-fg">{k}</dt>
-              <dd className="break-words">{v}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-      <div className="mt-4 flex min-h-10 items-center gap-2" aria-live="polite">
-        {state === "pending" ? (
-          <>
-            <button
-              type="button"
-              onClick={() => setState("approved")}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-fg transition-opacity hover:opacity-90"
-            >
-              <Check aria-hidden className="size-4" /> Approve
-            </button>
-            <button
-              type="button"
-              onClick={() => setState("denied")}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-line px-4 text-sm font-medium transition-colors hover:bg-accent"
-            >
-              <X aria-hidden className="size-4" /> Deny
-            </button>
-          </>
-        ) : (
-          <p className={cx("pop flex items-center gap-2 text-sm", state === "approved" ? "text-ok" : "text-bad")}>
-            {state === "approved" ? (
-              <>
-                <Check aria-hidden className="size-4" /> Approved. {a.agent} runs the tool and the reply continues.
-              </>
-            ) : (
-              <>
-                <X aria-hidden className="size-4" /> Denied. The tool never runs.
-              </>
-            )}
-            <button
-              type="button"
-              onClick={() => setState("pending")}
-              className="ml-1 text-muted-fg underline underline-offset-4 hover:text-fg"
-            >
-              Reset
-            </button>
-          </p>
-        )}
-      </div>
-      {!compact && <p className="mt-3 text-xs text-muted-fg">Illustration. Try the buttons.</p>}
+    <div className="flex gap-2">
+      <button
+        type="button"
+        onClick={() => onDecide(true)}
+        className="inline-flex h-7 items-center gap-1 rounded-[12px] bg-primary px-2.5 text-[0.8rem] font-medium text-primary-fg transition-opacity hover:opacity-80"
+      >
+        <Check aria-hidden strokeWidth={1.8} className="size-3.5" /> Approve
+      </button>
+      <button
+        type="button"
+        onClick={() => onDecide(false)}
+        className="inline-flex h-7 items-center gap-1 rounded-[12px] border border-line bg-bg px-2.5 text-[0.8rem] font-medium transition-colors hover:bg-accent"
+      >
+        <X aria-hidden strokeWidth={1.8} className="size-3.5" /> Deny
+      </button>
     </div>
   );
 }
 
-function money(n: number) {
-  return `$${n < 0.1 ? n.toFixed(6) : n.toFixed(2)}`;
+function ResetLink({ onClick }: { onClick: () => void }) {
+  return (
+    <button type="button" onClick={onClick} className="ml-2 underline underline-offset-4 hover:text-fg">
+      Reset
+    </button>
+  );
 }
 
-/** Mock of the per-turn usage receipt. */
-export function Receipt() {
-  const r = receiptExample;
-  const share = isTodo(r.estCostUsd) ? 0 : Math.max(0.02, r.estCostUsd / caps.costCapUsd);
+/** Tool-approval card: "<agent> wants to run: <label>", the tool name, its JSON arguments. */
+export function ApprovalCard() {
+  const [state, setState] = useState<"pending" | "approved" | "denied">("pending");
+  const a = approvalExample;
+  const title = `${a.agent} wants to run: ${a.label}`;
   return (
-    <div className="rounded-2xl border border-line bg-card p-4 sm:p-5">
-      <div className="flex items-center gap-3">
-        <BotFace color="orange" size={30} />
-        <p className="text-sm font-medium">Turn receipt</p>
-        <span className="ml-auto rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-fg">Under cap</span>
+    <div
+      role="group"
+      aria-label={title}
+      className="flex max-w-full flex-col gap-2 rounded-[20px] border border-line bg-muted/60 px-[18px] py-3 text-[14.5px] leading-[1.45]"
+    >
+      <div className="flex items-center gap-2 font-medium">
+        <ShieldAlert aria-hidden size={15} strokeWidth={1.8} className="shrink-0 text-muted-fg" />
+        <span className="min-w-0 break-words">{title}</span>
       </div>
+      <code className="w-fit max-w-full break-all rounded-md bg-bg px-1.5 py-0.5 font-mono text-[12.5px] text-muted-fg">
+        {a.toolName}
+      </code>
+      <pre className="max-w-full overflow-auto whitespace-pre-wrap break-words rounded-lg border border-line bg-bg px-3 py-2 font-mono text-[12.5px] leading-[1.5]">
+        {JSON.stringify(a.input, null, 2)}
+      </pre>
+      <div className="min-h-7" aria-live="polite">
+        {state === "pending" ? (
+          <DecisionButtons onDecide={(ok) => setState(ok ? "approved" : "denied")} />
+        ) : (
+          <p className="pop text-[13px] text-muted-fg">
+            {state === "approved" ? "Approved: the tool runs and the reply continues." : "Denied: the tool never runs."}
+            <ResetLink onClick={() => setState("pending")} />
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
-      <div className="mt-5">
-        <div className="flex items-baseline justify-between text-sm">
-          <span className="text-muted-fg">Estimated cost</span>
-          <span className="num font-medium">
-            <Show value={r.estCostUsd}>{money}</Show>
-            <span className="text-muted-fg"> of {money(caps.costCapUsd)} cap</span>
-          </span>
-        </div>
-        <div
-          className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted"
-          role="img"
-          aria-label={`Used ${(share * 100).toFixed(1)} percent of the cost cap`}
-        >
-          <div className="h-full rounded-full bg-[var(--bot-orange)]" style={{ width: `${share * 100}%` }} />
-        </div>
+/** Cap card shown at the end of a capped reply; text copied from capture 21. */
+export function CapCard() {
+  const [state, setState] = useState<"pending" | "approved" | "denied">("pending");
+  const c = capCardExample;
+  return (
+    <div
+      role="group"
+      aria-label={c.title}
+      className="flex max-w-full flex-col gap-2 rounded-[20px] border border-line bg-muted/60 px-[18px] py-3 text-[14.5px] leading-[1.45]"
+    >
+      <div className="flex items-start gap-2 font-medium">
+        <OctagonAlert aria-hidden size={15} strokeWidth={1.8} className="mt-[3px] shrink-0 text-bad" />
+        <span className="min-w-0 break-words">{c.title}</span>
       </div>
+      <div aria-live="polite" className="flex flex-col gap-2">
+        {state === "pending" ? (
+          <>
+            <p className="text-[13px] text-muted-fg">{c.pending}</p>
+            <DecisionButtons onDecide={(ok) => setState(ok ? "approved" : "denied")} />
+          </>
+        ) : (
+          <p className="pop text-[13px] text-muted-fg">
+            {state === "approved" ? c.approved : c.denied}
+            <ResetLink onClick={() => setState("pending")} />
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
-      <dl className="num mt-5 grid grid-cols-2 gap-y-3 text-sm">
-        <dt className="text-muted-fg">Tokens</dt>
-        <dd className="text-right">
-          <Show value={r.estTokens} /> <span className="text-muted-fg">of {caps.tokenCap.toLocaleString("en-US")}</span>
-        </dd>
-        <dt className="text-muted-fg">Model steps</dt>
-        <dd className="text-right">
-          <Show value={r.steps} />
-        </dd>
-        <dt className="text-muted-fg">neatlogs cost</dt>
-        <dd className="text-right">
-          <Show value={r.neatlogsCostUsd}>{money}</Show>
-          <span className="text-muted-fg"> for </span>
-          <Show value={r.neatlogsTokens} />
-          <span className="text-muted-fg"> tokens</span>
-        </dd>
-      </dl>
-      <div className="mt-4 flex items-center justify-between border-t border-line pt-3 text-xs text-muted-fg">
-        <span>Northwind After 2 · saved run, 12 Oct 2026. Trace may require sign-in.</span>
-        <ExtLink href={r.traceUrl}>Trace</ExtLink>
+const BAR: Record<UsageBarView["level"], string> = {
+  normal: "bg-fg/55",
+  warn: "bg-warn",
+  capped: "bg-bad",
+};
+
+function UsageBar({ bar }: { bar: UsageBarView }) {
+  return (
+    <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className="flex items-baseline justify-between gap-2 text-[12.5px]">
+        <span className="text-muted-fg">{bar.label}</span>
+        <span className={cx("num", bar.level === "capped" ? "text-bad" : "text-fg/85")}>{bar.text}</span>
       </div>
+      <div
+        role="meter"
+        aria-label={`${bar.label} used this turn`}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(bar.fraction * 100)}
+        aria-valuetext={bar.text}
+        className="h-1 overflow-hidden rounded-full bg-muted"
+      >
+        <div className={cx("h-full rounded-full", BAR[bar.level])} style={{ width: `${Math.min(1, bar.fraction) * 100}%` }} />
+      </div>
+    </div>
+  );
+}
+
+/** The chat header pill: avatar, bot name, status dot, chevron. */
+export function BotPill({ agent, name, dot }: { agent: AgentId; name: string; dot?: "working" | "capped" }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-line bg-card py-1 pe-3 ps-1.5 text-[14px] font-medium shadow-sm">
+      <BotAvatar agent={agent} size={22} />
+      {name}
+      {dot && (
+        <span aria-hidden className={cx("size-1.5 rounded-full", dot === "capped" ? "bg-bad" : "bg-warn")} />
+      )}
+      <ChevronDown aria-hidden className="size-3.5 text-muted-fg" />
+    </span>
+  );
+}
+
+/** Usage popover under the bot name, in the two states captured during the live run. */
+export function UsagePopover() {
+  const [i, setI] = useState(0);
+  const s = usageSnapshots[i]!;
+  return (
+    <div>
+      <div role="tablist" aria-label="Usage state" className="mb-3 inline-flex rounded-full border border-line bg-muted p-0.5 text-[13px]">
+        {usageSnapshots.map((u, k) => (
+          <button
+            key={u.id}
+            type="button"
+            role="tab"
+            aria-selected={k === i}
+            onClick={() => setI(k)}
+            className={cx(
+              "rounded-full px-3 py-1 font-medium transition-colors",
+              k === i ? "bg-card text-fg shadow-sm" : "text-muted-fg hover:text-fg",
+            )}
+          >
+            {u.tab}
+          </button>
+        ))}
+      </div>
+      <div className="flex justify-center">
+        <BotPill agent="assistant" name="Primary Bot" dot={s.id === "capped" ? "capped" : undefined} />
+      </div>
+      <section
+        aria-label="Usage this turn"
+        className="mx-auto mt-2 flex w-full max-w-[380px] flex-col gap-2.5 rounded-2xl border border-line bg-card/95 px-3.5 py-3 shadow-sm"
+      >
+        <div className="flex items-end gap-4">
+          <UsageBar bar={s.bars[0]} />
+          <UsageBar bar={s.bars[1]} />
+        </div>
+        <TraceLine est={s.neatlogs.est} text={s.neatlogs.text} traceId={s.neatlogs.traceId} />
+        <div className="flex items-center justify-between gap-2 text-[12px] text-muted-fg">
+          <span>{s.footer}</span>
+          <span className="rounded-md px-2 py-0.5 text-[12px] font-medium text-fg">Edit</span>
+        </div>
+      </section>
+      <p className="mt-3 text-center text-xs text-muted-fg">
+        Real numbers from the live run on 12 Oct 2026 ·{" "}
+        <a href={proofFile(s.capture)} target="_blank" rel="noreferrer" className="font-medium text-link underline-offset-4 hover:underline">
+          see the capture
+        </a>
+      </p>
+    </div>
+  );
+}
+
+function TraceLine({ est, text, traceId }: { est?: string; text: string; traceId: string }) {
+  const link: ReactNode = (
+    <a
+      href={traceUrl(traceId)}
+      target="_blank"
+      rel="noreferrer"
+      title={`Neatlogs trace ${traceId} (needs sign-in)`}
+      className="inline-flex items-center gap-1 underline-offset-2 hover:underline"
+    >
+      {text}
+      <ExternalLink aria-hidden className="size-3 shrink-0" />
+    </a>
+  );
+  if (!est) return <div className="text-[12px] text-muted-fg">{link}</div>;
+  return (
+    <div className="flex items-baseline justify-between gap-2 text-[12.5px]">
+      <span className="text-muted-fg">{est}</span>
+      <span className="num text-fg/85">{link}</span>
+    </div>
+  );
+}
+
+/** The app's tool-activity line: "Done · N tools", expanded to show its steps. */
+export function ToolActivity({ summary, steps }: { summary: string; steps: string[] }) {
+  return (
+    <div className="ps-1 text-muted-fg">
+      <p className="flex items-center gap-1 text-[13px] font-medium">
+        <ChevronRight aria-hidden className="size-3.5 rotate-90" strokeWidth={1.8} />
+        {summary}
+      </p>
+      <ul className="ms-[7px] mt-0.5 space-y-0.5 border-s border-line ps-3">
+        {steps.map((s) => (
+          <li key={s} className="flex items-center gap-2 text-[13px] leading-5">
+            <Check aria-hidden className="size-3 text-ok" strokeWidth={2} />
+            {s}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

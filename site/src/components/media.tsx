@@ -100,7 +100,7 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
 
   return (
     <>
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2">
         {shots.map((s) => (
           <li key={s.src}>
             <button
@@ -109,7 +109,7 @@ export function Gallery({ name, shots }: { name: string; shots: Maybe<Shot[]> })
               className="block w-full overflow-hidden rounded-xl transition-opacity hover:opacity-90"
               aria-label={`Enlarge: ${s.alt}`}
             >
-              <ShotFrame src={s.thumb} alt={s.alt} />
+              <img src={s.thumb} alt={s.alt} loading="lazy" decoding="async" className="aspect-[16/10] w-full rounded-xl border border-line bg-muted object-contain" />
             </button>
             <p className="mt-2 text-xs leading-relaxed text-muted-fg">{s.alt}</p>
           </li>

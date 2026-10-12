@@ -9,11 +9,15 @@ the repository root with `cd site && npm ci && npm run build` and publishes
 `site/dist`; pushes to `main` deploy automatically.
 
 The 12 October Northwind evidence is published in `public/evidence/2026-10-12/`.
-Its seven PNGs and three JSON exports match the supplied files in
+Its 31 PNGs and three JSON exports match the supplied files in
 `docs/demo/`; the report and Markdown links are adapted for public hosting.
 The folder includes a fresh SHA-256 manifest. Checkpoint counts are pinned to
 the commit stored in `repoFacts.ref`, so later commits do not invalidate them.
 The export lists checkpoint IDs, not private Entire session contents.
 
-Still needed: demo video/chapters, cfo.ai business plan and screenshots,
-Entire screenshot, and #neatHack posts. The repository remains private.
+The judges page presents the seven criteria as separate sections with inline
+screenshots. Entire uses saved CLI output; built-in-public awaits post links.
+Home uses the app avatar shapes, usage popover, approval and cap-card layouts.
+
+Still needed: demo video/chapters, the cfo.ai business plan, and #neatHack posts.
+The repository remains private.

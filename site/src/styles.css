@@ -13,6 +13,7 @@
   --border: #e4e4df;
   --primary: #1a1a1a;
   --primary-foreground: #f1f1ef;
+  --chat-user: #e2e2dc;
   --link: #2563eb;
   --ring: #3b82f6;
   --success: #228b3b;
@@ -43,6 +44,7 @@
     --border: #23252c;
     --primary: #f1f1ef;
     --primary-foreground: #0b0c0e;
+    --chat-user: #22242b;
     --link: #60a5fa;
     --success: #4ecb71;
     --warning: #e9c46a;
@@ -57,6 +59,7 @@
   --color-fg: var(--foreground);
   --color-card: var(--card);
   --color-muted: var(--muted);
+  --color-chat-user: var(--chat-user);
   --color-muted-fg: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-line: var(--border);
